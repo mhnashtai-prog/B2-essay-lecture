@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>ESSAY DROP</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#e2e2e6;
+  --card:#ffffff;
+  --border:rgba(0,0,0,0.07);
+  --ink:#0e0e12;
+  --ink2:rgba(14,14,18,0.62);
+  --ink3:rgba(14,14,18,0.28);
+  --red:#c21b19;
+  --red-s:rgba(194,27,25,0.09);
+  --rad:18px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+.app{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto;}
+
+/* ── TOPBAR ── */
+.topbar{z-index:50;padding:.42rem .9rem .36rem;background:rgba(226,226,230,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:.22rem;}
+.topbar-row{display:flex;align-items:center;gap:.6rem;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.24em;color:var(--ink);}
+.logo span{color:var(--red);}
+.tbsp{flex:1;}
+/* TIPS button — top right, always visible */
+.tips-btn{font-family:'DM Mono',monospace;font-size:.36rem;letter-spacing:.14em;text-transform:uppercase;padding:.22rem .6rem;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid rgba(0,0,0,.08);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tips-btn:hover{background:rgba(0,0,0,.1);color:var(--ink2);}
+.tips-btn.active{background:var(--red-s);color:var(--red);border-color:rgba(194,27,25,.2);}
+.tbctr{font-family:'DM Mono',monospace;font-size:.4rem;letter-spacing:.14em;color:var(--ink3);}
+.stories{display:flex;gap:2.5px;height:2px;}
+.seg{flex:1;border-radius:2px;background:rgba(0,0,0,0.09);overflow:hidden;position:relative;}
+.segf{position:absolute;inset:0;border-radius:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.22,1,.36,1);}
+.seg.done .segf{transform:scaleX(1);}
+.seg.active .segf{transform:scaleX(1);background:var(--ink);}
+
+/* ── STAGE ── */
+.stage{position:relative;overflow:hidden;display:flex;min-height:0;}
+.scene{position:absolute;inset:.42rem;display:flex;flex-direction:column;pointer-events:none;opacity:0;}
+.scene.active{opacity:1;pointer-events:all;animation:scIn .34s cubic-bezier(.22,1,.36,1) both;}
+@keyframes scIn{from{opacity:0;transform:translateY(14px) scale(.97);}to{opacity:1;transform:none;}}
+
+/* ══════════════════════════════════════════
+   POSTER CARD
+   White, fills available height.
+   Left red stripe, clipped badge.
+   Big Bebas title then large body lines.
+══════════════════════════════════════════ */
+.pc{flex:1;min-height:0;background:var(--card);border-radius:var(--rad);border:1px solid rgba(0,0,0,0.055);box-shadow:0 10px 36px rgba(0,0,0,0.09),0 2px 6px rgba(0,0,0,0.05);display:flex;overflow:hidden;position:relative;}
+.pc-stripe{width:5px;flex-shrink:0;background:var(--red);}
+.pc-badge{position:absolute;top:0;left:0;width:2.7rem;height:2.7rem;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:500;color:#fff;clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%);box-shadow:2px 2px 0 rgba(0,0,0,0.12);z-index:10;}
+
+.pc-body{flex:1;display:flex;flex-direction:column;padding:.45rem .85rem .42rem 1rem;overflow:hidden;min-height:0;}
+.pc-lbl{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:.38rem;flex-shrink:0;margin-top:.15rem;margin-bottom:.28rem;}
+.pc-lbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,0.065);}
+
+/* BIG TITLE — fills card width */
+.pc-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,12vw,6.5rem);line-height:.88;letter-spacing:.02em;color:var(--ink);flex-shrink:0;margin-top:1.85rem;}
+.pc-title .r{color:var(--red);}
+.pc-rule{width:2.4rem;height:3.5px;border-radius:2px;background:var(--red);flex-shrink:0;margin:.46rem 0 .42rem;}
+
+/* SENTENCE STACK — flex:1, lines grow evenly to fill the card */
+.pc-stack{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+.pc-line{
+  flex:1;min-height:0;
+  display:flex;align-items:center;
+  /* LARGE — the key fix from the feedback */
+  font-size:clamp(1rem,3.2vw,1.45rem);
+  font-weight:400;line-height:1.4;
+  color:var(--ink2);
+  border-bottom:1px solid rgba(0,0,0,0.045);
+  padding:.12rem 0;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .36s,transform .42s cubic-bezier(.22,1,.36,1);
+}
+.pc-line:last-child{border-bottom:none;}
+.pc-line.in{opacity:1;transform:none;}
+.pc-line.first{color:var(--ink);font-weight:600;}
+/* role badge */
+.pc-role{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.11em;text-transform:uppercase;padding:.1rem .36rem;border-radius:2px;background:var(--red-s);color:var(--red);margin-right:.4rem;flex-shrink:0;align-self:center;}
+
+.pc-wave-row{display:flex;align-items:flex-end;justify-content:flex-end;flex-shrink:0;padding-top:.22rem;height:1.3rem;}
+.pc-wave{display:flex;align-items:flex-end;gap:2.5px;height:100%;}
+.pc-wave-bar{width:3px;border-radius:2px;background:var(--red);}
+.pc-wave-bar:nth-child(1){height:28%}.pc-wave-bar:nth-child(2){height:60%}.pc-wave-bar:nth-child(3){height:100%}.pc-wave-bar:nth-child(4){height:72%}.pc-wave-bar:nth-child(5){height:40%}.pc-wave-bar:nth-child(6){height:84%}.pc-wave-bar:nth-child(7){height:52%}
+.pc-wave.on .pc-wave-bar{animation:wav .9s ease-in-out infinite;}
+.pc-wave-bar:nth-child(1){animation-delay:.00s}.pc-wave-bar:nth-child(2){animation-delay:.08s}.pc-wave-bar:nth-child(3){animation-delay:.16s}.pc-wave-bar:nth-child(4){animation-delay:.11s}.pc-wave-bar:nth-child(5){animation-delay:.04s}.pc-wave-bar:nth-child(6){animation-delay:.19s}.pc-wave-bar:nth-child(7){animation-delay:.09s}
+@keyframes wav{0%,100%{transform:scaleY(.22);opacity:.22}50%{transform:scaleY(1);opacity:1}}
+
+.swipe{text-align:center;padding-top:.18rem;font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);animation:pls 2.5s ease-in-out infinite;flex-shrink:0;}
+@keyframes pls{0%,100%{opacity:.16}50%{opacity:.4}}
+
+/* ═══════════════════════════════
+   SCENE 00 — QUESTION CARD
+   Question title fills card,
+   opinion chips anchor bottom.
+═══════════════════════════════ */
+.q-body{flex:1;display:flex;flex-direction:column;padding:.45rem .85rem .42rem 1rem;overflow:hidden;min-height:0;}
+.q-pill{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.18em;text-transform:uppercase;padding:.12rem .52rem;border-radius:20px;background:var(--red-s);color:var(--red);border:1px solid rgba(194,27,25,0.14);align-self:flex-start;flex-shrink:0;margin-top:.15rem;}
+.q-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,11vw,6rem);line-height:.88;letter-spacing:.02em;color:var(--ink);flex:1;display:flex;align-items:flex-start;padding-top:1.8rem;}
+.q-title-inner{align-self:flex-start;}
+.q-title .r{color:var(--red);}
+.q-rule{width:2.4rem;height:3.5px;border-radius:2px;background:var(--red);flex-shrink:0;margin:.38rem 0 .35rem;}
+.q-sub{font-family:'Instrument Sans',sans-serif;font-size:clamp(1rem,3vw,1.35rem);font-weight:400;line-height:1.45;color:var(--ink2);flex-shrink:0;}
+.q-sub strong{color:var(--ink);}
+.q-btns{display:flex;gap:.35rem;flex-shrink:0;margin-top:.4rem;}
+.q-btn{flex:1;padding:.45rem .5rem;border-radius:8px;font-family:'DM Mono',monospace;font-size:.42rem;font-weight:500;letter-spacing:.04em;text-align:center;border:1.5px solid transparent;cursor:default;line-height:1.35;}
+.q-btn.yes{background:rgba(22,163,74,.07);color:#15803d;border-color:rgba(22,163,74,.18);}
+.q-btn.maybe{background:rgba(0,0,0,.04);color:var(--ink2);border-color:rgba(0,0,0,.09);}
+.q-btn.no{background:var(--red-s);color:var(--red);border-color:rgba(194,27,25,.16);}
+.q-chips{display:flex;gap:.3rem;flex-wrap:wrap;flex-shrink:0;padding-top:.28rem;}
+.chip{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.1em;padding:.14rem .52rem;border-radius:20px;text-transform:uppercase;}
+.chip-r{background:var(--red-s);color:var(--red);border:1px solid rgba(194,27,25,.14);}
+.chip-g{background:rgba(0,0,0,.04);color:var(--ink3);border:1px solid rgba(0,0,0,.07);}
+
+/* ═══════════════════════════════
+   INTRO PAIRS OVERLAY
+   White card, poster fill.
+═══════════════════════════════ */
+.ov{position:fixed;inset:0;z-index:300;background:rgba(5,5,9,.82);backdrop-filter:blur(28px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;}
+.ov.show{opacity:1;pointer-events:all;}
+.ob{width:min(460px,95vw);height:min(580px,88vh);background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,0.055);box-shadow:4px 4px 0 rgba(0,0,0,0.055),0 22px 60px rgba(0,0,0,0.42);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(32px) scale(.95);transition:opacity .38s,transform .46s cubic-bezier(.22,1,.36,1);}
+.ov.show .ob{opacity:1;transform:none;}
+.ob.exit{opacity:0!important;transform:translateX(-48px) scale(.93)!important;transition:opacity .17s,transform .19s ease!important;}
+.ob-top{height:4px;background:var(--red);flex-shrink:0;}
+.ob-num{position:absolute;top:.72rem;right:.82rem;font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.16em;text-transform:uppercase;padding:.11rem .42rem;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border);z-index:2;}
+.ob-hook{flex:1;padding:.9rem 1.45rem .8rem;border-bottom:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+.ob-hlbl{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:.38rem;margin-bottom:.4rem;flex-shrink:0;}
+.ob-hlbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.07);}
+.ob-rl{width:1.7rem;height:3px;border-radius:2px;background:var(--red);margin-bottom:.42rem;flex-shrink:0;}
+.ob-starter{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,9vw,4rem);line-height:.9;letter-spacing:.02em;color:var(--ink);flex-shrink:0;}
+.ob-rest{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:clamp(.95rem,2.8vw,1.2rem);line-height:1.5;color:var(--ink2);margin-top:.36rem;flex:1;opacity:0;transform:translateY(7px);transition:opacity .36s .5s,transform .42s .5s cubic-bezier(.22,1,.36,1);}
+.ov.show .ob:not(.exit) .ob-rest{opacity:1;transform:none;}
+.ob-thesis{flex:1;padding:.8rem 1.45rem .72rem;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+.ob-tlbl{font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:.38rem;margin-bottom:.4rem;flex-shrink:0;opacity:0;transform:translateX(-7px);transition:opacity .32s .52s,transform .36s .52s;}
+.ov.show .ob:not(.exit) .ob-tlbl{opacity:1;transform:none;}
+.ob-tlbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.07);}
+.ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:clamp(1rem,3vw,1.3rem);line-height:1.55;color:var(--ink2);flex:1;opacity:0;transform:translateY(9px);transition:opacity .4s .62s,transform .46s .62s cubic-bezier(.22,1,.36,1);}
+.ob-tt strong{color:var(--red);font-weight:700;}
+.ov.show .ob:not(.exit) .ob-tt{opacity:1;transform:none;}
+.ob-foot{display:flex;align-items:center;justify-content:space-between;padding:.46rem 1.45rem .65rem;border-top:1px solid var(--border);flex-shrink:0;}
+.ob-fl{font-family:'DM Mono',monospace;font-size:.3rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);}
+.ob-wave{display:flex;align-items:flex-end;gap:2.5px;height:15px;}
+.ob-wave-bar{width:3px;border-radius:2px;background:var(--red);}
+.ob-wave-bar:nth-child(1){height:30%}.ob-wave-bar:nth-child(2){height:65%}.ob-wave-bar:nth-child(3){height:100%}.ob-wave-bar:nth-child(4){height:60%}.ob-wave-bar:nth-child(5){height:30%}
+.ob-wave.on .ob-wave-bar{animation:wav2 .9s ease-in-out infinite;}
+.ob-wave-bar:nth-child(1){animation-delay:.00s}.ob-wave-bar:nth-child(2){animation-delay:.07s}.ob-wave-bar:nth-child(3){animation-delay:.14s}.ob-wave-bar:nth-child(4){animation-delay:.09s}.ob-wave-bar:nth-child(5){animation-delay:.03s}
+@keyframes wav2{0%,100%{transform:scaleY(.2);opacity:.2}50%{transform:scaleY(1);opacity:1}}
+.ob-dots{display:flex;gap:6px;margin-top:.6rem;}
+.bdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s cubic-bezier(.22,1,.36,1);}
+.bdot.active{transform:scale(1.9);background:#fff;}
+.bdot.done{background:rgba(255,255,255,.5);}
+
+/* ═══════════════════════════════
+   TIPS PANEL — slides in from right
+   Optional. Doesn't interrupt flow.
+═══════════════════════════════ */
+.tips-panel{
+  position:fixed;inset:0;z-index:400;
+  background:rgba(5,5,9,.85);backdrop-filter:blur(28px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;
+}
+.tips-panel.show{opacity:1;pointer-events:all;}
+.tips-card{
+  width:min(460px,95vw);
+  height:min(600px,90vh);
+  background:#fff;border-radius:20px;
+  border:1px solid rgba(0,0,0,0.055);
+  box-shadow:4px 4px 0 rgba(0,0,0,0.055),0 22px 60px rgba(0,0,0,0.42);
+  overflow:hidden;display:flex;flex-direction:column;
+  opacity:0;transform:translateX(40px) scale(.96);
+  transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);
+}
+.tips-panel.show .tips-card{opacity:1;transform:none;}
+.tips-top{height:4px;background:var(--ink);flex-shrink:0;}
+.tips-header{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.tips-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;color:var(--ink);}
+.tips-close{font-family:'DM Mono',monospace;font-size:.38rem;letter-spacing:.12em;text-transform:uppercase;padding:.22rem .6rem;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;}
+.tips-close:hover{background:rgba(0,0,0,.1);}
+.tips-tabs{display:flex;gap:.3rem;padding:.5rem 1.2rem .38rem;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.tips-tab{font-family:'DM Mono',monospace;font-size:.34rem;letter-spacing:.12em;text-transform:uppercase;padding:.22rem .62rem;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid rgba(0,0,0,.07);cursor:pointer;white-space:nowrap;transition:all .2s;}
+.tips-tab.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.tips-body{flex:1;overflow-y:auto;padding:.8rem 1.2rem;-webkit-overflow-scrolling:touch;}
+.tips-body::-webkit-scrollbar{width:3px;}
+.tips-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:2px;}
+.tip-section{margin-bottom:.9rem;}
+.tip-section-title{font-family:'DM Mono',monospace;font-size:.34rem;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:.42rem;}
+.tip-item{font-family:'Instrument Sans',sans-serif;font-size:clamp(.88rem,2.4vw,1.05rem);font-weight:400;line-height:1.55;color:var(--ink2);padding:.32rem 0;border-bottom:1px dashed rgba(0,0,0,.07);}
+.tip-item:last-child{border-bottom:none;}
+.tip-item strong{color:var(--ink);font-weight:600;}
+/* play tip button */
+.tip-play-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:.7rem 0 .3rem;padding:.55rem;border-radius:.55rem;background:var(--ink);color:#fff;border:none;font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.12em;cursor:pointer;transition:all .18s;width:100%;}
+.tip-play-btn:hover{background:rgba(14,14,18,.78);}
+.tip-play-btn.on{background:var(--red);}
+
+/* ── CONTROLS ── */
+.controls{display:flex;align-items:center;gap:.4rem;padding:.46rem .82rem calc(env(safe-area-inset-bottom,0px)+.46rem);background:rgba(220,220,224,0.97);border-top:1px solid var(--border);backdrop-filter:blur(14px);z-index:50;}
+.btn-main{flex:1;display:flex;align-items:center;justify-content:center;gap:.35rem;padding:.58rem;border:none;border-radius:.56rem;font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.14em;cursor:pointer;transition:all .18s;background:var(--red);color:#fff;box-shadow:0 3px 0 rgba(100,6,6,.4),0 5px 13px rgba(194,27,25,.13);}
+.btn-main:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(100,6,6,.4);}
+.btn-main.running{background:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.25);}
+.btn-nav{width:2.55rem;height:2.55rem;border-radius:.56rem;background:rgba(0,0,0,.055);border:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--ink3);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.btn-nav:hover:not(:disabled){color:var(--ink);background:rgba(0,0,0,.10);}
+.btn-nav:active:not(:disabled){transform:scale(.94);}
+.btn-nav:disabled{opacity:.15;cursor:not-allowed;}
+
+.flash{position:fixed;inset:0;z-index:900;pointer-events:none;opacity:0;transition:opacity .08s;background:var(--red);}
+.flash.pop{opacity:.04;transition:opacity 0s;}
+.fem{position:fixed;pointer-events:none;z-index:800;font-size:clamp(.9rem,3vw,1.3rem);animation:femUp 2s ease-out forwards;}
+@keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-12px) scale(1.1);}80%{opacity:.8;transform:translateY(-100px);}100%{opacity:0;transform:translateY(-145px);}}
+
+@media(max-width:480px){
+  .pc-title{font-size:clamp(2.4rem,12.5vw,4rem)!important;}
+  .q-title{font-size:clamp(2.2rem,11.5vw,3.8rem)!important;}
+  .pc-line,.pc-line.first{font-size:clamp(.94rem,4.2vw,1.1rem)!important;}
+  .ob-rest,.ob-tt{font-size:clamp(.92rem,4vw,1.1rem)!important;}
+  .scene{inset:.3rem;}
+}
+@media(max-height:600px){
+  .pc-title{font-size:clamp(2rem,8vw,3rem)!important;}
+  .pc-line{font-size:clamp(.88rem,2vw,.95rem)!important;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="logo">ESSAY<span>_</span>DROP</div>
+      <div class="tbsp"></div>
+      <!-- TIPS: optional side track, never interrupts flow -->
+      <button class="tips-btn" id="tipsBtn" onclick="toggleTips()">💡 Tips</button>
+      <div class="tbctr" id="ctr">1 / 6</div>
+    </div>
+    <div class="stories" id="stories"></div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- ══ 0: QUESTION ══ -->
+    <div class="scene active" id="sc0">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">00</div>
+        <div class="q-body">
+          <div class="q-pill">📱 Today's question</div>
+          <div class="q-title"><div class="q-title-inner">Should the use of phones be <span class="r">limited</span> for young people?</div></div>
+          <div class="q-rule"></div>
+          <div class="q-sub">What do <strong>you</strong> think? Pick your side — then watch how to argue it perfectly.</div>
+          <div class="q-btns">
+            <div class="q-btn yes">✅ YES<br>limit them</div>
+            <div class="q-btn maybe">🤔 It<br>depends</div>
+            <div class="q-btn no">❌ NO<br>let them use them</div>
+          </div>
+          <div class="q-chips">
+            <div class="chip chip-r">B2 essay</div>
+            <div class="chip chip-g">140–190 words</div>
+            <div class="chip chip-g">5 paragraphs</div>
+            <div class="chip chip-r">own idea required</div>
+          </div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w0"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe">tap start to begin · swipe to navigate</div>
+    </div>
+
+    <!-- ══ 1: INTRODUCTION (triggers pairs) ══ -->
+    <div class="scene" id="sc1">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">01</div>
+        <div class="pc-body">
+          <div class="pc-lbl">Paragraph 1 · Introduction</div>
+          <div class="pc-title">INTRO<span class="r">DUCTION</span></div>
+          <div class="pc-rule"></div>
+          <div class="pc-stack" id="stk1"></div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w1"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe" id="sh1">watch 5 intro pairs →</div>
+    </div>
+
+    <!-- ══ 2: BODY P1 ══ -->
+    <div class="scene" id="sc2">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">02</div>
+        <div class="pc-body">
+          <div class="pc-lbl">Paragraph 2 · Academic performance</div>
+          <div class="pc-title">BODY <span class="r">P1</span></div>
+          <div class="pc-rule"></div>
+          <div class="pc-stack" id="stk2"></div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w2"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe" id="sh2">next →</div>
+    </div>
+
+    <!-- ══ 3: BODY P2 ══ -->
+    <div class="scene" id="sc3">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">03</div>
+        <div class="pc-body">
+          <div class="pc-lbl">Paragraph 3 · Mental health &amp; sleep</div>
+          <div class="pc-title">BODY <span class="r">P2</span></div>
+          <div class="pc-rule"></div>
+          <div class="pc-stack" id="stk3"></div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w3"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe" id="sh3">next →</div>
+    </div>
+
+    <!-- ══ 4: BODY P3 (own idea) ══ -->
+    <div class="scene" id="sc4">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">04</div>
+        <div class="pc-body">
+          <div class="pc-lbl">Paragraph 4 · Your own idea</div>
+          <div class="pc-title">BODY <span class="r">P3</span></div>
+          <div class="pc-rule"></div>
+          <div class="pc-stack" id="stk4"></div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w4"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe" id="sh4">next →</div>
+    </div>
+
+    <!-- ══ 5: CONCLUSION ══ -->
+    <div class="scene" id="sc5">
+      <div class="pc">
+        <div class="pc-stripe"></div>
+        <div class="pc-badge">05</div>
+        <div class="pc-body">
+          <div class="pc-lbl">Paragraph 5 · Conclusion</div>
+          <div class="pc-title">CONCLU<span class="r">SION</span></div>
+          <div class="pc-rule"></div>
+          <div class="pc-stack" id="stk5"></div>
+          <div class="pc-wave-row"><div class="pc-wave" id="w5"><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div><div class="pc-wave-bar"></div></div></div>
+        </div>
+      </div>
+      <div class="swipe" id="sh5">done ✓</div>
+    </div>
+
+  </div>
+
+  <div class="flash" id="flash"></div>
+
+  <div class="controls">
+    <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
+    <button class="btn-main" id="btnMain" onclick="handleMain()">▶  START</button>
+    <button class="btn-nav" id="btnNext" onclick="nextScene()" disabled>›</button>
+  </div>
+</div>
+
+<!-- ══ INTRO PAIRS OVERLAY ══ -->
+<div class="ov" id="ov">
+  <div class="ob" id="ob">
+    <div class="ob-top"></div>
+    <div class="ob-num" id="obNum">1 / 5</div>
+    <div class="ob-hook">
+      <div class="ob-hlbl">🪝 Hook — how to open</div>
+      <div class="ob-rl"></div>
+      <div class="ob-starter" id="obS"></div>
+      <div class="ob-rest" id="obR"></div>
+    </div>
+    <div class="ob-thesis">
+      <div class="ob-tlbl">📌 Thesis — your argument</div>
+      <div class="ob-tt" id="obT"></div>
+    </div>
+    <div class="ob-foot">
+      <div class="ob-fl" id="obFL">pair 1 of 5</div>
+      <div class="ob-wave" id="obW"><div class="ob-wave-bar"></div><div class="ob-wave-bar"></div><div class="ob-wave-bar"></div><div class="ob-wave-bar"></div><div class="ob-wave-bar"></div></div>
+    </div>
+  </div>
+  <div class="ob-dots" id="obDots"></div>
+</div>
+
+<!-- ══ TIPS PANEL (optional, never interrupts) ══ -->
+<div class="tips-panel" id="tipsPanel">
+  <div class="tips-card">
+    <div class="tips-top"></div>
+    <div class="tips-header">
+      <div class="tips-title">💡 HOW IT WORKS</div>
+      <div class="tips-close" onclick="closeTips()">✕ Close</div>
+    </div>
+    <div class="tips-tabs" id="tipsTabs">
+      <div class="tips-tab on" data-tab="essay" onclick="switchTipsTab('essay')">Essay</div>
+      <div class="tips-tab" data-tab="structure" onclick="switchTipsTab('structure')">Structure</div>
+      <div class="tips-tab" data-tab="marking" onclick="switchTipsTab('marking')">Marking</div>
+      <div class="tips-tab" data-tab="linking" onclick="switchTipsTab('linking')">Linking words</div>
+    </div>
+    <div class="tips-body" id="tipsBody">
+      <!-- content injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ TIPS CONTENT ═══ */
+const TIPS = {
+  essay:[
+    {title:'What is an essay?',items:[
+      '<strong>An essay is a formal, structured discussion.</strong> Not a story. Not a list.',
+      'You give your opinion — then prove it with reasons and examples.',
+      'No slang. No contractions. Write as a professional would.'
+    ]},
+    {title:'Register',items:[
+      'Always use <strong>formal vocabulary</strong>: "However" not "But", "Furthermore" not "Also".',
+      'Use the passive voice when possible: "It is widely believed that..."',
+      'Never write "I think" — use "In my opinion" or "It seems to me that".'
+    ]}
+  ],
+  structure:[
+    {title:'The 5-paragraph formula',items:[
+      '<strong>P1 Introduction</strong> — hook sentence + thesis statement.',
+      '<strong>P2 Body</strong> — first idea from the question (CLAIM · REASON · EXAMPLE · RESULT).',
+      '<strong>P3 Body</strong> — second idea from the question (same pattern).',
+      '<strong>P4 Body</strong> — your OWN idea. This is where you gain or lose marks.',
+      '<strong>P5 Conclusion</strong> — restate opinion in different words. No new ideas.'
+    ]},
+    {title:'The CRER pattern (body paragraphs)',items:[
+      '<strong>CLAIM</strong> — make your point.',
+      '<strong>REASON</strong> — explain why it is true.',
+      '<strong>EXAMPLE</strong> — give evidence or an instance.',
+      '<strong>RESULT</strong> — state the consequence or conclusion.'
+    ]}
+  ],
+  marking:[
+    {title:'Four marking criteria',items:[
+      '<strong>Content (25%)</strong> — answer the question, include all 3 ideas.',
+      '<strong>Communicative Achievement (25%)</strong> — formal style, justified points.',
+      '<strong>Organisation (25%)</strong> — clear paragraphs, logical order, good linking.',
+      '<strong>Language (25%)</strong> — wide range of vocabulary and grammar, accurately used.'
+    ]},
+    {title:'Quick wins',items:[
+      'Include the examiner\'s two ideas AND add a third of your own.',
+      'Use a different linking word to begin every paragraph.',
+      'Aim for 140–190 words. Under 130 = automatic penalty.',
+      'Begin the conclusion with "In conclusion" or "To sum up" — never "Finally".'
+    ]}
+  ],
+  linking:[
+    {title:'Opinion',items:['"In my opinion," · "I firmly believe that" · "As far as I am concerned,"']},
+    {title:'Add ideas',items:['"Moreover," · "Furthermore," · "In addition,"']},
+    {title:'Contrast',items:['"However," · "On the other hand," · "Although" · "Despite this,"']},
+    {title:'Example',items:['"For instance," · "For example," · "Indeed,"']},
+    {title:'Result',items:['"As a result," · "Consequently," · "Therefore,"']},
+    {title:'Conclude',items:['"In conclusion," · "To sum up," · "Overall,"']}
+  ]
+};
+let activeTipsTab='essay';
+function renderTips(tab){
+  const sections=TIPS[tab]||[];
+  let h='';
+  sections.forEach(sec=>{
+    h+=`<div class="tip-section"><div class="tip-section-title">${sec.title}</div>`;
+    sec.items.forEach(it=>{h+=`<div class="tip-item">${it}</div>`;});
+    h+='</div>';
+  });
+  document.getElementById('tipsBody').innerHTML=h;
+}
+function switchTipsTab(tab){
+  activeTipsTab=tab;
+  document.querySelectorAll('.tips-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tab));
+  renderTips(tab);
+}
+function toggleTips(){
+  const p=document.getElementById('tipsPanel');
+  const b=document.getElementById('tipsBtn');
+  const showing=p.classList.contains('show');
+  if(!showing){renderTips(activeTipsTab);p.classList.add('show');b.classList.add('active');}
+  else{p.classList.remove('show');b.classList.remove('active');}
+}
+function closeTips(){document.getElementById('tipsPanel').classList.remove('show');document.getElementById('tipsBtn').classList.remove('active');}
+
+/* ═══ ESSAY DATA — the main track ═══ */
+
+/* Scene 1 — intro teaser (just 2 lines before pairs open) */
+const INTRO_TEASER=[
+  'Two sentences. That is all an introduction needs.',
+  'Sentence 1: a hook to grab attention. Sentence 2: your thesis.'
+];
+
+const PAIRS=[
+  {s:'Nowadays,',f:'Nowadays, smartphones are used by millions of young people around the world every single day.',r:'smartphones are used by millions of young people around the world every single day.',t:'This essay will discuss the main <strong>advantages and disadvantages</strong> of limiting smartphone use for young people.',tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use for young people.'},
+  {s:'In recent years,',f:'In recent years, there has been a growing debate about whether young people should have unlimited access to their phones.',r:'there has been a growing debate about whether young people should have unlimited access to their phones.',t:'In this essay, I will examine <strong>both sides of the argument</strong> before giving my personal opinion.',tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.'},
+  {s:'It is widely believed that',f:'It is widely believed that smartphone use has fundamentally changed the way young people learn, communicate and relax.',r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',t:'Therefore, it is essential to discuss <strong>the benefits and drawbacks</strong> of restricting access to these devices.',tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting access to these devices.'},
+  {s:'Many people argue that',f:'Many people argue that excessive smartphone use is one of the most serious challenges facing young people today.',r:'excessive smartphone use is one of the most serious challenges facing young people today.',t:'The aim of this essay is to consider <strong>whether limiting smartphones</strong> would truly benefit young people.',tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.'},
+  {s:'It is impossible to deny that',f:'It is impossible to deny that smartphones play a significant role in the daily lives of young people worldwide.',r:'smartphones play a significant role in the daily lives of young people worldwide.',t:'This essay will argue that <strong>some restrictions</strong> on smartphone use are both necessary and beneficial.',tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.'}
+];
+
+const BODY_DATA=[
+  [
+    {r:'CLAIM',  n:'Firstly, it seems to me that limiting smartphone use allows young people to concentrate more deeply on their studies.'},
+    {r:'REASON', n:'This is because constant notifications and social media alerts make it very difficult to focus for more than a few minutes at a time.'},
+    {r:'EXAMPLE',n:'For instance, many schools with phone-free policies have reported a clear improvement in behaviour and exam results.'},
+    {r:'RESULT', n:'As a result, young people who limit their screen time find it easier to complete homework and achieve higher grades.'}
+  ],
+  [
+    {r:'CLAIM',  n:"Secondly, as far as I am concerned, restricting smartphones has a positive effect on young people's mental health and sleep."},
+    {r:'REASON', n:'This is because blue light from screens interferes with melatonin production, making it significantly harder to fall asleep.'},
+    {r:'EXAMPLE',n:'For example, research shows that teenagers who use phones late at night are twice as likely to suffer from sleep deprivation.'},
+    {r:'RESULT', n:'Consequently, setting clear limits on evening screen time could directly improve the wellbeing of millions of young people.'}
+  ],
+  [
+    {r:'COUNTER',n:'On the other hand, it could be argued that smartphones are increasingly valuable tools for independent learning.'},
+    {r:'REASON', n:'Many students use phones to access revision apps, research topics, and collaborate — all of which directly support their education.'},
+    {r:'EXAMPLE',n:'Indeed, platforms such as Duolingo and Khan Academy have transformed smartphones into powerful learning resources.'},
+    {r:'BALANCE', n:'For this reason, teaching young people responsible use of devices may be more effective than imposing a complete ban.'}
+  ]
+];
+
+const CONCL_DATA=[
+  {r:'SUMMARY',n:'In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration.'},
+  {r:'POINT 1',n:'On one hand, restricting phones can lead to improved academic performance, better sleep, and greater wellbeing.'},
+  {r:'POINT 2',n:'On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful.'},
+  {r:'VERDICT', n:'Overall, a measured approach to limiting smartphone use would benefit the vast majority of young people.'}
+];
+
+const SC0_NARR="Here is today's essay question. Should the use of phones be limited for young people? What do you think? By the end of this lesson you will know exactly how to argue it.";
+
+const TOTAL=6; /* scenes 0–5 */
+
+/* ═══ ENGINE ═══ */
+let cur=0,running=false,bannerOn=false,timers=[];
+const synth=window.speechSynthesis;let voice=null;
+function loadVoice(){const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};if(synth.getVoices().length)p();else synth.onvoiceschanged=p;}
+let sRes=null;
+function stopSpeech(){if(sRes){sRes();sRes=null;}synth.cancel();}
+function speak(t){return new Promise(r=>{if(!running){r();return;}synth.cancel();sRes=r;const go=()=>{if(!running){r();return;}const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};synth.speak(u);};const t2=setTimeout(go,160);timers.push(t2);});}
+function wait(ms){return new Promise(r=>{const t=setTimeout(r,ms);timers.push(t);});}
+
+function initStories(){const b=document.getElementById('stories');b.innerHTML='';for(let i=0;i<TOTAL;i++){const s=document.createElement('div');s.className='seg';s.id='seg'+i;s.innerHTML='<div class="segf"></div>';b.appendChild(s);}}
+function updateStories(i){for(let j=0;j<TOTAL;j++){const s=document.getElementById('seg'+j);if(!s)continue;s.classList.toggle('done',j<i);s.classList.toggle('active',j===i);}}
+function waveOn(i){const w=document.getElementById('w'+i);if(w)w.classList.add('on');}
+function waveOff(i){const w=document.getElementById('w'+i);if(w)w.classList.remove('on');}
+
+function showScene(i){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  const sc=document.getElementById('sc'+i);if(!sc)return;
+  sc.classList.add('active');
+  document.getElementById('ctr').textContent=(i+1)+' / '+TOTAL;
+  updateStories(i);updateNavBtns();flashColor();
+  if(i>0)spawnEmoji(i);
+}
+
+/* SPEAK first — text appears after */
+async function speakThenShow(stkId,text,isFirst){
+  if(!running)return;
+  await speak(text);if(!running)return;
+  const stk=document.getElementById(stkId);if(!stk)return;
+  const line=document.createElement('div');
+  line.className='pc-line'+(isFirst?' first':'');
+  line.textContent=text;
+  stk.appendChild(line);
+  await wait(28);line.classList.add('in');await wait(200);
+}
+
+async function speakThenShowRole(stkId,role,text,isFirst){
+  if(!running)return;
+  await speak(text);if(!running)return;
+  const stk=document.getElementById(stkId);if(!stk)return;
+  const line=document.createElement('div');
+  line.className='pc-line'+(isFirst?' first':'');
+  line.innerHTML=`<span class="pc-role">${role}</span>${text}`;
+  stk.appendChild(line);
+  await wait(28);line.classList.add('in');await wait(200);
+}
+
+/* INTRO PAIRS */
+async function runPairs(){
+  bannerOn=true;
+  const ov=document.getElementById('ov');
+  document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
+  ov.classList.add('show');
+  for(let i=0;i<PAIRS.length;i++){if(!running||!bannerOn)break;await showPair(PAIRS[i],i);}
+  if(running)closeBanner();
+}
+async function showPair(p,idx){
+  const ob=document.getElementById('ob');
+  if(idx>0){ob.classList.add('exit');await wait(190);if(!running||!bannerOn){ob.classList.remove('exit');return;}ob.classList.remove('exit');}
+  if(!running||!bannerOn)return;
+  document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
+  document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
+  const sEl=document.getElementById('obS');
+  sEl.textContent=p.s;
+  const l=p.s.length;
+  sEl.style.fontSize=l>22?'clamp(1.6rem,6vw,2.8rem)':l>14?'clamp(2rem,7.5vw,3.5rem)':'clamp(2.4rem,9vw,4.2rem)';
+  const rEl=document.getElementById('obR'),tEl=document.getElementById('obT');
+  rEl.style.cssText='opacity:0;transform:translateY(7px);transition:none;';
+  tEl.style.cssText='opacity:0;transform:translateY(9px);transition:none;';
+  rEl.textContent=p.r;tEl.innerHTML=p.t;
+  await wait(24);rEl.style.cssText='';tEl.style.cssText='';
+  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(!d)continue;d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}
+  document.getElementById('obW').classList.add('on');
+  await speak(p.f);if(!running||!bannerOn)return;
+  await wait(190);await speak(p.tf);if(!running||!bannerOn)return;
+  document.getElementById('obW').classList.remove('on');
+  await wait(500);
+}
+function closeBanner(){document.getElementById('ov').classList.remove('show');document.getElementById('ob').classList.remove('exit');bannerOn=false;}
+
+/* SCENE RUNNERS */
+async function runScene(idx){
+  if(!running)return;
+  if(idx>=TOTAL){finishAll();return;}
+  ['stk1','stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
+  showScene(idx);
+
+  if(idx===0){
+    waveOn(0);await speak(SC0_NARR);waveOff(0);
+
+  }else if(idx===1){
+    /* INTRO: speak teaser, then open pairs */
+    waveOn(1);
+    for(let i=0;i<INTRO_TEASER.length;i++){if(!running)return;await speakThenShow('stk1',INTRO_TEASER[i],i===0);}
+    waveOff(1);
+    const h=document.getElementById('sh1');if(h)h.textContent='opening intro pairs…';
+    if(running){await wait(350);await runPairs();}
+
+  }else if(idx===2){
+    waveOn(2);
+    for(let i=0;i<BODY_DATA[0].length;i++){if(!running)return;const row=BODY_DATA[0][i];await speakThenShowRole('stk2',row.r,row.n,i===0);}
+    waveOff(2);const h=document.getElementById('sh2');if(h)h.textContent='next →';
+
+  }else if(idx===3){
+    waveOn(3);
+    for(let i=0;i<BODY_DATA[1].length;i++){if(!running)return;const row=BODY_DATA[1][i];await speakThenShowRole('stk3',row.r,row.n,i===0);}
+    waveOff(3);const h=document.getElementById('sh3');if(h)h.textContent='next →';
+
+  }else if(idx===4){
+    waveOn(4);
+    for(let i=0;i<BODY_DATA[2].length;i++){if(!running)return;const row=BODY_DATA[2][i];await speakThenShowRole('stk4',row.r,row.n,i===0);}
+    waveOff(4);const h=document.getElementById('sh4');if(h)h.textContent='next →';
+
+  }else if(idx===5){
+    waveOn(5);
+    for(let i=0;i<CONCL_DATA.length;i++){if(!running)return;const row=CONCL_DATA[i];await speakThenShowRole('stk5',row.r,row.n,i===0);}
+    waveOff(5);const h=document.getElementById('sh5');if(h)h.textContent='done ✓';
+  }
+
+  if(!running)return;await wait(480);if(!running)return;cur=idx+1;runScene(cur);
+}
+
+function handleMain(){
+  if(!running){running=true;const b=document.getElementById('btnMain');b.textContent='⏹  STOP';b.classList.add('running');updateNavBtns();runScene(cur);}
+  else stopAll();
+}
+function stopAll(){running=false;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();const b=document.getElementById('btnMain');b.textContent=cur===0?'▶  START':'▶  RESUME';b.classList.remove('running');updateNavBtns();}
+function clearBuilt(){['stk1','stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});}
+function nextScene(){bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearBuilt();if(cur+1<TOTAL){cur++;running?runScene(cur):showScene(cur);}updateNavBtns();}
+function prevScene(){if(cur===0)return;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearBuilt();cur=Math.max(0,cur-1);running?runScene(cur):showScene(cur);updateNavBtns();}
+function updateNavBtns(){document.getElementById('btnPrev').disabled=cur<=0;document.getElementById('btnNext').disabled=cur>=TOTAL-1;}
+function finishAll(){running=false;spawnEmoji(5);const b=document.getElementById('btnMain');b.textContent='↺  RESTART';b.classList.remove('running');updateNavBtns();b.onclick=()=>{cur=0;clearBuilt();b.textContent='▶  START';b.onclick=handleMain;initStories();showScene(0);};}
+function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
+const EMJS=[['📱'],['🪝'],['💪'],['💡'],['⚖️'],['🏁']];
+function spawnEmoji(idx){const list=EMJS[idx]||[];const r=document.getElementById('stage').getBoundingClientRect();list.forEach((em,i)=>{const t=setTimeout(()=>{const el=document.createElement('div');el.className='fem';el.textContent=em;el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.5+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2700);},i*170);timers.push(t);});}
+
+document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();handleMain();}if(e.key==='ArrowRight')nextScene();if(e.key==='ArrowLeft')prevScene();if(e.key==='Escape'){stopAll();closeTips();}});
+let _tx=0;
+document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
+
+loadVoice();initStories();showScene(0);
+</script>
+</body>
+</html>
