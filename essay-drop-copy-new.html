@@ -3,217 +3,94 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ESSAY DROP — V6</title>
+<title>ESSAY DROP — V7</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#FAF9F7;
-  --card:#ffffff;
-  --ink:#1C1C1E;
-  --ink2:rgba(28,28,30,0.92);
-  --ink3:rgba(28,28,30,0.75);
-  --red:#c9140f;
-  --red-s:rgba(201,20,15,0.08);
-  --border:rgba(28,28,30,0.08);
-  --c-intro:#3d9e95;
-  --c-b1:#c9140f;
-  --c-b2:#c9140f;
-  --c-b3:#7b5ea7;
-  --c-conc:#2d7a3a;
+  --bg:#FAF9F7;--ink:#1C1C1E;--ink2:rgba(28,28,30,0.92);--ink3:rgba(28,28,30,0.75);
+  --red:#c9140f;--red-s:rgba(201,20,15,0.08);--border:rgba(28,28,30,0.08);
+  --c-intro:#3d9e95;--c-b1:#c9140f;--c-b3:#7b5ea7;--c-conc:#2d7a3a;
 }
-
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{font-size:16px;}
 html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);
   font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;}
 
-/* ─── TOPBAR ─── */
-.topbar{
-  flex-shrink:0;display:flex;align-items:center;gap:10px;
-  padding:10px 18px 9px;
-  background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);
-  backdrop-filter:blur(14px);z-index:100;
-}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--ink);}
+.topbar{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 18px 9px;
+  background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(14px);z-index:100;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;}
 .logo span{color:var(--red);}
 .spacer{flex:1;}
 .tbctr{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);}
 
-/* ─── STAGE ─── */
 .stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);}
 
-/* ─── POSTER ─── */
-.poster{
-  position:relative;
-  width:min(460px,93vw);
-  height:min(530px,76vh);
-  background:#ffffff;
-  border-radius:22px;
-  border:1px solid rgba(28,28,30,0.10);
-  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
+.poster{position:relative;width:min(460px,93vw);height:min(530px,76vh);background:#fff;border-radius:22px;
+  border:1px solid rgba(28,28,30,0.10);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
   box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);
-  animation:pIn .42s cubic-bezier(.22,1,.36,1) both;
-}
-/* stacked card layers */
-.poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#ffffff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;box-shadow:0 4px 12px rgba(0,0,0,.05);}
-.poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#ffffff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
+  animation:pIn .42s cubic-bezier(.22,1,.36,1) both;}
+.poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
+.poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
 @keyframes pIn{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
 
-/* FLAG */
 .flag{position:absolute;top:-2px;left:22px;z-index:10;}
-.flag-body{min-width:80px;width:auto;padding:11px 14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
-.flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.1;text-align:center;white-space:nowrap;}
+.flag-body{min-width:80px;padding:11px 14px 10px;display:flex;align-items:center;justify-content:center;position:relative;}
+.flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;white-space:nowrap;}
 .flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;
   clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
 .section-lbl{position:absolute;top:16px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;opacity:.3;}
 
-.card-body{flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 26px 4px 28px;overflow:hidden;}
-.card-heading{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:10px;flex-shrink:0;}
-
-.sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
-.sentence-scroll::-webkit-scrollbar{display:none;}
-
-.s-line{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:400;line-height:1.6;
-  color:rgba(17,17,17,.80);flex-shrink:0;opacity:0;transform:translateY(7px);
-  transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);
-  padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);}
-.s-line:last-child{border-bottom:none;}
-.s-line.in{opacity:1;transform:none;}
-.s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
-
-.s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
-  padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
-
-.build-step{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;letter-spacing:.5px;
-  line-height:1.35;color:var(--ink);flex-shrink:0;padding:5px 0;
-  opacity:0;transform:translateX(-6px);transition:opacity .32s ease,transform .36s cubic-bezier(.22,1,.36,1);}
-.build-step.in{opacity:1;transform:none;}
-.build-step .part-dim{color:rgba(17,17,17,.28);}
-.build-step .part-new{color:var(--red);}
-.build-step .part-done{color:var(--ink);}
-
-/* ─── CARD DOTS ROW ─── */
-.card-dots-row{
-  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:7px 16px 6px;border-top:1px solid rgba(0,0,0,.06);
-}
-.card-arrow{
-  width:30px;height:30px;border-radius:50%;background:transparent;border:none;
-  font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all .18s;
-}
+.card-dots-row{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:7px 16px 6px;border-top:1px solid rgba(0,0,0,.06);}
+.card-arrow{width:30px;height:30px;border-radius:50%;background:transparent;border:none;font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .card-arrow:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.07);}
 .card-arrow[disabled]{opacity:.15;cursor:not-allowed;}
-
 .dots{display:flex;gap:5px;align-items:center;}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.16);transition:all .3s cubic-bezier(.22,1,.36,1);}
 .dot.active{width:18px;border-radius:3px;background:var(--ink);}
 .dot.done{background:rgba(0,0,0,.34);}
-
 .accent-bar{height:5px;flex-shrink:0;}
 
-/* ─── FOOTER ─── */
-.footer{
-  flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);
-  backdrop-filter:blur(16px);z-index:999;
-  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
-}
-
-/* Playback row */
+.footer{flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);backdrop-filter:blur(16px);z-index:999;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);}
 .playback-row{display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 18px 8px;}
-
-.btn-nav{
-  width:48px;height:48px;border-radius:50%;
-  background:rgba(0,0,0,.07);border:1px solid var(--border);
-  font-size:22px;color:var(--ink3);cursor:pointer;transition:all .18s;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.btn-nav{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.07);border:1px solid var(--border);font-size:22px;color:var(--ink3);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .btn-nav:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.12);}
 .btn-nav:active:not([disabled]){transform:scale(.92);}
 .btn-nav[disabled]{opacity:.15;cursor:not-allowed;}
-
-.btn-play{
-  width:64px;height:64px;border-radius:50%;border:none;
-  background:var(--ink);color:#fff;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  box-shadow:0 4px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.22);
-  transition:all .18s;font-size:22px;
-}
+.btn-play{width:64px;height:64px;border-radius:50%;border:none;background:var(--ink);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.22);transition:all .18s;font-size:22px;}
 .btn-play:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28);}
 .btn-play.running{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 8px 22px rgba(201,20,15,.24);}
 
-/* wave flanking play button */
 .wave{display:flex;align-items:flex-end;gap:3px;height:22px;width:32px;}
 .wb{width:4px;border-radius:2px;background:var(--ink3);}
-.wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}
-.wb:nth-child(4){height:72%}.wb:nth-child(5){height:40%}
+.wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}.wb:nth-child(4){height:72%}.wb:nth-child(5){height:40%}
 .wave.on .wb{animation:wv .9s ease-in-out infinite;}
 .wb:nth-child(1){animation-delay:.00s}.wb:nth-child(2){animation-delay:.08s}.wb:nth-child(3){animation-delay:.16s}.wb:nth-child(4){animation-delay:.11s}.wb:nth-child(5){animation-delay:.04s}
 @keyframes wv{0%,100%{transform:scaleY(.22);opacity:.2}50%{transform:scaleY(1);opacity:.65}}
 .wave.off .wb{animation:none;transform:scaleY(.22);opacity:.18;}
 
-/* ─── PILL TAB BAR ─── */
 .tab-bar-wrap{display:flex;align-items:center;justify-content:center;padding:2px 18px 10px;}
-.tab-bar{
-  display:inline-flex;align-items:center;
-  background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;
-}
-.tab-btn{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
-  padding:8px 16px;border-radius:24px;border:none;cursor:pointer;
-  background:transparent;color:var(--ink3);
-  transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;
-  font-weight:500;
-}
-.tab-btn.active{
-  background:var(--ink);color:#fff;
-  box-shadow:0 2px 8px rgba(0,0,0,.22);
-}
+.tab-bar{display:inline-flex;align-items:center;background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:8px 16px;border-radius:24px;border:none;cursor:pointer;background:transparent;color:var(--ink3);transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;font-weight:500;}
+.tab-btn.active{background:var(--ink);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.22);}
 .tab-btn:not(.active):hover{color:var(--ink2);}
 
-/* ─── SCENES ─── */
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;pointer-events:none;opacity:0;}
 .scene.active{opacity:1;pointer-events:all;}
 
-/* ─── USEFUL NOTES PANEL ─── */
-.notes-panel{
-  position:fixed;inset:0;z-index:500;
-  background:#FAF9F7;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;
-}
-.notes-panel.show{opacity:1;pointer-events:all;}
-.notes-card{
-  width:min(460px,96vw);height:min(600px,88vh);background:#ffffff;border-radius:22px;
-  border:1px solid rgba(0,0,0,.06);
-  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);
-  overflow:hidden;display:flex;flex-direction:column;
-  opacity:0;transform:translateY(24px) scale(.96);
-  transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);
-}
-.notes-panel.show .notes-card{opacity:1;transform:none;}
-.notes-top{height:5px;background:var(--ink);flex-shrink:0;}
-.notes-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.notes-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;color:var(--ink);}
-.notes-close{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;}
-.notes-tabs{display:flex;gap:4px;padding:10px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
-.notes-tabs::-webkit-scrollbar{display:none;}
-.ntab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;padding:6px 14px;border-radius:16px;border:none;background:rgba(0,0,0,.05);color:var(--ink3);cursor:pointer;white-space:nowrap;transition:all .18s;}
-.ntab.on{background:var(--ink);color:#fff;}
-.notes-body{flex:1;overflow-y:auto;padding:16px 20px;-webkit-overflow-scrolling:touch;}
-.notes-body::-webkit-scrollbar{width:3px;}
-.notes-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px;}
-.n-section{margin-bottom:18px;}
-.n-stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
-.n-item{font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.55;color:var(--ink2);padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.07);}
-.n-item:last-child{border-bottom:none;}
-.n-item strong{color:var(--ink);font-weight:600;}
+/* sentence scroll (conclusion) */
+.sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
+.sentence-scroll::-webkit-scrollbar{display:none;}
+.s-line{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:400;line-height:1.6;color:rgba(17,17,17,.80);flex-shrink:0;opacity:0;transform:translateY(7px);transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);}
+.s-line:last-child{border-bottom:none;}
+.s-line.in{opacity:1;transform:none;}
+.s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
+.s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
 
-/* ─── INTERSTITIAL ─── */
+/* INTERSTITIAL */
 .inter-ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;}
 .inter-ov.show{opacity:1;}
-.inter-card{width:min(460px,92vw);height:min(530px,79vh);background:#ffffff;border-radius:22px;box-shadow:0 2px 0 rgba(255,255,255,.9) inset,4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;position:relative;opacity:0;transform:translateY(20px) scale(.97);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
+.inter-card{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;position:relative;opacity:0;transform:translateY(20px) scale(.97);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
 .inter-ov.show .inter-card{opacity:1;transform:none;}
 .inter-flag{position:absolute;top:-2px;left:22px;z-index:10;}
 .inter-flag-body{padding:10px 14px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
@@ -227,16 +104,16 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .inter-sub strong{color:var(--ink);font-weight:600;}
 .inter-bottom{height:5px;flex-shrink:0;}
 
-/* ─── INTRO PAIRS OVERLAY ─── */
+/* INTRO PAIRS */
 .ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
 .ov.show{opacity:1;}
-.ob{width:min(460px,92vw);height:min(530px,79vh);background:#ffffff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
+.ob{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
 .ov.show .ob{opacity:1;transform:none;}
 .ob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
 .ob-flag{position:absolute;top:-2px;left:22px;z-index:10;}
 .ob-flag-body{padding:9px 14px 8px;background:var(--c-intro);display:flex;align-items:center;justify-content:center;position:relative;}
 .ob-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:var(--c-intro);clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
-.ob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#fff;line-height:1.1;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;}
+.ob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;}
 .ob-pair-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
 .ob-body{flex:1;min-height:0;padding:52px 28px 14px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
 .ob-hlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:8px;flex-shrink:0;}
@@ -248,21 +125,16 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .ob-sep{margin:14px 0;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .ob-sep::before{content:'';flex:1;height:1px;background:rgba(0,0,0,.08);}
 .ob-sep::after{content:'↓';font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--c-intro);flex-shrink:0;line-height:1;}
-.ob-thesis{flex-shrink:0;}
 .ob-tlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:8px;flex-shrink:0;opacity:0;transform:translateY(4px);transition:opacity .28s .5s,transform .32s .5s;}
 .ov.show .ob:not(.exit) .ob-tlbl{opacity:1;transform:none;}
 .ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;line-height:1.52;color:var(--ink2);opacity:0;transform:translateY(8px);transition:opacity .36s .58s,transform .42s .58s cubic-bezier(.22,1,.36,1);}
 .ob-tt strong{color:var(--c-intro);font-weight:700;}
 .ov.show .ob:not(.exit) .ob-tt{opacity:1;transform:none;}
-.ob-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 26px 12px 28px;flex-shrink:0;}
-.ob-fl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
-.ob-stop{
-  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
-  padding:6px 14px;border-radius:20px;border:1.5px solid rgba(201,20,15,.3);
-  background:rgba(201,20,15,.07);color:var(--red);cursor:pointer;
-  transition:all .18s;
-}
-.ob-stop:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.ob-foot{display:flex;align-items:center;justify-content:center;padding:10px 26px 14px;flex-shrink:0;}
+.ob-fl{display:none;}
+.ob-stop{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;padding:12px 36px;border-radius:50px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all .18s;box-shadow:0 4px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.18);}
+.ob-stop:hover{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 6px 18px rgba(201,20,15,.24);}
+.ob-stop:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
 .ob-wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
 .ob-wb{width:3px;border-radius:2px;background:var(--c-intro);}
 .ob-wb:nth-child(1){height:30%}.ob-wb:nth-child(2){height:65%}.ob-wb:nth-child(3){height:100%}.ob-wb:nth-child(4){height:60%}.ob-wb:nth-child(5){height:30%}
@@ -275,159 +147,91 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .bdot.active{transform:scale(1.8);background:var(--ink);}
 .bdot.done{background:rgba(0,0,0,.3);}
 
-/* misc */
+/* BODY PARAGRAPH PAIRS OVERLAY */
+.bov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.bov.show{opacity:1;}
+.bob{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
+.bov.show .bob{opacity:1;transform:none;}
+.bob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
+.bob-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.bob-flag-body{padding:9px 14px 8px;display:flex;align-items:center;justify-content:center;position:relative;}
+.bob-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.bob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;}
+.bob-pair-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+.bob-body{flex:1;min-height:0;padding:50px 24px 8px 26px;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;}
+.bob-body::-webkit-scrollbar{display:none;}
+.bob-foot{display:flex;align-items:center;justify-content:center;padding:10px 24px 14px;flex-shrink:0;border-top:1px solid rgba(0,0,0,.06);}
+.bob-fl{display:none;}
+.bob-stop{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;padding:12px 36px;border-radius:50px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all .18s;box-shadow:0 4px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.18);}
+.bob-stop:hover{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 6px 18px rgba(201,20,15,.24);}
+.bob-stop:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
+.bob-wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
+.bob-wb{width:3px;border-radius:2px;}
+.bob-wb:nth-child(1){height:30%}.bob-wb:nth-child(2){height:65%}.bob-wb:nth-child(3){height:100%}.bob-wb:nth-child(4){height:60%}.bob-wb:nth-child(5){height:30%}
+.bob-wave.on .bob-wb{animation:wv3 .9s ease-in-out infinite;}
+.bob-wb:nth-child(1){animation-delay:.00s}.bob-wb:nth-child(2){animation-delay:.07s}.bob-wb:nth-child(3){animation-delay:.14s}.bob-wb:nth-child(4){animation-delay:.09s}.bob-wb:nth-child(5){animation-delay:.03s}
+@keyframes wv3{0%,100%{transform:scaleY(.2);opacity:.18}50%{transform:scaleY(1);opacity:1}}
+.bob-bottom{height:5px;flex-shrink:0;}
+.bob-dots{display:flex;gap:7px;margin-top:10px;}
+
+/* NOTES */
+.notes-panel{position:fixed;inset:0;z-index:500;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.notes-panel.show{opacity:1;pointer-events:all;}
+.notes-card{width:min(460px,96vw);height:min(600px,88vh);background:#fff;border-radius:22px;border:1px solid rgba(0,0,0,.06);box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.96);transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);}
+.notes-panel.show .notes-card{opacity:1;transform:none;}
+.notes-top{height:5px;background:var(--ink);flex-shrink:0;}
+.notes-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.notes-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;}
+.notes-close{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;}
+.notes-tabs{display:flex;gap:4px;padding:10px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+.ntab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;padding:6px 14px;border-radius:16px;border:none;background:rgba(0,0,0,.05);color:var(--ink3);cursor:pointer;white-space:nowrap;transition:all .18s;}
+.ntab.on{background:var(--ink);color:#fff;}
+.notes-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.n-section{margin-bottom:18px;}
+.n-stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.n-item{font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.55;color:var(--ink2);padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.07);}
+.n-item:last-child{border-bottom:none;}
+.n-item strong{color:var(--ink);font-weight:600;}
+
+/* CRER INFOGRAPHIC */
+.crer-wrap{flex:1;min-height:0;display:flex;flex-direction:column;padding:50px 22px 6px;overflow:hidden;}
+.crer-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:7px;flex-shrink:0;}
+.crer-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,5vw,36px);font-weight:900;line-height:.9;letter-spacing:1px;color:var(--ink);flex-shrink:0;margin-bottom:14px;}
+.crer-title em{font-style:normal;color:var(--red);}
+.crer-oup{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;flex-shrink:0;padding:4px 10px;background:rgba(0,0,0,.04);border-radius:20px;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);}
+.crer-steps{display:flex;flex-direction:column;gap:0;flex:1;min-height:0;justify-content:center;}
+.crer-step{display:flex;align-items:stretch;gap:0;flex-shrink:0;}
+.crer-letter-col{width:44px;display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.crer-letter{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;line-height:1;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;}
+.crer-connector{width:3px;flex:1;margin:2px auto 2px;border-radius:2px;min-height:8px;}
+.crer-step:last-child .crer-connector{display:none;}
+.crer-content{flex:1;padding:7px 0 10px 12px;}
+.crer-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:3px;}
+.crer-desc{font-family:'Instrument Sans',sans-serif;font-size:13px;line-height:1.4;color:var(--ink3);}
+.crer-pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.crer-pill{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.5px;padding:3px 8px;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);white-space:nowrap;}
+
 .flash{position:fixed;inset:0;z-index:900;pointer-events:none;opacity:0;transition:opacity .08s;background:var(--red);}
 .flash.pop{opacity:.04;transition:opacity 0s;}
 .fem{position:fixed;pointer-events:none;z-index:800;font-size:20px;animation:femUp 2s ease-out forwards;}
 @keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-10px) scale(1.1);}80%{opacity:.8;transform:translateY(-90px);}100%{opacity:0;transform:translateY(-130px);}}
 .swipe-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);animation:ph 2.5s ease-in-out infinite;pointer-events:none;white-space:nowrap;}
 @keyframes ph{0%,100%{opacity:.14}50%{opacity:.3}}
-
-/* ─── BODY PARAGRAPH INFOGRAPHIC ─── */
-.bp-infographic{
-  display:flex;
-  flex-direction:column;
-  gap:0;
-  flex-shrink:0;
-}
-
-.bp-two-box{
-  display:flex;
-  gap:8px;
-  flex-shrink:0;
-}
-
-.bp-main-box{
-  flex:1;
-  border-radius:12px;
-  padding:10px 10px 10px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.bp-main-claim{
-  background:#111111;
-  flex:0 0 42%;
-}
-.bp-main-support{
-  background:rgba(0,0,0,0.06);
-  border:1.5px solid rgba(0,0,0,0.08);
-  flex:1;
-}
-
-.bp-main-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:15px;font-weight:900;letter-spacing:2px;
-  text-transform:uppercase;line-height:1;
-  margin-bottom:2px;
-}
-.bp-main-claim .bp-main-title{color:#fff;}
-.bp-main-support .bp-main-title{color:var(--ink);}
-
-.bp-sub-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-}
-
-.bp-sub-btn{
-  font-family:'DM Mono',monospace;
-  font-size:9px;letter-spacing:1px;text-transform:uppercase;
-  padding:4px 8px;border-radius:20px;border:none;cursor:pointer;
-  transition:all .18s;
-  white-space:nowrap;
-}
-.bp-main-claim .bp-sub-btn{
-  background:rgba(255,255,255,0.12);
-  color:rgba(255,255,255,0.75);
-}
-.bp-main-claim .bp-sub-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
-.bp-main-claim .bp-sub-btn.active{background:var(--red);color:#fff;}
-
-.bp-main-support .bp-sub-btn{
-  background:rgba(28,28,30,0.07);
-  color:var(--ink3);
-}
-.bp-main-support .bp-sub-btn:hover{background:rgba(0,0,0,0.13);color:var(--ink);}
-.bp-main-support .bp-sub-btn.active{background:#111;color:#fff;}
-
-/* STANCE SPECTRUM */
-.bp-spectrum-bar{margin:0 0 8px;display:flex;align-items:center;}
-.bp-spectrum-track{flex:1;height:3px;border-radius:2px;background:linear-gradient(to right,#4a9fd4,#8a7fbf,#c9140f);}
-
-.bp-stance-card{
-  border-radius:8px;padding:7px 8px;margin-bottom:5px;
-  border:1.5px solid rgba(255,255,255,0.15);
-  cursor:pointer;transition:all .18s;
-  background:rgba(255,255,255,0.06);
-}
-.bp-stance-card:hover{background:rgba(255,255,255,0.12);}
-.bp-stance-card.active{background:rgba(255,255,255,0.14);border-width:2px;}
-.bp-stance-label{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:13px;font-weight:900;letter-spacing:2px;
-  line-height:1;margin-bottom:2px;
-}
-.bp-stance-sub{
-  font-family:'DM Mono',monospace;font-size:7.5px;
-  letter-spacing:1px;text-transform:uppercase;
-  color:rgba(255,255,255,0.45);margin-bottom:4px;
-}
-.bp-stance-phrases{display:flex;flex-direction:column;gap:1px;}
-.bp-stance-phrases span{
-  font-family:'Instrument Sans',sans-serif;
-  font-size:9.5px;color:rgba(255,255,255,0.7);
-  line-height:1.4;
-}
-
-
-  flex-shrink:0;
-  margin:10px 0 0;
-  padding:10px 12px;
-  background:rgba(0,0,0,0.04);
-  border-radius:10px;
-  border-left:3px solid var(--red);
-  min-height:44px;
-  display:flex;align-items:flex-start;gap:8px;
-  opacity:0;transform:translateY(4px);
-  transition:opacity .28s,transform .32s cubic-bezier(.22,1,.36,1);
-}
-.bp-example-box.show{opacity:1;transform:none;}
-.bp-ex-role{
-  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--red);
-  white-space:nowrap;padding-top:2px;flex-shrink:0;
-}
-.bp-example-box span:last-child{
-  font-family:'Instrument Sans',sans-serif;
-  font-size:13px;line-height:1.5;color:var(--ink);
-}
-
-@media(max-width:400px){
-  .tab-btn{font-size:9px;padding:7px 10px;}
-  .flag-num{font-size:13px!important;}
-  .bp-strat-letter{font-size:16px;}
-  .bp-cell-letter{font-size:18px;}
-}
-@media(max-height:600px){
-  .poster{height:min(440px,72vh);}
-}
+@media(max-width:400px){.tab-btn{font-size:9px;padding:7px 10px;}}
+@media(max-height:600px){.poster{height:min(440px,72vh);}}
 </style>
 </head>
 <body>
 <div class="shell">
-
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">ESSAY<span>_</span>DROP</div>
     <div class="spacer"></div>
     <div class="tbctr" id="ctr">1 / 6</div>
   </div>
 
-  <!-- STAGE -->
   <div class="stage" id="stage">
 
-    <!-- SCENE 0: BLUEPRINT -->
+    <!-- SC0: OVERVIEW -->
     <div class="scene active" id="sc0">
       <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
@@ -443,27 +247,27 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         </div>
         <div style="flex:1;min-height:0;padding:4px 28px 4px;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden;">
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;letter-spacing:1px;min-width:26px;">P1</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;min-width:26px;">P1</div>
             <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">INTRODUCTION</div>
             <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Hook + Thesis statement</div></div>
           </div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);letter-spacing:1px;min-width:26px;">P2</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P2</div>
             <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 1</div>
             <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Claim → Reason → Example → Result</div></div>
           </div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);letter-spacing:1px;min-width:26px;">P3</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P3</div>
             <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 2</div>
             <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Claim → Reason → Example → Result</div></div>
           </div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#7b5ea7;letter-spacing:1px;min-width:26px;">P4</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#7b5ea7;min-width:26px;">P4</div>
             <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 3 <span style="color:#7b5ea7;font-size:13px;">★ own idea</span></div>
             <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Your original point — required for full marks</div></div>
           </div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2d7a3a;letter-spacing:1px;min-width:26px;">P5</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2d7a3a;min-width:26px;">P5</div>
             <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">CONCLUSION</div>
             <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Restate opinion · No new ideas</div></div>
           </div>
@@ -478,20 +282,16 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       <div class="swipe-hint">tap ▶ to begin</div>
     </div>
 
-    <!-- SCENE 1: QUESTION -->
+    <!-- SC1: QUESTION + INTRO PAIRS -->
     <div class="scene" id="sc1">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">INTRODUCTION</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b1)">THE QUESTION</div>
+        <div class="flag"><div class="flag-body" style="background:var(--c-intro)"><span class="flag-num">INTRODUCTION</span></div></div>
+        <div class="section-lbl" style="color:var(--c-intro)">THE QUESTION</div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 28px 10px;">
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;flex-shrink:0;">📱 Today's essay question</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.95;letter-spacing:1px;color:var(--ink);flex-shrink:0;">
-            Should the use of phones be <span style="color:var(--red);">limited</span> for young people?
-          </div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.95;letter-spacing:1px;color:var(--ink);flex-shrink:0;">Should the use of phones be <span style="color:var(--red);">limited</span> for young people?</div>
           <div style="flex:1;"></div>
-          <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:400;line-height:1.5;color:var(--ink2);margin-bottom:18px;flex-shrink:0;">
-            What do <strong style="color:var(--ink);">you</strong> think? Pick your side.
-          </div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink2);margin-bottom:18px;flex-shrink:0;">What do <strong style="color:var(--ink);">you</strong> think? Pick your side.</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex-shrink:0;margin-bottom:12px;">
             <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;">
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;line-height:1;">YES</div>
@@ -512,79 +312,116 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
           <div class="dots" id="dots1"></div>
           <button class="card-arrow" onclick="nextScene()">›</button>
         </div>
-        <div class="accent-bar" style="background:var(--c-b1)"></div>
+        <div class="accent-bar" style="background:var(--c-intro)"></div>
       </div>
     </div>
 
-    <!-- SCENE 2 -->
+    <!-- SC2: CRER STRUCTURE INFOGRAPHIC -->
     <div class="scene" id="sc2">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">BODY PARAGRAPH 1</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b1)">BODY P1</div>
-        <div class="card-body" style="padding:54px 14px 4px 14px;">
-          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 2 · Build your argument</div>
-          <div class="bp-infographic" id="bpGrid2"></div>
-          <div class="bp-example-box" id="bpEx2"><span class="bp-ex-role" id="bpExRole2"></span><span id="bpExText2"></span></div>
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
+        <div class="section-lbl" style="color:var(--red)">STRUCTURE</div>
+        <div class="crer-wrap">
+          <div class="crer-kicker">Body paragraphs · One suggested pattern</div>
+          <div class="crer-title">Try <em>C · R · E · R</em></div>
+          <div class="crer-oup">📘 Suggested by OUP · not a rule</div>
+          <div class="crer-steps">
+            <div class="crer-step">
+              <div class="crer-letter-col">
+                <div class="crer-letter" style="background:#c9140f;color:#fff;">C</div>
+                <div class="crer-connector" style="background:rgba(201,20,15,0.18);"></div>
+              </div>
+              <div class="crer-content">
+                <div class="crer-role" style="color:#c9140f;">CLAIM — your point</div>
+                <div class="crer-pills">
+                  <span class="crer-pill">Firstly,</span><span class="crer-pill">Furthermore,</span><span class="crer-pill">In addition,</span><span class="crer-pill">However,</span><span class="crer-pill">On the other hand,</span>
+                </div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.8px;color:rgba(0,0,0,.35);margin-top:5px;line-height:1.5;">+ In my opinion, · As far as I am concerned, · It could be argued that</div>
+              </div>
+            </div>
+            <div class="crer-step">
+              <div class="crer-letter-col">
+                <div class="crer-letter" style="background:#1a6b3c;color:#fff;">R</div>
+                <div class="crer-connector" style="background:rgba(26,107,60,0.18);"></div>
+              </div>
+              <div class="crer-content">
+                <div class="crer-role" style="color:#1a6b3c;">REASON — explain why</div>
+                <div class="crer-pills">
+                  <span class="crer-pill">This is because…</span>
+                  <span class="crer-pill">This is largely due to…</span>
+                  <span class="crer-pill">Since…</span>
+                </div>
+              </div>
+            </div>
+            <div class="crer-step">
+              <div class="crer-letter-col">
+                <div class="crer-letter" style="background:#1a5c8a;color:#fff;">E</div>
+                <div class="crer-connector" style="background:rgba(26,92,138,0.18);"></div>
+              </div>
+              <div class="crer-content">
+                <div class="crer-role" style="color:#1a5c8a;">EXAMPLE — give evidence</div>
+                <div class="crer-pills">
+                  <span class="crer-pill">For instance,</span>
+                  <span class="crer-pill">For example,</span>
+                  <span class="crer-pill">Indeed,</span>
+                </div>
+              </div>
+            </div>
+            <div class="crer-step">
+              <div class="crer-letter-col">
+                <div class="crer-letter" style="background:#6b4ea8;color:#fff;">R</div>
+              </div>
+              <div class="crer-content">
+                <div class="crer-role" style="color:#6b4ea8;">RESULT — the consequence</div>
+                <div class="crer-pills">
+                  <span class="crer-pill">As a result,</span>
+                  <span class="crer-pill">Consequently,</span>
+                  <span class="crer-pill">Therefore,</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-dots-row">
           <button class="card-arrow" onclick="prevScene()">‹</button>
           <div class="dots" id="dots2"></div>
           <button class="card-arrow" onclick="nextScene()">›</button>
         </div>
-        <div class="accent-bar" style="background:var(--c-b1)"></div>
+        <div class="accent-bar" style="background:var(--red)"></div>
       </div>
     </div>
 
-    <!-- SCENE 3 -->
+    <!-- SC3: BODY PARAGRAPH WALKTHROUGH -->
     <div class="scene" id="sc3">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b2)"><span class="flag-num">BODY PARAGRAPH 2</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b2)">BODY P2</div>
-        <div class="card-body" style="padding:54px 14px 4px 14px;">
-          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 3 · Build your argument</div>
-          <div class="bp-infographic" id="bpGrid3"></div>
-          <div class="bp-example-box" id="bpEx3"><span class="bp-ex-role" id="bpExRole3"></span><span id="bpExText3"></span></div>
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
+        <div class="section-lbl" style="color:var(--red)">EXAMPLES</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 28px 10px;justify-content:center;gap:16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);">Watch 5 complete body paragraphs</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.95;color:var(--ink);">See <span style="color:var(--red);">CRER</span><br>in action.</div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-size:15px;line-height:1.65;color:var(--ink2);">Each paragraph is built sentence by sentence — <strong style="color:var(--ink);">Claim → Reason → Example → Result.</strong><br><br>Press <strong style="color:var(--ink);">▶ Play</strong> to watch all five examples spoken aloud, exactly as in the introduction.</div>
         </div>
         <div class="card-dots-row">
           <button class="card-arrow" onclick="prevScene()">‹</button>
           <div class="dots" id="dots3"></div>
           <button class="card-arrow" onclick="nextScene()">›</button>
         </div>
-        <div class="accent-bar" style="background:var(--c-b2)"></div>
+        <div class="accent-bar" style="background:var(--red)"></div>
       </div>
     </div>
 
-    <!-- SCENE 4 -->
+    <!-- SC4: CONCLUSION -->
     <div class="scene" id="sc4">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b3)"><span class="flag-num">BODY PARAGRAPH 3</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b3)">BODY P3</div>
-        <div class="card-body" style="padding:54px 14px 4px 14px;">
-          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 4 · Your own idea</div>
-          <div class="bp-infographic" id="bpGrid4"></div>
-          <div class="bp-example-box" id="bpEx4"><span class="bp-ex-role" id="bpExRole4"></span><span id="bpExText4"></span></div>
+        <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
+        <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 26px 4px 28px;overflow:hidden;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:10px;flex-shrink:0;">Paragraph 5 · Conclusion</div>
+          <div class="sentence-scroll" id="stk4"></div>
         </div>
         <div class="card-dots-row">
           <button class="card-arrow" onclick="prevScene()">‹</button>
           <div class="dots" id="dots4"></div>
-          <button class="card-arrow" onclick="nextScene()">›</button>
-        </div>
-        <div class="accent-bar" style="background:var(--c-b3)"></div>
-      </div>
-    </div>
-
-    <!-- SCENE 5 -->
-    <div class="scene" id="sc5">
-      <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
-        <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 5 · Conclusion</div>
-          <div class="sentence-scroll" id="stk5"></div>
-        </div>
-        <div class="card-dots-row">
-          <button class="card-arrow" onclick="prevScene()">‹</button>
-          <div class="dots" id="dots5"></div>
           <button class="card-arrow" onclick="nextScene()" disabled>›</button>
         </div>
         <div class="accent-bar" style="background:var(--c-conc)"></div>
@@ -593,9 +430,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 
   </div><!-- /stage -->
 
-  <!-- ═══ FOOTER ═══ -->
   <div class="footer">
-    <!-- TikTok-style playback -->
     <div class="playback-row">
       <div class="wave off" id="wL"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
       <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
@@ -603,7 +438,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       <button class="btn-nav" id="btnNext" onclick="nextScene()">›</button>
       <div class="wave off" id="wR"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
     </div>
-    <!-- Pill tab bar -->
     <div class="tab-bar-wrap">
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="intro" onclick="jumpTab('intro')">INTRODUCTION</button>
@@ -613,8 +447,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       </div>
     </div>
   </div>
-
-</div><!-- /shell -->
+</div>
 
 <!-- INTERSTITIAL -->
 <div class="inter-ov" id="interOv">
@@ -629,8 +462,8 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   </div>
 </div>
 
-<!-- INTRO PAIRS -->
-<div class="ov" id="ov">
+<!-- INTRO PAIRS OVERLAY -->
+<div class="ov" id="ov" onclick="if(event.target===this){hardStop();updateNavBtns();}">
   <div class="ob" id="ob">
     <div class="ob-flag"><div class="ob-flag-body"><span class="ob-flag-num">INTRODUCTION</span></div></div>
     <div class="ob-pair-lbl" id="obNum">1 / 5</div>
@@ -640,22 +473,34 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       <div class="ob-rest" id="obR"></div>
       <div class="ob-link" id="obL"></div>
       <div class="ob-sep"></div>
-      <div class="ob-thesis">
+      <div>
         <div class="ob-tlbl">📌 THESIS</div>
         <div class="ob-tt" id="obT"></div>
       </div>
     </div>
     <div class="ob-foot">
-      <div class="ob-fl" id="obFL">pair 1 of 5</div>
-      <button class="ob-stop" onclick="hardStop();updateNavBtns()">&#9632; STOP</button>
-      <div class="ob-wave" id="obW"><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div></div>
+      <button class="ob-stop" onclick="hardStop();updateNavBtns()">&#9632; &nbsp;STOP</button>
     </div>
     <div class="ob-bottom"></div>
   </div>
   <div class="ob-dots" id="obDots"></div>
 </div>
 
-<!-- USEFUL NOTES PANEL -->
+<!-- BODY PARAGRAPH PAIRS OVERLAY -->
+<div class="bov" id="bov" onclick="if(event.target===this){hardStop();updateNavBtns();}">
+  <div class="bob" id="bob">
+    <div class="bob-flag"><div class="bob-flag-body" id="bobFlagBody"><span class="bob-flag-num" id="bobFlagNum">BODY PARAGRAPH</span></div></div>
+    <div class="bob-pair-lbl" id="bobNum">1 / 5</div>
+    <div class="bob-body" id="bobBody"></div>
+    <div class="bob-foot">
+      <button class="bob-stop" onclick="hardStop();updateNavBtns()">&#9632; &nbsp;STOP</button>
+    </div>
+    <div class="bob-bottom" id="bobBottom"></div>
+  </div>
+  <div class="bob-dots" id="bobDots"></div>
+</div>
+
+<!-- NOTES PANEL -->
 <div class="notes-panel" id="notesPanel">
   <div class="notes-card">
     <div class="notes-top"></div>
@@ -676,8 +521,11 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 <div class="flash" id="flash"></div>
 
 <script>
-/* ═══ DATA ═══ */
-const NOTES_DATA={
+const TOTAL = 6; // 0-5 (sc0–sc4 = 5 scenes, but total counter shows 6 for fun)
+const SCENE_COUNT = 5;
+
+/* ─── DATA ─── */
+const NOTES_DATA = {
   descriptors:[
     {title:'Content (25%)',items:['<strong>Answer the question directly.</strong> Include both given ideas plus your own third idea.','Each point must be developed — not just stated.','Missing the third idea = automatic loss of marks.']},
     {title:'Communicative Achievement (25%)',items:['<strong>Formal register throughout.</strong> No contractions, no slang.','Every claim needs a reason or example.','Never "I think" — use "In my opinion" or "It seems to me that".']},
@@ -685,13 +533,16 @@ const NOTES_DATA={
     {title:'Language (25%)',items:['<strong>Range of vocabulary</strong> — avoid repetition.','Variety of grammar: passive, relative clauses, conditionals.','Accurate spelling and punctuation.']}
   ],
   linking:[
-    {title:'Opinion',items:['"In my opinion," · "I firmly believe that" · "As far as I am concerned,"']},
-    {title:'Adding ideas',items:['"Moreover," · "Furthermore," · "In addition," · "What is more,"']},
-    {title:'Contrasting',items:['"However," · "On the other hand," · "Although" · "Nevertheless,"']},
-    {title:'Examples',items:['"For instance," · "For example," · "Indeed,"']},
-    {title:'Result',items:['"As a result," · "Consequently," · "Therefore,"']},
-    {title:'Concluding',items:['"In conclusion," · "To sum up," · "Overall,"']},
-    {title:'Sequencing',items:['"Firstly," · "Secondly," · "Thirdly," · "Finally,"']}
+    {title:'Opening each paragraph — use a DIFFERENT one each time',items:[
+      '"Firstly," · "Furthermore," · "In addition," · "However," · "On the other hand,"',
+      '⚠️ Never use "Secondly," in a B2 First for Schools essay — it sounds like a list, not an argument.',
+      '⚠️ Never repeat the same opening marker across two paragraphs — the examiner notices.'
+    ]},
+    {title:'Opinion (Cambridge corpus)',items:['"In my opinion," · "As far as I am concerned," · "It could be argued that" · "I firmly believe that"']},
+    {title:'Reason (Cambridge corpus)',items:['"This is because" · "This is largely due to the fact that" · "The main reason for this is that"']},
+    {title:'Example (Cambridge corpus)',items:['"For instance," · "For example," · "This can be seen in the fact that"']},
+    {title:'Result (Cambridge corpus)',items:['"As a result," · "Consequently," · "As a consequence," · "This means that"']},
+    {title:'Concluding (Cambridge corpus)',items:['"In conclusion," · "To sum up," · "All things considered," · "On the whole,"']}
   ],
   planning:[
     {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Write 3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
@@ -704,343 +555,124 @@ const NOTES_DATA={
   ]
 };
 
-const PAIRS=[
-  {
-    s:'Nowadays,',
-    r:'smartphones are used by millions of young people around the world every single day.',
+const PAIRS = [
+  { s:'Nowadays,', r:'smartphones are used by millions of young people around the world every single day.',
     f:'Nowadays, smartphones are used by millions of young people around the world every single day.',
     link:'Although this technology brings undeniable benefits, there is growing concern about its impact on young people\'s health and education.',
     linkHtml:'<span style="color:var(--red);font-weight:700">Although</span> this technology brings undeniable benefits, there is growing concern about its impact on young people\'s health and education.',
     t:'This essay will discuss the main <strong>advantages and disadvantages</strong> of limiting smartphone use.',
-    tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use.'
-  },
-  {
-    s:'In recent years,',
-    r:'there has been a growing debate about whether young people should have unlimited access to their phones.',
+    tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use.' },
+  { s:'In recent years,', r:'there has been a growing debate about whether young people should have unlimited access to their phones.',
     f:'In recent years, there has been a growing debate about whether young people should have unlimited access to their phones.',
     link:'Despite the many educational opportunities that smartphones provide, concerns about their negative effects continue to increase.',
     linkHtml:'<span style="color:var(--red);font-weight:700">Despite</span> the many educational opportunities that smartphones provide, concerns about their negative effects continue to increase.',
     t:'In this essay, I will examine <strong>both sides of the argument</strong> before giving my personal opinion.',
-    tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.'
-  },
-  {
-    s:'It is widely believed that',
-    r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',
+    tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.' },
+  { s:'It is widely believed that', r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',
     f:'It is widely believed that smartphone use has fundamentally changed the way young people learn, communicate and relax.',
     link:'However, it is becoming increasingly clear that unrestricted use may have serious consequences for young people\'s wellbeing.',
     linkHtml:'<span style="color:var(--red);font-weight:700">However,</span> it is becoming increasingly clear that unrestricted use may have serious consequences for young people\'s wellbeing.',
     t:'Therefore, it is essential to discuss <strong>the benefits and drawbacks</strong> of restricting these devices.',
-    tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting these devices.'
-  },
-  {
-    s:'Many people argue that',
-    r:'excessive smartphone use is one of the most serious challenges facing young people today.',
+    tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting these devices.' },
+  { s:'Many people argue that', r:'excessive smartphone use is one of the most serious challenges facing young people today.',
     f:'Many people argue that excessive smartphone use is one of the most serious challenges facing young people today.',
     link:'Since smartphones have become such a central part of daily life, the question of how to regulate their use has never been more important.',
     linkHtml:'<span style="color:var(--red);font-weight:700">Since</span> smartphones have become such a central part of daily life, the question of how to regulate their use has never been more important.',
     t:'The aim of this essay is to consider <strong>whether limiting smartphones</strong> would truly benefit young people.',
-    tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.'
-  },
-  {
-    s:'It is impossible to deny that',
-    r:'smartphones play a significant role in the daily lives of young people worldwide.',
+    tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.' },
+  { s:'It is impossible to deny that', r:'smartphones play a significant role in the daily lives of young people worldwide.',
     f:'It is impossible to deny that smartphones play a significant role in the daily lives of young people worldwide.',
     link:'Nevertheless, with growing evidence of the harm caused by excessive screen time, it is vital that we consider whether some form of restriction is necessary.',
     linkHtml:'<span style="color:var(--red);font-weight:700">Nevertheless,</span> with growing evidence of the harm caused by excessive screen time, it is vital that we consider whether some form of restriction is necessary.',
     t:'This essay will argue that <strong>some restrictions</strong> on smartphone use are both necessary and beneficial.',
-    tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.'
+    tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.' }
+];
+
+/* Body paragraphs — continuous flowing prose, poster style.
+   starter = big Barlow Condensed word. rest = everything after, plain black.
+   links = discourse markers to highlight red inline.                         */
+const BODY_PAIRS = [
+  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 1', topic:'📝 CONCENTRATION',
+    starter:'Firstly,',
+    rest:" it seems to me that limiting smartphones helps young people concentrate more effectively on their studies. This is because apps are deliberately designed to interrupt attention constantly, making sustained focus very difficult. For instance, phone-free schools have reported clear improvements in behaviour and exam results. As a result, students who limit screen time find it easier to achieve higher grades.",
+    links:['This is because','For instance,','As a result,']
+  },
+  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 2', topic:'🌙 SLEEP & HEALTH',
+    starter:'Furthermore,',
+    rest:" as far as I am concerned, restricting phones improves the sleep and mental health of young people. This is because screen light makes it harder to fall asleep naturally. For example, teens who use phones before bed are twice as likely to suffer sleep problems. Consequently, clear limits on evening screen time could benefit millions of young people.",
+    links:['This is because','For example,','Consequently,']
+  },
+  { color:'#7b5ea7', flagTitle:'BODY PARAGRAPH 3 ★', topic:'💡 YOUR OWN IDEA',
+    starter:'In addition,',
+    rest:" I firmly believe that excessive phone use stops young people developing real social skills. This is because screens replace the face-to-face practice needed to read emotions and handle conflict. For instance, many employers say graduates struggle with teamwork and direct communication. As a consequence, limiting phones during childhood may produce more confident adults.",
+    links:['This is because','For instance,','As a consequence,']
+  },
+  { color:'#c9140f', flagTitle:'BODY P1 — OTHER SIDE', topic:'📚 PHONES HELP LEARNING',
+    starter:'However,',
+    rest:" it could be argued that smartphones are valuable tools for independent learning. This is because students use them to research, revise and collaborate with classmates. For example, apps like Duolingo and Khan Academy are used by millions of learners every day. As a result, teaching responsible use may be more effective than a complete ban.",
+    links:['This is because','For example,','As a result,']
+  },
+  { color:'#c9140f', flagTitle:'BODY P2 — OTHER SIDE', topic:'🛡️ SAFETY',
+    starter:'On the other hand,',
+    rest:" phones help keep young people safe and connected to their families. This is because in an emergency, contacting a parent immediately can make a critical difference. For instance, parents feel far less anxious when their child travels independently with a phone. Consequently, setting clear limits rather than a ban may be the best solution.",
+    links:['This is because','For instance,','Consequently,']
   }
 ];
 
-const BODY_PARAS=[
-  {claimBuild:[
-    {speak:'Firstly,',html:'<span class="part-new">Firstly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
-    {speak:'it seems to me that',html:'<span class="part-done">Firstly,</span> <span class="part-new">it seems to me that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-    {speak:'Firstly, it seems to me that the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.',html:'<span class="part-done">Firstly, it seems to me that</span> <span class="part-new">the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.</span>',label:'+ FULL CLAIM ✓'}
-  ],
-  supports:[
-    {role:'REASON',text:'This is because social media and messaging apps are deliberately designed to interrupt attention every few minutes.',kw:'This is because'},
-    {role:'EXAMPLE',text:'For instance, many schools that have introduced phone-free policies have reported a clear improvement in student behaviour and exam results.',kw:'For instance,'},
-    {role:'RESULT',text:'As a result, young people who limit their screen time tend to find it significantly easier to complete homework and achieve higher grades.',kw:'As a result,'}
-  ]},
-  {claimBuild:[
-    {speak:'Secondly,',html:'<span class="part-new">Secondly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
-    {speak:'as far as I am concerned,',html:'<span class="part-done">Secondly,</span> <span class="part-new">as far as I am concerned,</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-    {speak:"Secondly, as far as I am concerned, restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.",html:"<span class='part-done'>Secondly, as far as I am concerned,</span> <span class='part-new'>restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.</span>",label:'+ FULL CLAIM ✓'}
-  ],
-  supports:[
-    {role:'REASON',text:'This is because the blue light from screens interferes with melatonin production, making it much harder for young people to fall asleep naturally.',kw:'This is because'},
-    {role:'EXAMPLE',text:'For example, research suggests that teenagers who use phones for more than two hours before bed are twice as likely to suffer from sleep deprivation.',kw:'For example,'},
-    {role:'RESULT',text:'Consequently, setting clear boundaries on evening screen time could have a direct and measurable impact on the wellbeing of millions of young people.',kw:'Consequently,'}
-  ]},
-  {claimBuild:[
-    {speak:'On the other hand,',html:'<span class="part-new">On the other hand,</span> <span class="part-dim">…</span>',label:'CONTRAST MARKER'},
-    {speak:'it could be argued that',html:'<span class="part-done">On the other hand,</span> <span class="part-new">it could be argued that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-    {speak:'On the other hand, it could be argued that smartphones are increasingly valuable tools for independent learning and self-education.',html:'<span class="part-done">On the other hand, it could be argued that</span> <span class="part-new">smartphones are increasingly valuable tools for independent learning and self-education.</span>',label:'+ YOUR OWN IDEA ✓'}
-  ],
-  supports:[
-    {role:'REASON',text:'This is because many students use their phones to access revision apps, research topics, and collaborate with classmates — all of which directly support their education.',kw:'This is because'},
-    {role:'EXAMPLE',text:'Indeed, platforms such as Duolingo and Khan Academy have transformed smartphones into resources that millions of young learners rely on every day.',kw:'Indeed,'},
-    {role:'RESULT',text:'For this reason, teaching young people responsible and mindful use of devices may ultimately be more effective than imposing a complete ban.',kw:'For this reason,'}
-  ]}
+const CONCL_DATA = [
+  {role:'SUMMARY', kw:'In conclusion,',    text:"In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration."},
+  {role:'POINT 1', kw:'On one hand,',      text:"On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing."},
+  {role:'POINT 2', kw:'On the other hand,',text:"On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful."},
+  {role:'REWORD',  kw:'In other words,',   text:"In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used."},
+  {role:'VERDICT', kw:'Overall,',          text:"Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people."}
 ];
 
-const CONCL_DATA=[
-  {role:'SUMMARY',text:'In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration.',kw:'In conclusion,'},
-  {role:'POINT 1',text:'On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing.',kw:'On one hand,'},
-  {role:'POINT 2',text:'On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful.',kw:'On the other hand,'},
-  {role:'REWORD',text:'In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used.',kw:'In other words,'},
-  {role:'VERDICT',text:'Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people.',kw:'Overall,'}
-];
+/* ─── STATE ─── */
+let cur = 0, running = false, bannerOn = false, bodyBannerOn = false, gen = 0;
 
-/* ═══ OUP BODY PARAGRAPH DATA ═══ */
-const BP_CLAIM_ITEMS=[{key:'listing',label:'Listing'}];
-
-const BP_STANCE_SPECTRUM=[
-  {key:'neutral', label:'NEUTRAL', sublabel:'Academic distance',
-   phrases:['It is widely believed that…','It is often argued that…','It is commonly known that…'],
-   example:{role:'NEUTRAL STANCE', text:"It is widely believed that excessive smartphone use has a negative impact on young people's ability to concentrate."}},
-  {key:'hedged',  label:'HEDGED',  sublabel:'Tentative & safe',
-   phrases:['It could be argued that…','It appears that…','It seems to me that…'],
-   example:{role:'HEDGED STANCE',  text:"It could be argued that constant connectivity makes it significantly harder for young people to focus on their studies."}},
-  {key:'personal',label:'PERSONAL',sublabel:'Direct conviction',
-   phrases:['In my opinion,','I firmly believe that…','As far as I am concerned,'],
-   example:{role:'PERSONAL STANCE',text:"In my opinion, the unrestricted use of smartphones is one of the most damaging influences on academic performance today."}},
-];
-
-const BP_SUPPORT_ITEMS=[
-  {key:'reason',   label:'Reason'},
-  {key:'example',  label:'Example'},
-  {key:'reword',   label:'Rephrase'},
-  {key:'result',   label:'Result'},
-  {key:'compare',  label:'Compare'},
-  {key:'contrast', label:'Contrast'},
-];
-
-const BP_CLAIM_EXAMPLES={
-  listing:   {role:'LISTING',    text:'Firstly, · Secondly, · Moreover, · Furthermore, · On the other hand,'},
-  generalise:{role:'GENERALISE', text:'Overall, it is clear that… · In general, it seems that… · It is widely accepted that…'},
-  opinion:   {role:'OPINION',    text:'In my opinion, · I firmly believe that · It could be argued that · As far as I am concerned,'},
-  mainclaim: {role:'MAIN CLAIM', text:'…smartphones are increasingly harmful to young people\'s academic performance and wellbeing.'},
-};
-const BP_SUPPORT_EXAMPLES={
-  reason:  {role:'REASON',    text:'This is because social media apps are deliberately designed to interrupt concentration every few minutes.'},
-  example: {role:'EXAMPLE',   text:'For instance, schools that introduced phone-free policies reported clear improvements in exam results.'},
-  reword:  {role:'REPHRASE',  text:'In other words, the constant availability of phones makes it almost impossible for students to focus deeply.'},
-  result:  {role:'RESULT',    text:'As a result, young people who limit screen time tend to achieve significantly higher grades.'},
-  compare: {role:'COMPARE',   text:'Similarly, research from Finland and South Korea shows restricted phone use correlates with better outcomes.'},
-  contrast:{role:'CONTRAST',  text:'By contrast, students with unrestricted phone access consistently report lower concentration and higher stress.'},
-};
-
-const BP_SUPPORT_COLS=[
-  {key:'reason',   letter:'R', name:'REASON',     color:'#1a6b3c',
-   example:{role:'REASON',   text:'This is because social media apps are deliberately designed to interrupt concentration every few minutes.'}},
-  {key:'example',  letter:'E', name:'EXAMPLE',    color:'#1a5c8a',
-   example:{role:'EXAMPLE',  text:'For instance, schools that introduced phone-free policies reported clear improvements in exam results.'}},
-  {key:'reword',   letter:'R', name:'REWORD',     color:'#6b4ea8',
-   example:{role:'REWORD',   text:'In other words, the constant availability of phones makes it almost impossible for students to focus deeply.'}},
-  {key:'result',   letter:'R', name:'RESULT',     color:'#c9140f',
-   example:{role:'RESULT',   text:'As a result, young people who limit screen time tend to achieve significantly higher grades.'}},
-  {key:'compare',  letter:'C', name:'COMPARE',    color:'#8a6a1a',
-   example:{role:'COMPARE',  text:'Similarly, research from Finland and South Korea shows restricted phone use correlates with better outcomes.'}},
-  {key:'contrast', letter:'C', name:'CONTRAST',   color:'#1a6b6b',
-   example:{role:'CONTRAST', text:'By contrast, students with unrestricted phone access consistently report lower concentration and higher stress.'}},
-  {key:'general',  letter:'G', name:'GENERALISE', color:'#555',
-   example:{role:'GENERALISE',text:'Overall, it is clear that the relationship between smartphone use and academic performance cannot be ignored.'}}
-];
-
-const BP_LISTEN_NARRATION=[
-  {key:'listing',    text:'Begin your body paragraph with a listing marker. Words like Firstly, Secondly, or Moreover signal clear organisation to the examiner.'},
-  {key:'opinion',    text:'Follow with a viewpoint expression. Phrases like In my opinion, I firmly believe that, or It could be argued that show your stance.'},
-  {key:'mainclaim',  text:'Now write your main claim — your central point for this paragraph. Make it specific and directly linked to the question.'},
-  {key:'reason',     text:'The first supporting strategy is REASON. Explain why your claim is true. Use This is because or The reason for this is that.'},
-  {key:'example',    text:'EXAMPLE gives concrete evidence. Use For instance, For example, or Indeed to introduce it.'},
-  {key:'reword',     text:'REPHRASE means restating your point differently. Use In other words or That is to say to clarify or reinforce your claim.'},
-  {key:'result',     text:'RESULT shows the consequence. Phrases like As a result, Consequently, and Therefore signal the outcome.'},
-  {key:'compare',    text:'COMPARE links your point to similar situations. Similarly, Likewise, and In the same way make your argument broader.'},
-  {key:'contrast',   text:'CONTRAST highlights an opposing view to strengthen your point. Use By contrast, However, or On the other hand.'},
-  {key:'generalise', text:'Finally, GENERALISE — sum up your paragraph at a higher level. Use Overall, or In general, to show the bigger picture.'}
-];
-
-/* ═══ INFOGRAPHIC BUILDER ═══ */
-function buildBPInfographic(sceneIdx){
-  const grid=document.getElementById('bpGrid'+sceneIdx);
-  if(!grid||grid.dataset.built)return;
-  grid.dataset.built='1';
-  const exBox=document.getElementById('bpEx'+sceneIdx);
-  const exRole=document.getElementById('bpExRole'+sceneIdx);
-  const exText=document.getElementById('bpExText'+sceneIdx);
-
-  function showEx(key, type, btnEl){
-    grid.querySelectorAll('.bp-two-box .bp-sub-btn').forEach(b=>b.classList.remove('active'));
-    btnEl.classList.add('active');
-    const ex=(type==='claim'?BP_CLAIM_EXAMPLES:BP_SUPPORT_EXAMPLES)[key];
-    if(!ex)return;
-    exRole.textContent=ex.role+' ·';
-    exText.textContent=ex.text;
-    exBox.classList.add('show');
-  }
-
-  // ── TWO-BOX ROW ──
-  const twoBox=document.createElement('div');
-  twoBox.className='bp-two-box';
-
-  // LEFT: CLAIM
-  const claimBox=document.createElement('div');
-  claimBox.className='bp-main-box bp-main-claim';
-
-  // Listing pill
-  const listingRow=document.createElement('div');
-  listingRow.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:10px;';
-  const listingLbl=document.createElement('div');
-  listingLbl.style.cssText='font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);flex-shrink:0;';
-  listingLbl.textContent='LISTING';
-  const listingBtn=document.createElement('button');
-  listingBtn.className='bp-sub-btn';
-  listingBtn.textContent='Firstly · Secondly · Moreover…';
-  listingBtn.style.cssText='font-size:8px;padding:3px 8px;';
-  listingBtn.onclick=()=>showEx('listing','claim',listingBtn);
-  listingRow.appendChild(listingLbl);
-  listingRow.appendChild(listingBtn);
-  claimBox.appendChild(listingRow);
-
-  // STANCE title
-  const stanceTitle=document.createElement('div');
-  stanceTitle.style.cssText='font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:6px;';
-  stanceTitle.textContent='YOUR STANCE';
-  claimBox.appendChild(stanceTitle);
-
-  // Spectrum bar
-  const specBar=document.createElement('div');
-  specBar.className='bp-spectrum-bar';
-  const specTrack=document.createElement('div');
-  specTrack.className='bp-spectrum-track';
-  // gradient arrow
-  specBar.appendChild(specTrack);
-  claimBox.appendChild(specBar);
-
-  // 3 stance cards
-  BP_STANCE_SPECTRUM.forEach((s,si)=>{
-    const card=document.createElement('div');
-    card.className='bp-stance-card';
-    card.dataset.key=s.key;
-    const temps=['#4a9fd4','#8a7fbf','#c9140f'];
-    card.style.borderColor=temps[si];
-    card.innerHTML=`<div class="bp-stance-label" style="color:${temps[si]}">${s.label}</div><div class="bp-stance-sub">${s.sublabel}</div><div class="bp-stance-phrases">${s.phrases.map(p=>`<span>${p}</span>`).join('')}</div>`;
-    card.onclick=()=>{
-      claimBox.querySelectorAll('.bp-stance-card').forEach(c=>c.classList.remove('active'));
-      card.classList.add('active');
-      grid.querySelectorAll('.bp-sub-btn').forEach(b=>b.classList.remove('active'));
-      exRole.textContent=s.example.role+' ·';
-      exText.textContent=s.example.text;
-      exBox.classList.add('show');
-    };
-    claimBox.appendChild(card);
-  });
-
-  // Main claim pill
-  const claimPillRow=document.createElement('div');
-  claimPillRow.style.cssText='margin-top:8px;';
-  const claimTitle=document.createElement('div');
-  claimTitle.style.cssText='font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:5px;';
-  claimTitle.textContent='MAIN CLAIM';
-  const claimBtn=document.createElement('button');
-  claimBtn.className='bp-sub-btn';
-  claimBtn.textContent='State your central point';
-  claimBtn.style.cssText='font-size:8px;padding:3px 8px;width:100%;text-align:left;';
-  claimBtn.onclick=()=>showEx('mainclaim','claim',claimBtn);
-  claimPillRow.appendChild(claimTitle);
-  claimPillRow.appendChild(claimBtn);
-  claimBox.appendChild(claimPillRow);
-
-  // RIGHT: SUPPORT
-  const supportBox=document.createElement('div');
-  supportBox.className='bp-main-box bp-main-support';
-  supportBox.innerHTML='<div class="bp-main-title">SUPPORT</div>';
-  const supportSubs=document.createElement('div');
-  supportSubs.className='bp-sub-list';
-  BP_SUPPORT_ITEMS.forEach(item=>{
-    const btn=document.createElement('button');
-    btn.className='bp-sub-btn';
-    btn.textContent=item.label;
-    btn.onclick=()=>showEx(item.key,'support',btn);
-    supportSubs.appendChild(btn);
-  });
-  supportBox.appendChild(supportSubs);
-
-  twoBox.appendChild(claimBox);
-  twoBox.appendChild(supportBox);
-  grid.appendChild(twoBox);
-}
-
-/* ═══ STATE ═══ */
-const TOTAL=6;
-let cur=0;
-let running=false;
-let bannerOn=false;
-let gen=0;
-
-/* ═══ SPEECH ═══ */
-const synth=window.speechSynthesis;
-let voice=null;
+/* ─── SPEECH ─── */
+const synth = window.speechSynthesis;
+let voice = null;
 function loadVoice(){
   const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};
   if(synth.getVoices().length)p();else synth.onvoiceschanged=p;
 }
 let sRes=null;
 function stopSpeech(){if(sRes){sRes();sRes=null;}synth.cancel();}
-
-// speak() and wait() both receive the generation at launch time (myGen).
-// If gen has changed by the time they resolve, they resolve immediately without side effects.
-function speak(t, myGen){
+function speak(t,myGen){
   return new Promise(r=>{
     if(!running||myGen!==gen){r();return;}
-    synth.cancel();
-    sRes=r;
+    synth.cancel();sRes=r;
     const go=()=>{
       if(!running||myGen!==gen){sRes=null;r();return;}
       const u=new SpeechSynthesisUtterance(t);
       u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;
-      u.onend=()=>{sRes=null;r();};
-      u.onerror=()=>{sRes=null;r();};
+      u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};
       synth.speak(u);
     };
     setTimeout(go,120);
   });
 }
-function wait(ms, myGen){
-  return new Promise(r=>{
-    setTimeout(()=>{
-      // If stale, resolve immediately (don't block the chain from reaching its !running check)
-      r();
-    }, (myGen!==undefined && myGen!==gen) ? 0 : ms);
-  });
-}
+function wait(ms,myGen){return new Promise(r=>setTimeout(()=>r(),(myGen!==undefined&&myGen!==gen)?0:ms));}
 
-/* ═══ HARD STOP — always call this before any navigation ═══ */
+/* ─── HARD STOP ─── */
 function hardStop(){
-  gen++;          // invalidate all running async chains instantly
-  running=false;
-  bannerOn=false;
-  stopSpeech();
-  waveOff();
-  closeBanner();
-  hideInter();
-  const b=document.getElementById('btnPlay');
-  b.textContent='▶';b.classList.remove('running');
+  gen++;running=false;bannerOn=false;bodyBannerOn=false;
+  stopSpeech();waveOff();closeBanner();closeBodyBanner();hideInter();
+  const b=document.getElementById('btnPlay');b.textContent='▶';b.classList.remove('running');
 }
 
-/* ═══ DOTS ═══ */
+/* ─── DOTS ─── */
 function buildDots(){
-  for(let sc=0;sc<TOTAL;sc++){
+  for(let sc=0;sc<SCENE_COUNT;sc++){
     const c=document.getElementById('dots'+sc);if(!c)continue;
     c.innerHTML='';
-    for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot';d.id='d'+sc+'-'+i;c.appendChild(d);}
+    for(let i=0;i<SCENE_COUNT;i++){const d=document.createElement('div');d.className='dot';d.id='d'+sc+'-'+i;c.appendChild(d);}
   }
 }
 function updateDots(i){
-  for(let sc=0;sc<TOTAL;sc++){
-    for(let j=0;j<TOTAL;j++){
+  for(let sc=0;sc<SCENE_COUNT;sc++){
+    for(let j=0;j<SCENE_COUNT;j++){
       const d=document.getElementById('d'+sc+'-'+j);if(!d)continue;
       d.classList.remove('active','done');
       if(j===i)d.classList.add('active');else if(j<i)d.classList.add('done');
@@ -1048,45 +680,53 @@ function updateDots(i){
   }
 }
 
-/* ═══ TAB SYNC ═══ */
+/* ─── TAB SYNC ─── */
 function syncTab(idx){
   let t='intro';
-  if(idx>=2&&idx<=4)t='body';
-  else if(idx===5)t='conc';
+  if(idx===2||idx===3)t='body';
+  else if(idx===4)t='conc';
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
 }
-
-// jumpTab: always hard-stops first, then navigates. No race possible.
 function jumpTab(tab){
   if(tab==='notes'){openNotes();return;}
-  hardStop();
-  clearStacks();
-  const map={intro:0,body:2,conc:5};
+  hardStop();clearStacks();
+
+  // Each tab navigates to its scene AND immediately starts playing that section
+  const map={intro:1, body:2, conc:4};
   const target=map[tab];
   if(typeof target==='number'){
     cur=target;
     showScene(cur);
+    // Small delay so the scene renders before speech starts
+    setTimeout(()=>{
+      if(!running){
+        running=true;
+        const myGen=gen;
+        const b=document.getElementById('btnPlay');
+        b.textContent='⏹';b.classList.add('running');
+        updateNavBtns();
+        runScene(cur,myGen);
+      }
+    },120);
   }
   updateNavBtns();
 }
 
-/* ═══ SCENE DISPLAY (pure UI, no async) ═══ */
+/* ─── SCENE ─── */
 function showScene(i){
   document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
   const sc=document.getElementById('sc'+i);if(!sc)return;
   sc.classList.add('active');
-  document.getElementById('ctr').textContent=(i+1)+' / '+TOTAL;
+  document.getElementById('ctr').textContent=(i+1)+' / '+SCENE_COUNT;
   updateDots(i);syncTab(i);updateNavBtns();flashColor();
   if(i>0)spawnEmoji(i);
-  // Build body infographics on first visit
-  if(i>=2&&i<=4)buildBPInfographic(i);
 }
 
-/* ═══ WAVE ═══ */
+/* ─── WAVE ─── */
 function waveOn(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}});}
 function waveOff(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}});}
 
-/* ═══ INTERSTITIAL ═══ */
+/* ─── INTERSTITIAL ─── */
 function showInter(flag,fc,kicker,big,sub,ac){
   document.getElementById('interFlagBody').style.background=fc;
   document.getElementById('interFlagNum').textContent=flag;
@@ -1099,7 +739,7 @@ function showInter(flag,fc,kicker,big,sub,ac){
 }
 function hideInter(){document.getElementById('interOv').classList.remove('show');}
 
-/* ═══ NOTES ═══ */
+/* ─── NOTES ─── */
 let activeNtab='descriptors';
 function renderNotes(tab){
   const body=document.getElementById('notesBody');
@@ -1111,63 +751,111 @@ function switchNtab(t){activeNtab=t;document.querySelectorAll('.ntab').forEach(b
 function openNotes(){renderNotes(activeNtab);document.getElementById('notesPanel').classList.add('show');}
 function closeNotes(){document.getElementById('notesPanel').classList.remove('show');syncTab(cur);}
 
-/* ═══ BANNER (intro pairs) ═══ */
-function closeBanner(){
-  document.getElementById('ov').classList.remove('show');
-  document.getElementById('ob').classList.remove('exit');
-  bannerOn=false;
-}
-
+/* ─── INTRO PAIRS BANNER ─── */
+function closeBanner(){document.getElementById('ov').classList.remove('show');document.getElementById('ob').classList.remove('exit');bannerOn=false;}
 async function runPairs(myGen){
   bannerOn=true;
   document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
   document.getElementById('ov').classList.add('show');
-  for(let i=0;i<PAIRS.length;i++){
-    if(!running||!bannerOn||myGen!==gen)break;
-    await showPair(PAIRS[i],i,myGen);
-  }
+  for(let i=0;i<PAIRS.length;i++){if(!running||!bannerOn||myGen!==gen)break;await showPair(PAIRS[i],i,myGen);}
   if(running&&myGen===gen)closeBanner();
 }
-
 async function showPair(p,idx,myGen){
   const ob=document.getElementById('ob');
-  if(idx>0){
-    ob.classList.add('exit');
-    await wait(190,myGen);
-    if(!running||!bannerOn||myGen!==gen){ob.classList.remove('exit');return;}
-    ob.classList.remove('exit');
-  }
+  if(idx>0){ob.classList.add('exit');await wait(190,myGen);if(!running||!bannerOn||myGen!==gen){ob.classList.remove('exit');return;}ob.classList.remove('exit');}
   if(!running||!bannerOn||myGen!==gen)return;
-
   document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
   document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
   const sEl=document.getElementById('obS');
   sEl.textContent=p.s;
   const l=p.s.length;
   sEl.style.fontSize=l>22?'clamp(1.35rem,5vw,2.2rem)':l>14?'clamp(1.7rem,6.5vw,2.8rem)':'clamp(2rem,7.5vw,3.3rem)';
-  const rEl=document.getElementById('obR');
-  const lEl=document.getElementById('obL');
-  const tEl=document.getElementById('obT');
+  const rEl=document.getElementById('obR'),lEl=document.getElementById('obL'),tEl=document.getElementById('obT');
   rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';
   lEl.style.cssText='opacity:0;transform:translateY(4px);transition:none;';
   tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
-  rEl.textContent=p.r;
-  lEl.innerHTML=p.linkHtml;
-  tEl.innerHTML=p.t;
+  rEl.textContent=p.r;lEl.innerHTML=p.linkHtml;tEl.innerHTML=p.t;
   await wait(24,myGen);
   rEl.style.cssText='';lEl.style.cssText='';tEl.style.cssText='';
   for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
-  document.getElementById('obW').classList.add('on');
+  document.getElementById('obW')&&document.getElementById('obW').classList.add('on');
+  waveOn();
   await speak(p.f,myGen);if(!running||!bannerOn||myGen!==gen)return;
   await wait(140,myGen);
   await speak(p.link,myGen);if(!running||!bannerOn||myGen!==gen)return;
   await wait(140,myGen);
   await speak(p.tf,myGen);if(!running||!bannerOn||myGen!==gen)return;
-  document.getElementById('obW').classList.remove('on');
+  document.getElementById('obW')&&document.getElementById('obW').classList.remove('on');
+  waveOff();
   await wait(460,myGen);
 }
 
-/* ═══ SENTENCE HELPERS ═══ */
+/* ─── BODY PARAGRAPH BANNER ─── */
+function closeBodyBanner(){document.getElementById('bov').classList.remove('show');document.getElementById('bob').classList.remove('exit');bodyBannerOn=false;}
+
+async function runBodyPairs(myGen){
+  bodyBannerOn=true;
+  document.getElementById('bobDots').innerHTML=BODY_PAIRS.map((_,i)=>`<div class="bdot" id="bbd${i}"></div>`).join('');
+  document.getElementById('bov').classList.add('show');
+  for(let i=0;i<BODY_PAIRS.length;i++){if(!running||!bodyBannerOn||myGen!==gen)break;await showBodyPair(BODY_PAIRS[i],i,myGen);}
+  if(running&&myGen===gen)closeBodyBanner();
+}
+
+async function showBodyPair(para,idx,myGen){
+  const bob=document.getElementById('bob');
+  if(idx>0){bob.classList.add('exit');await wait(190,myGen);if(!running||!bodyBannerOn||myGen!==gen){bob.classList.remove('exit');return;}bob.classList.remove('exit');}
+  if(!running||!bodyBannerOn||myGen!==gen)return;
+
+  document.getElementById('bobNum').textContent=(idx+1)+' / '+BODY_PAIRS.length;
+  document.getElementById('bobFL').textContent='example '+(idx+1)+' of '+BODY_PAIRS.length;
+  document.getElementById('bobFlagNum').textContent=para.flagTitle;
+  document.getElementById('bobFlagBody').style.background=para.color;
+  document.getElementById('bobBottom').style.background=para.color;
+  document.querySelectorAll('.bob-wb').forEach(w=>w.style.background=para.color);
+  for(let i=0;i<BODY_PAIRS.length;i++){const d=document.getElementById('bbd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+
+  const body=document.getElementById('bobBody');
+  body.innerHTML='';
+
+  // Topic kicker — small label, like ob-hlbl
+  const topicLbl=document.createElement('div');
+  topicLbl.style.cssText=`font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;flex-shrink:0;color:${para.color};`;
+  topicLbl.textContent=para.topic;
+  body.appendChild(topicLbl);
+
+  // Starter word — large Barlow Condensed, exactly like ob-starter
+  const starterEl=document.createElement('div');
+  const sLen=para.starter.length;
+  const sFontSize=sLen>16?'clamp(1.6rem,5.5vw,2.2rem)':sLen>10?'clamp(2rem,7vw,3rem)':'clamp(2.4rem,8vw,3.6rem)';
+  starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.92;letter-spacing:.5px;color:var(--ink);flex-shrink:0;margin-bottom:8px;`;
+  starterEl.textContent=para.starter;
+  body.appendChild(starterEl);
+
+  // Flowing paragraph — black text, linking words highlighted red
+  // Build HTML by replacing each linking word with red span
+  let html=para.rest;
+  para.links.forEach(lw=>{
+    html=html.replace(lw,`<span style="color:var(--red);font-weight:700">${lw}</span>`);
+  });
+
+  const paraEl=document.createElement('div');
+  paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:15px;font-weight:400;line-height:1.65;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(6px);transition:opacity .38s .18s,transform .44s .18s cubic-bezier(.22,1,.36,1);';
+  paraEl.innerHTML=html;
+  body.appendChild(paraEl);
+
+  // Speak the whole paragraph as one natural flow
+  waveOn();
+  await speak(para.starter+para.rest, myGen);
+  if(!running||!bodyBannerOn||myGen!==gen){waveOff();return;}
+
+  // Reveal paragraph text after speaking
+  paraEl.style.opacity='1';
+  paraEl.style.transform='none';
+  waveOff();
+  await wait(600,myGen);
+}
+
+/* ─── CONCLUSION HELPER ─── */
 async function speakThenShow(stkId,text,isFirst,role,kw,myGen){
   if(!running||myGen!==gen)return;
   await speak(text,myGen);
@@ -1180,55 +868,16 @@ async function speakThenShow(stkId,text,isFirst,role,kw,myGen){
   if(role)line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;
   else line.innerHTML=html;
   stk.appendChild(line);
-  await wait(20,myGen);
-  line.classList.add('in');
+  await wait(20,myGen);line.classList.add('in');
   line.scrollIntoView({behavior:'smooth',block:'nearest'});
   await wait(180,myGen);
 }
 
-async function buildClaim(stkId,para,myGen){
+/* ─── SCENE RUNNER ─── */
+async function runScene(idx,myGen){
   if(!running||myGen!==gen)return;
-  const stk=document.getElementById(stkId);if(!stk)return;
-  const lbl=document.createElement('div');
-  lbl.style.cssText="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .3s;flex-shrink:0;";
-  lbl.textContent='▸ CLAIM — built in 3 steps';
-  stk.appendChild(lbl);await wait(20,myGen);lbl.style.opacity='1';
-
-  const sentEl=document.createElement('div');
-  sentEl.className='build-step in';
-  sentEl.style.cssText="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;line-height:1.35;color:var(--ink);flex-shrink:0;padding:6px 0;min-height:32px;";
-  stk.appendChild(sentEl);
-
-  const stepLbl=document.createElement('div');
-  stepLbl.style.cssText="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:3px;opacity:0;transition:opacity .22s;flex-shrink:0;";
-  stk.appendChild(stepLbl);
-
-  for(let i=0;i<para.claimBuild.length;i++){
-    if(!running||myGen!==gen)return;
-    stepLbl.textContent='STEP '+(i+1)+': '+para.claimBuild[i].label;
-    stepLbl.style.opacity='1';
-    sentEl.innerHTML=para.claimBuild[i].html;
-    sentEl.scrollIntoView({behavior:'smooth',block:'nearest'});
-    await speak(para.claimBuild[i].speak,myGen);
-    if(!running||myGen!==gen)return;
-    if(i<para.claimBuild.length-1){stepLbl.style.opacity='0';await wait(260,myGen);}
-  }
-  await wait(300,myGen);
-  if(!running||myGen!==gen)return;
-  const div=document.createElement('div');
-  div.style.cssText="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(0,0,0,.25);margin:8px 0 3px;border-top:1px solid rgba(0,0,0,.07);padding-top:8px;flex-shrink:0;";
-  div.textContent='▸ DEVELOP — Reason · Example · Result';
-  stk.appendChild(div);await wait(20,myGen);
-}
-
-/* ═══ SCENE RUNNER ═══ */
-async function runScene(idx, myGen){
-  // Abort immediately if this chain is already stale
-  if(!running||myGen!==gen)return;
-  if(idx>=TOTAL){finishAll();return;}
-
-  clearStacks();
-  showScene(idx);
+  if(idx>=SCENE_COUNT){finishAll();return;}
+  clearStacks();showScene(idx);
 
   if(idx===0){
     waveOn();
@@ -1241,8 +890,7 @@ async function runScene(idx, myGen){
     await speak("The introduction is just two sentences. A hook, then a thesis. Now watch five different ways to write them.",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
-    hideInter();
-    await wait(280,myGen);if(!running||myGen!==gen)return;
+    hideInter();await wait(280,myGen);if(!running||myGen!==gen)return;
     waveOn();
     await speak("Here is today's essay question. Should the use of phones be limited for young people? What do you think? By the end of this lesson, you will know exactly how to argue it.",myGen);
     if(!running||myGen!==gen){waveOff();return;}
@@ -1250,187 +898,68 @@ async function runScene(idx, myGen){
     await wait(260,myGen);if(!running||myGen!==gen)return;
     await runPairs(myGen);
 
-  }else if(idx>=2&&idx<=4){
-    const bColors=['var(--c-b1)','var(--c-b2)','var(--c-b3)'];
-    const bColor=bColors[idx-2];
-    const bNums=['one','two','three'];
-    const bTopics=['academic performance','mental health and sleep','your own original idea'];
-
-    // BEAT 1 — name the paragraph
-    showInter('BODY PARAGRAPH '+(idx-1),bColor,'PARAGRAPH '+idx+' OF 5',
-      'Body Paragraph <em>'+(idx-1)+'.</em>',
-      'Topic: <strong>'+bTopics[idx-2]+'</strong>',bColor);
-    await speak('Body paragraph '+bNums[idx-2]+'. Your topic is '+bTopics[idx-2]+'.',myGen);
-    if(!running||myGen!==gen)return;
-    await wait(260,myGen);if(!running||myGen!==gen)return;
-
-    // BEAT 2 — the two jobs
-    showInter('BODY PARAGRAPH '+(idx-1),bColor,'EVERY BODY PARAGRAPH HAS 2 JOBS',
-      'Make a <em>Claim.</em><br>Then <em>Support</em> it.',
-      'One focused point. Fully developed.',bColor);
-    await speak('Every body paragraph has exactly two jobs. First — you make your claim. Second — you support it. One focused point, fully developed.',myGen);
-    if(!running||myGen!==gen)return;
-    await wait(260,myGen);if(!running||myGen!==gen)return;
-
-    // BEAT 3 — claim structure
-    showInter('BODY PARAGRAPH '+(idx-1),bColor,'THE CLAIM — 3 PARTS',
-      '<em>Listing</em> + <em>Stance</em> + <em>Point.</em>',
-      'Always in this order.',bColor);
-    await speak('Your claim is built from three parts. A listing marker — Firstly, Secondly, Moreover. Then your stance — how personally you commit to the idea. Then your main point, stated clearly.',myGen);
-    if(!running||myGen!==gen)return;
-    await wait(260,myGen);if(!running||myGen!==gen)return;
-
-    // BEAT 4 — stance spectrum
-    showInter('BODY PARAGRAPH '+(idx-1),bColor,'YOUR STANCE',
-      '<em>Neutral</em> · <em>Hedged</em> · <em>Personal.</em>',
-      'Cold academic distance — or — warm conviction.',bColor);
-    await speak('The stance is your choice. Neutral — It is widely believed that. Hedged — It could be argued that. Personal — In my opinion. Each sends a different signal to the examiner.',myGen);
-    if(!running||myGen!==gen)return;
-    await wait(260,myGen);if(!running||myGen!==gen)return;
-
-    // BEAT 5 — 7 strategies
-    showInter('BODY PARAGRAPH '+(idx-1),bColor,'SUPPORTING YOUR CLAIM',
-      '<strong>7 strategies.</strong><br>You choose any.',
-      'Reason · Example · Rephrase · Result · Compare · Contrast · Generalise',bColor);
-    await speak('Now the support. Most students think they must write reason, example, result — in that order. That is not true. You have seven strategies. You choose which ones to use and in what order. That is what makes a sophisticated essay.',myGen);
+  }else if(idx===2){
+    showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R</em><br>Formula.','Four sentences. One complete argument.','var(--red)');
+    await speak("Now for the body paragraphs. Every single body paragraph follows the same four-step pattern, recommended by Oxford University Press. We call it C R E R. Claim. Reason. Example. Result.",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
-
-    // REVEAL diagram
-    hideInter();
-    await wait(220,myGen);if(!running||myGen!==gen)return;
+    hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
     waveOn();
-    buildBPInfographic(idx);
-    await speak('Here is the full diagram. Tap any section to see example phrases.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await wait(300,myGen);
-
-    // Walk through each narration step, highlighting the relevant column
-    for(let i=0;i<BP_LISTEN_NARRATION.length;i++){
-      if(!running||myGen!==gen){waveOff();return;}
-      const step=BP_LISTEN_NARRATION[i];
-
-      // Highlight the correct button
-      const grid=document.getElementById('bpGrid'+idx);
-      if(grid){
-        grid.querySelectorAll('.bp-sub-btn').forEach(b=>b.classList.remove('active'));
-        // Find button by matching data key stored in onclick
-        const allBtns=grid.querySelectorAll('.bp-sub-btn');
-        allBtns.forEach(b=>{
-          if(b.textContent.toLowerCase().replace(/\s/g,'')===step.key.replace(/\s/g,'')||
-             b.textContent.toLowerCase()===step.key.toLowerCase()||
-             (step.key==='reword'&&b.textContent.toLowerCase()==='rephrase')||
-             (step.key==='general'&&b.textContent.toLowerCase()==='generalise')||
-             (step.key==='generalise'&&b.textContent.toLowerCase()==='generalise')||
-             (step.key==='mainclaim'&&b.textContent.toLowerCase()==='main claim')||
-             (step.key==='listing'&&b.textContent.toLowerCase()==='listing')||
-             (step.key==='opinion'&&b.textContent.toLowerCase()==='opinion')
-            ){b.classList.add('active');}
-        });
-        // Show example in box
-        const claimKeys=BP_CLAIM_ITEMS.map(i=>i.key);
-        const isClaimKey=claimKeys.includes(step.key);
-        const ex=(isClaimKey?BP_CLAIM_EXAMPLES:BP_SUPPORT_EXAMPLES)[step.key]||
-                  BP_SUPPORT_EXAMPLES[step.key==='general'||step.key==='generalise'?'generalise':step.key]||
-                  BP_SUPPORT_EXAMPLES[step.key==='reword'?'reword':step.key];
-        if(ex){
-          const exBox=document.getElementById('bpEx'+idx);
-          const exRole=document.getElementById('bpExRole'+idx);
-          const exText=document.getElementById('bpExText'+idx);
-          if(exBox&&exRole&&exText){
-            exRole.textContent=ex.role+' ·';
-            exText.textContent=ex.text;
-            exBox.classList.add('show');
-          }
-        }
-      }
-      await speak(step.text,myGen);
-      if(!running||myGen!==gen){waveOff();return;}
-      await wait(220,myGen);
-    }
-    // Clear highlights
-    const grid=document.getElementById('bpGrid'+idx);
-    if(grid)grid.querySelectorAll('.bp-claim-cell,.bp-strat-col').forEach(c=>c.classList.remove('listen-highlight','active'));
+    await speak("Here is the full structure. The Claim states your point. The Reason explains why. The Example gives concrete evidence. And the Result shows the consequence. Four sentences. One complete paragraph.",myGen);
     if(!running||myGen!==gen){waveOff();return;}
     waveOff();
 
-  }else if(idx===5){
+  }else if(idx===3){
+    showInter('BODY PARAGRAPHS','var(--red)','WATCH 5 COMPLETE EXAMPLES','<em>CRER</em><br>in action.','Sentence by sentence — spoken and shown.','var(--red)');
+    await speak("Now watch five complete body paragraphs built sentence by sentence. Listen for the Claim, the Reason, the Example, and the Result — exactly as in the introduction.",myGen);
+    if(!running||myGen!==gen)return;
+    await wait(400,myGen);if(!running||myGen!==gen)return;
+    hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
+    await runBodyPairs(myGen);
+
+  }else if(idx===4){
     waveOn();
     await speak('Finally, the conclusion. Restate your opinion in different words. Never introduce new ideas. Use a summary opener, echo your two points, then give a final verdict.',myGen);
     if(!running||myGen!==gen){waveOff();return;}
     for(let i=0;i<CONCL_DATA.length;i++){
       if(!running||myGen!==gen){waveOff();return;}
       const row=CONCL_DATA[i];
-      await speakThenShow('stk5',row.text,i===0,row.role,row.kw,myGen);
+      await speakThenShow('stk4',row.text,i===0,row.role,row.kw,myGen);
     }
     if(!running||myGen!==gen){waveOff();return;}
     waveOff();
   }
 
-  // Auto-advance to next scene
   if(!running||myGen!==gen)return;
   await wait(440,myGen);
   if(!running||myGen!==gen)return;
-  cur=idx+1;
-  runScene(cur,myGen);
+  cur=idx+1;runScene(cur,myGen);
 }
 
-/* ═══ PLAYBACK CONTROLS ═══ */
+/* ─── PLAYBACK ─── */
 function handlePlay(){
   if(!running){
-    running=true;
-    const myGen=gen; // capture current gen — this chain owns this gen value
+    running=true;const myGen=gen;
     const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
-    updateNavBtns();
-    runScene(cur,myGen);
-  }else{
-    hardStop();
-    updateNavBtns();
-  }
+    updateNavBtns();runScene(cur,myGen);
+  }else{hardStop();updateNavBtns();}
 }
-
-function stopAll(){hardStop();updateNavBtns();}
-
-function clearStacks(){
-  ['stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
-}
-
-function nextScene(){
-  hardStop();
-  clearStacks();
-  if(cur+1<TOTAL){cur++;}
-  showScene(cur);
-  updateNavBtns();
-}
-
-function prevScene(){
-  if(cur===0)return;
-  hardStop();
-  clearStacks();
-  cur=Math.max(0,cur-1);
-  showScene(cur);
-  updateNavBtns();
-}
-
+function clearStacks(){const el=document.getElementById('stk4');if(el)el.innerHTML='';}
+function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;showScene(cur);updateNavBtns();}
+function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);showScene(cur);updateNavBtns();}
 function updateNavBtns(){
   document.getElementById('btnPrev').disabled=cur<=0;
-  document.getElementById('btnNext').disabled=cur>=TOTAL-1;
+  document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;
 }
-
 function finishAll(){
   hardStop();
-  const b=document.getElementById('btnPlay');
-  b.textContent='↺';
-  updateNavBtns();
-  b.onclick=()=>{
-    cur=0;clearStacks();
-    b.textContent='▶';b.onclick=handlePlay;
-    buildDots();showScene(0);updateNavBtns();
-  };
+  const b=document.getElementById('btnPlay');b.textContent='↺';updateNavBtns();
+  b.onclick=()=>{cur=0;clearStacks();b.textContent='▶';b.onclick=handlePlay;buildDots();showScene(0);updateNavBtns();};
 }
 
+/* ─── FX ─── */
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
-const EMJS=[['📖'],['📱'],['🪝'],['💪'],['💡'],['✅']];
+const EMJS=[['📖'],['📱'],['📐'],['💪'],['✅']];
 function spawnEmoji(idx){
   const list=EMJS[idx]||[];
   const r=document.getElementById('stage').getBoundingClientRect();
@@ -1454,8 +983,6 @@ document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passi
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
 
 loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
-// Pre-build body paragraph infographics
-[2,3,4].forEach(buildBPInfographic);
 </script>
 </body>
 </html>
