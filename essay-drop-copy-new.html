@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ESSAY DROP — V5</title>
+<title>ESSAY DROP — V6</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#f0efec;
+  --bg:#FAF9F7;
   --card:#ffffff;
-  --ink:#111111;
-  --ink2:rgba(17,17,17,0.62);
-  --ink3:rgba(17,17,17,0.28);
+  --ink:#1C1C1E;
+  --ink2:rgba(28,28,30,0.92);
+  --ink3:rgba(28,28,30,0.75);
   --red:#c9140f;
   --red-s:rgba(201,20,15,0.08);
-  --border:rgba(0,0,0,0.07);
+  --border:rgba(28,28,30,0.08);
   --c-intro:#3d9e95;
   --c-b1:#c9140f;
   --c-b2:#c9140f;
@@ -23,468 +23,603 @@
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;}
 html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);
   font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
-
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;}
 
-/* TOPBAR */
-.topbar{flex-shrink:0;display:flex;align-items:center;gap:.55rem;padding:.48rem .9rem .38rem;
-  background:rgba(240,239,236,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(14px);z-index:100;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);}
+/* ─── TOPBAR ─── */
+.topbar{
+  flex-shrink:0;display:flex;align-items:center;gap:10px;
+  padding:10px 18px 9px;
+  background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(14px);z-index:100;
+}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--ink);}
 .logo span{color:var(--red);}
 .spacer{flex:1;}
-.tips-btn{font-family:'DM Mono',monospace;font-size:.3rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:.2rem .6rem;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;transition:all .2s;}
-.tips-btn:hover{background:rgba(0,0,0,.1);color:var(--ink2);}
-.tips-btn.active{background:var(--red-s);color:var(--red);border-color:rgba(201,20,15,.2);}
-.tbctr{font-family:'DM Mono',monospace;font-size:.36rem;letter-spacing:.14em;color:var(--ink3);}
+.tbctr{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);}
 
-.pbar-row{flex-shrink:0;display:flex;gap:2.5px;padding:.0rem .9rem .3rem;background:rgba(240,239,236,0.97);}
-.pseg{flex:1;height:2px;border-radius:2px;background:rgba(0,0,0,.09);overflow:hidden;position:relative;}
-.psegf{position:absolute;inset:0;border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.22,1,.36,1);}
-.pseg.done .psegf{transform:scaleX(1);background:var(--red);}
-.pseg.active .psegf{transform:scaleX(1);background:var(--ink);}
-
+/* ─── STAGE ─── */
 .stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);}
 
-/* POSTER */
-.poster{position:relative;width:min(420px,92vw);height:min(520px,82vh);background:var(--card);border-radius:1.4rem;
+/* ─── POSTER ─── */
+.poster{
+  position:relative;
+  width:min(460px,93vw);
+  height:min(530px,76vh);
+  background:#ffffff;
+  border-radius:22px;
+  border:1px solid rgba(28,28,30,0.10);
   display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
-  box-shadow:0 2px 0 rgba(255,255,255,0.9) inset,4px 6px 0 rgba(0,0,0,0.06),0 20px 50px rgba(0,0,0,0.18),0 4px 12px rgba(0,0,0,0.1);
-  animation:pIn .42s cubic-bezier(.22,1,.36,1) both;}
+  box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);
+  animation:pIn .42s cubic-bezier(.22,1,.36,1) both;
+}
+/* stacked card layers */
+.poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#ffffff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;box-shadow:0 4px 12px rgba(0,0,0,.05);}
+.poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#ffffff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
 @keyframes pIn{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
 
-/* FLAG — auto-sizing, no more clipping */
-.flag{position:absolute;top:-2px;left:1.4rem;z-index:10;min-width:72px;}
-.flag-body{
-  min-width:72px;width:auto;
-  padding:.6rem .75rem .5rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  position:relative;gap:.06rem;
-}
-.flag-num{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.95rem;font-weight:900;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:#fff;line-height:1.1;text-align:center;
-  white-space:nowrap;
-}
+/* FLAG */
+.flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.flag-body{min-width:80px;width:auto;padding:11px 14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.1;text-align:center;white-space:nowrap;}
 .flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;
   clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.section-lbl{position:absolute;top:16px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;opacity:.3;}
 
-.section-lbl{position:absolute;top:1rem;right:1.3rem;font-family:'Barlow Condensed',sans-serif;
-  font-size:.75rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;opacity:.35;}
+.card-body{flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 26px 4px 28px;overflow:hidden;}
+.card-heading{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:10px;flex-shrink:0;}
 
-.card-body{flex:1;min-height:0;display:flex;flex-direction:column;padding:3.8rem 1.6rem .6rem 1.7rem;overflow:hidden;}
-.card-heading{font-family:'DM Mono',monospace;font-size:.3rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.28);margin-bottom:.55rem;flex-shrink:0;}
-
-.sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:.35rem;scrollbar-width:none;-ms-overflow-style:none;}
+.sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
 .sentence-scroll::-webkit-scrollbar{display:none;}
 
-.s-line{font-family:'Instrument Sans',sans-serif;font-size:clamp(1rem,2.8vw,1.14rem);font-weight:400;line-height:1.62;
-  color:rgba(17,17,17,.78);flex-shrink:0;opacity:0;transform:translateY(7px);
+.s-line{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:400;line-height:1.6;
+  color:rgba(17,17,17,.80);flex-shrink:0;opacity:0;transform:translateY(7px);
   transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);
-  padding:.14rem 0;border-bottom:1px solid rgba(0,0,0,.04);}
+  padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);}
 .s-line:last-child{border-bottom:none;}
 .s-line.in{opacity:1;transform:none;}
-.s-line.first{color:var(--ink);font-weight:600;font-size:clamp(1.06rem,2.8vw,1.2rem);}
+.s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
 
-.s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:.28rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  padding:.1rem .45rem;border-radius:2px;margin-right:.42rem;vertical-align:middle;flex-shrink:0;border-left:2.5px solid currentColor;}
+.s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
 
-.build-step{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.1rem,3.4vw,1.3rem);font-weight:700;letter-spacing:.01em;
-  line-height:1.35;color:var(--ink);flex-shrink:0;padding:.2rem 0;
+.build-step{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;letter-spacing:.5px;
+  line-height:1.35;color:var(--ink);flex-shrink:0;padding:5px 0;
   opacity:0;transform:translateX(-6px);transition:opacity .32s ease,transform .36s cubic-bezier(.22,1,.36,1);}
 .build-step.in{opacity:1;transform:none;}
 .build-step .part-dim{color:rgba(17,17,17,.28);}
 .build-step .part-new{color:var(--red);}
 .build-step .part-done{color:var(--ink);}
 
+/* ─── CARD DOTS ROW ─── */
+.card-dots-row{
+  flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
+  padding:7px 16px 6px;border-top:1px solid rgba(0,0,0,.06);
+}
+.card-arrow{
+  width:30px;height:30px;border-radius:50%;background:transparent;border:none;
+  font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .18s;
+}
+.card-arrow:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.07);}
+.card-arrow[disabled]{opacity:.15;cursor:not-allowed;}
+
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.16);transition:all .3s cubic-bezier(.22,1,.36,1);}
+.dot.active{width:18px;border-radius:3px;background:var(--ink);}
+.dot.done{background:rgba(0,0,0,.34);}
+
 .accent-bar{height:5px;flex-shrink:0;}
-.card-foot{display:flex;align-items:flex-end;justify-content:flex-end;padding:.28rem 1.4rem .4rem 0;flex-shrink:0;}
-.wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
-.wb{width:3px;border-radius:2px;}
-.wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}.wb:nth-child(4){height:72%}.wb:nth-child(5){height:44%}.wb:nth-child(6){height:84%}.wb:nth-child(7){height:52%}
-.wave.on .wb{animation:wv .95s ease-in-out infinite;}
-.wb:nth-child(1){animation-delay:.00s}.wb:nth-child(2){animation-delay:.08s}.wb:nth-child(3){animation-delay:.17s}.wb:nth-child(4){animation-delay:.12s}.wb:nth-child(5){animation-delay:.04s}.wb:nth-child(6){animation-delay:.2s}.wb:nth-child(7){animation-delay:.09s}
-@keyframes wv{0%,100%{transform:scaleY(.22);opacity:.18}50%{transform:scaleY(1);opacity:1}}
-.wave.off .wb{animation:none;transform:scaleY(.22);opacity:.15;}
 
-/* CONTROLS */
-.controls{flex-shrink:0;display:flex;align-items:center;gap:.4rem;
-  padding:.42rem .85rem calc(env(safe-area-inset-bottom,0px)+.42rem);
-  background:rgba(232,231,228,0.97);border-top:1px solid var(--border);backdrop-filter:blur(14px);z-index:999;position:relative;}
-.btn-main{flex:1;display:flex;align-items:center;justify-content:center;gap:.35rem;
-  padding:.55rem;border:none;border-radius:.55rem;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;
-  letter-spacing:.14em;cursor:pointer;transition:all .18s;background:var(--red);color:#fff;
-  box-shadow:0 3px 0 rgba(100,6,6,.4),0 5px 14px rgba(201,20,15,.13);}
-.btn-main:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(100,6,6,.4);}
-.btn-main.running{background:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.28);}
-.btn-nav{width:2.5rem;height:2.5rem;border-radius:.55rem;background:rgba(0,0,0,.06);border:1px solid var(--border);
-  font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:var(--ink3);cursor:pointer;transition:all .18s;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.btn-nav:hover:not(:disabled){color:var(--ink);background:rgba(0,0,0,.10);}
-.btn-nav:active:not(:disabled){transform:scale(.94);}
-.btn-nav:disabled{opacity:.15;cursor:not-allowed;}
-
-
-
-
-
-/* ═══ INTERSTITIAL — single-idea poster flash ═══ */
-.inter-ov{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(240,239,236,0.96);backdrop-filter:blur(18px);
-  display:flex;align-items:center;justify-content:center;
-  pointer-events:none;opacity:0;transition:opacity .3s;
+/* ─── FOOTER ─── */
+.footer{
+  flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);
+  backdrop-filter:blur(16px);z-index:999;
+  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);
 }
-.inter-ov.show{opacity:1;pointer-events:none;}
-.inter-card{
-  width:min(420px,92vw);
-  height:min(520px,82vh);
-  background:var(--card);border-radius:1.4rem;
-  box-shadow:0 2px 0 rgba(255,255,255,.9) inset,4px 6px 0 rgba(0,0,0,.06),0 20px 50px rgba(0,0,0,.18);
-  overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;
-  opacity:0;transform:translateY(20px) scale(.97);
-  transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);
+
+/* Playback row */
+.playback-row{display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 18px 8px;}
+
+.btn-nav{
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(0,0,0,.07);border:1px solid var(--border);
+  font-size:22px;color:var(--ink3);cursor:pointer;transition:all .18s;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
+.btn-nav:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.12);}
+.btn-nav:active:not([disabled]){transform:scale(.92);}
+.btn-nav[disabled]{opacity:.15;cursor:not-allowed;}
+
+.btn-play{
+  width:64px;height:64px;border-radius:50%;border:none;
+  background:var(--ink);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 4px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.22);
+  transition:all .18s;font-size:22px;
+}
+.btn-play:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28);}
+.btn-play.running{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 8px 22px rgba(201,20,15,.24);}
+
+/* wave flanking play button */
+.wave{display:flex;align-items:flex-end;gap:3px;height:22px;width:32px;}
+.wb{width:4px;border-radius:2px;background:var(--ink3);}
+.wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}
+.wb:nth-child(4){height:72%}.wb:nth-child(5){height:40%}
+.wave.on .wb{animation:wv .9s ease-in-out infinite;}
+.wb:nth-child(1){animation-delay:.00s}.wb:nth-child(2){animation-delay:.08s}.wb:nth-child(3){animation-delay:.16s}.wb:nth-child(4){animation-delay:.11s}.wb:nth-child(5){animation-delay:.04s}
+@keyframes wv{0%,100%{transform:scaleY(.22);opacity:.2}50%{transform:scaleY(1);opacity:.65}}
+.wave.off .wb{animation:none;transform:scaleY(.22);opacity:.18;}
+
+/* ─── PILL TAB BAR ─── */
+.tab-bar-wrap{display:flex;align-items:center;justify-content:center;padding:2px 18px 10px;}
+.tab-bar{
+  display:inline-flex;align-items:center;
+  background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;
+}
+.tab-btn{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
+  padding:8px 16px;border-radius:24px;border:none;cursor:pointer;
+  background:transparent;color:var(--ink3);
+  transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;
+  font-weight:500;
+}
+.tab-btn.active{
+  background:var(--ink);color:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.22);
+}
+.tab-btn:not(.active):hover{color:var(--ink2);}
+
+/* ─── SCENES ─── */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;pointer-events:none;opacity:0;}
+.scene.active{opacity:1;pointer-events:all;}
+
+/* ─── USEFUL NOTES PANEL ─── */
+.notes-panel{
+  position:fixed;inset:0;z-index:500;
+  background:#FAF9F7;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;
+}
+.notes-panel.show{opacity:1;pointer-events:all;}
+.notes-card{
+  width:min(460px,96vw);height:min(600px,88vh);background:#ffffff;border-radius:22px;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);
+  overflow:hidden;display:flex;flex-direction:column;
+  opacity:0;transform:translateY(24px) scale(.96);
+  transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);
+}
+.notes-panel.show .notes-card{opacity:1;transform:none;}
+.notes-top{height:5px;background:var(--ink);flex-shrink:0;}
+.notes-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.notes-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;color:var(--ink);}
+.notes-close{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;}
+.notes-tabs{display:flex;gap:4px;padding:10px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.notes-tabs::-webkit-scrollbar{display:none;}
+.ntab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;padding:6px 14px;border-radius:16px;border:none;background:rgba(0,0,0,.05);color:var(--ink3);cursor:pointer;white-space:nowrap;transition:all .18s;}
+.ntab.on{background:var(--ink);color:#fff;}
+.notes-body{flex:1;overflow-y:auto;padding:16px 20px;-webkit-overflow-scrolling:touch;}
+.notes-body::-webkit-scrollbar{width:3px;}
+.notes-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px;}
+.n-section{margin-bottom:18px;}
+.n-stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.n-item{font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:400;line-height:1.55;color:var(--ink2);padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.07);}
+.n-item:last-child{border-bottom:none;}
+.n-item strong{color:var(--ink);font-weight:600;}
+
+/* ─── INTERSTITIAL ─── */
+.inter-ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;}
+.inter-ov.show{opacity:1;}
+.inter-card{width:min(460px,92vw);height:min(530px,79vh);background:#ffffff;border-radius:22px;box-shadow:0 2px 0 rgba(255,255,255,.9) inset,4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;position:relative;opacity:0;transform:translateY(20px) scale(.97);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
 .inter-ov.show .inter-card{opacity:1;transform:none;}
-.inter-flag{position:absolute;top:-2px;left:1.4rem;z-index:10;}
-.inter-flag-body{padding:.55rem .75rem .45rem;display:flex;align-items:center;justify-content:center;position:relative;}
-.inter-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;
-  clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
-.inter-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;color:#fff;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
-.inter-body{flex:1;min-height:0;padding:3.8rem 1.8rem 1.2rem;display:flex;flex-direction:column;justify-content:center;gap:.7rem;}
-.inter-kicker{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);}
-.inter-big{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.6rem,9vw,4rem);font-weight:900;line-height:.9;letter-spacing:.01em;color:var(--ink);}
+.inter-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.inter-flag-body{padding:10px 14px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
+.inter-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.inter-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+.inter-body{flex:1;min-height:0;padding:58px 28px 20px;display:flex;flex-direction:column;justify-content:center;gap:14px;}
+.inter-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);}
+.inter-big{font-family:'Barlow Condensed',sans-serif;font-size:clamp(38px,7vw,58px);font-weight:900;line-height:.9;letter-spacing:1px;color:var(--ink);}
 .inter-big em{font-style:normal;color:var(--inter-accent,var(--red));}
-.inter-sub{font-family:'Instrument Sans',sans-serif;font-size:clamp(1.02rem,2.8vw,1.18rem);font-weight:400;line-height:1.58;color:var(--ink2);}
+.inter-sub{font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:400;line-height:1.55;color:var(--ink2);}
 .inter-sub strong{color:var(--ink);font-weight:600;}
 .inter-bottom{height:5px;flex-shrink:0;}
 
-/* ═══ INTRO PAIRS OVERLAY ═══ */
-.ov{position:fixed;inset:0;z-index:200;background:rgba(240,239,236,0.94);backdrop-filter:blur(20px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;}
-.ov.show{opacity:1;pointer-events:none;}
-.ob{width:min(420px,92vw);height:min(520px,82vh);background:var(--card);border-radius:1.4rem;
-  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 22px 55px rgba(0,0,0,.18),0 4px 12px rgba(0,0,0,.1);
-  overflow:hidden;display:flex;flex-direction:column;
-  opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
+/* ─── INTRO PAIRS OVERLAY ─── */
+.ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.ov.show{opacity:1;}
+.ob{width:min(460px,92vw);height:min(530px,79vh);background:#ffffff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
 .ov.show .ob{opacity:1;transform:none;}
 .ob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
-.ob-flag{position:absolute;top:-2px;left:1.4rem;min-width:72px;z-index:10;}
-.ob-flag-body{min-width:72px;padding:.45rem .6rem .3rem;background:var(--c-intro);display:flex;align-items:center;justify-content:center;position:relative;}
-.ob-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:var(--c-intro);
-  clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
-.ob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:1.75rem;font-weight:900;color:#fff;line-height:1;white-space:nowrap;}
-.ob-pair-lbl{position:absolute;top:1rem;right:1.3rem;font-family:'DM Mono',monospace;font-size:.3rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);}
-.ob-body{flex:1;min-height:0;padding:3.4rem 1.7rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0;overflow:hidden;}
-.ob-hlbl{font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.2em;text-transform:uppercase;color:var(--c-intro);margin-bottom:.3rem;flex-shrink:0;}
-.ob-rl{display:none;}
-.ob-starter{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.2rem,8.5vw,3.2rem);font-weight:900;line-height:.9;letter-spacing:.02em;color:var(--ink);flex-shrink:0;}
-.ob-rest{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:clamp(.95rem,2.5vw,1.08rem);line-height:1.55;color:var(--ink2);margin-top:.4rem;flex-shrink:0;
-  opacity:0;transform:translateY(6px);transition:opacity .34s .46s,transform .4s .46s cubic-bezier(.22,1,.36,1);}
+.ob-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.ob-flag-body{padding:9px 14px 8px;background:var(--c-intro);display:flex;align-items:center;justify-content:center;position:relative;}
+.ob-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:var(--c-intro);clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.ob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#fff;line-height:1.1;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;}
+.ob-pair-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+.ob-body{flex:1;min-height:0;padding:52px 28px 14px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+.ob-hlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:8px;flex-shrink:0;}
+.ob-starter{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,6.5vw,48px);font-weight:900;line-height:.9;letter-spacing:1px;color:var(--ink);flex-shrink:0;}
+.ob-link{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:15px;line-height:1.52;color:var(--ink2);margin-top:10px;flex-shrink:0;opacity:0;transform:translateY(4px);transition:opacity .34s .3s,transform .4s .3s cubic-bezier(.22,1,.36,1);}
+.ov.show .ob:not(.exit) .ob-link{opacity:1;transform:none;}
+.ob-rest{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:15px;line-height:1.52;color:var(--ink2);margin-top:10px;flex-shrink:0;opacity:0;transform:translateY(6px);transition:opacity .34s .46s,transform .4s .46s cubic-bezier(.22,1,.36,1);}
 .ov.show .ob:not(.exit) .ob-rest{opacity:1;transform:none;}
-/* connector arrow between hook and thesis */
-.ob-sep{margin:.8rem 0;display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+.ob-sep{margin:14px 0;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .ob-sep::before{content:'';flex:1;height:1px;background:rgba(0,0,0,.08);}
-.ob-sep::after{content:'↓';font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:900;color:var(--c-intro);flex-shrink:0;line-height:1;}
-.ob-thesis{flex-shrink:0;display:flex;flex-direction:column;}
-.ob-tlbl{font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.2em;text-transform:uppercase;color:var(--c-intro);margin-bottom:.3rem;flex-shrink:0;
-  opacity:0;transform:translateY(4px);transition:opacity .28s .5s,transform .32s .5s;}
+.ob-sep::after{content:'↓';font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--c-intro);flex-shrink:0;line-height:1;}
+.ob-thesis{flex-shrink:0;}
+.ob-tlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:8px;flex-shrink:0;opacity:0;transform:translateY(4px);transition:opacity .28s .5s,transform .32s .5s;}
 .ov.show .ob:not(.exit) .ob-tlbl{opacity:1;transform:none;}
-.ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:clamp(.95rem,2.5vw,1.08rem);line-height:1.55;color:var(--ink2);
-  opacity:0;transform:translateY(8px);transition:opacity .36s .58s,transform .42s .58s cubic-bezier(.22,1,.36,1);}
+.ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;line-height:1.52;color:var(--ink2);opacity:0;transform:translateY(8px);transition:opacity .36s .58s,transform .42s .58s cubic-bezier(.22,1,.36,1);}
 .ob-tt strong{color:var(--c-intro);font-weight:700;}
 .ov.show .ob:not(.exit) .ob-tt{opacity:1;transform:none;}
-.ob-foot{display:flex;align-items:center;justify-content:space-between;padding:.38rem 1.4rem .5rem 1.7rem;flex-shrink:0;}
-.ob-fl{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);}
-.ob-wave{display:flex;align-items:flex-end;gap:2.5px;height:13px;}
+.ob-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 26px 12px 28px;flex-shrink:0;}
+.ob-fl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+.ob-stop{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;border:1.5px solid rgba(201,20,15,.3);
+  background:rgba(201,20,15,.07);color:var(--red);cursor:pointer;
+  transition:all .18s;
+}
+.ob-stop:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.ob-wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
 .ob-wb{width:3px;border-radius:2px;background:var(--c-intro);}
 .ob-wb:nth-child(1){height:30%}.ob-wb:nth-child(2){height:65%}.ob-wb:nth-child(3){height:100%}.ob-wb:nth-child(4){height:60%}.ob-wb:nth-child(5){height:30%}
 .ob-wave.on .ob-wb{animation:wv2 .9s ease-in-out infinite;}
 .ob-wb:nth-child(1){animation-delay:.00s}.ob-wb:nth-child(2){animation-delay:.07s}.ob-wb:nth-child(3){animation-delay:.14s}.ob-wb:nth-child(4){animation-delay:.09s}.ob-wb:nth-child(5){animation-delay:.03s}
 @keyframes wv2{0%,100%{transform:scaleY(.2);opacity:.18}50%{transform:scaleY(1);opacity:1}}
-.ob-bottom{height:4px;background:var(--c-intro);flex-shrink:0;}
-.ob-dots{display:flex;gap:6px;margin-top:.5rem;}
-.bdot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.14);transition:all .3s cubic-bezier(.22,1,.36,1);}
+.ob-bottom{height:5px;background:var(--c-intro);flex-shrink:0;}
+.ob-dots{display:flex;gap:7px;margin-top:10px;}
+.bdot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.14);transition:all .3s cubic-bezier(.22,1,.36,1);}
 .bdot.active{transform:scale(1.8);background:var(--ink);}
 .bdot.done{background:rgba(0,0,0,.3);}
 
-/* TIPS PANEL */
-.tips-panel{position:fixed;inset:0;z-index:590;background:rgba(240,239,236,0.95);backdrop-filter:blur(22px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;}
-.tips-panel.show{opacity:1;pointer-events:all;}
-.tips-card{width:min(420px,96vw);height:min(600px,90vh);background:var(--card);border-radius:1.4rem;border:1px solid rgba(0,0,0,.06);
-  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;
-  opacity:0;transform:translateX(36px) scale(.96);transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);}
-.tips-panel.show .tips-card{opacity:1;transform:none;}
-.tips-top{height:4px;background:var(--ink);flex-shrink:0;}
-.tips-header{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
-.tips-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;letter-spacing:.08em;color:var(--ink);}
-.tips-close{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;transition:all .18s;}
-.tips-close:hover{background:rgba(0,0,0,.12);}
-.tips-tabs{display:flex;gap:.25rem;padding:.38rem 1rem .3rem;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
-.tips-tabs::-webkit-scrollbar{display:none;}
-.tips-tab{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border);cursor:pointer;white-space:nowrap;transition:all .18s;}
-.tips-tab.on{background:var(--ink);color:#fff;border-color:var(--ink);}
-.tips-body{flex:1;overflow-y:auto;padding:.65rem 1rem;-webkit-overflow-scrolling:touch;}
-.tips-body::-webkit-scrollbar{width:3px;}
-.tips-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px;}
-.t-section{margin-bottom:.75rem;}
-.t-stitle{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.32rem;}
-.t-item{font-family:'Instrument Sans',sans-serif;font-size:clamp(.78rem,2.1vw,.92rem);font-weight:400;line-height:1.55;color:var(--ink2);padding:.24rem 0;border-bottom:1px dashed rgba(0,0,0,.06);}
-.t-item:last-child{border-bottom:none;}
-.t-item strong{color:var(--ink);font-weight:600;}
-
+/* misc */
 .flash{position:fixed;inset:0;z-index:900;pointer-events:none;opacity:0;transition:opacity .08s;background:var(--red);}
 .flash.pop{opacity:.04;transition:opacity 0s;}
-.fem{position:fixed;pointer-events:none;z-index:800;font-size:clamp(.9rem,3vw,1.2rem);animation:femUp 2s ease-out forwards;}
+.fem{position:fixed;pointer-events:none;z-index:800;font-size:20px;animation:femUp 2s ease-out forwards;}
 @keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-10px) scale(1.1);}80%{opacity:.8;transform:translateY(-90px);}100%{opacity:0;transform:translateY(-130px);}}
+.swipe-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);animation:ph 2.5s ease-in-out infinite;pointer-events:none;white-space:nowrap;}
+@keyframes ph{0%,100%{opacity:.14}50%{opacity:.3}}
 
-.swipe-hint{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);animation:ph 2.5s ease-in-out infinite;pointer-events:none;white-space:nowrap;}
-@keyframes ph{0%,100%{opacity:.14}50%{opacity:.32}}
-
-.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.6rem;pointer-events:none;opacity:0;}
-.scene.active{opacity:1;pointer-events:all;}
-
-@media(max-width:480px){
-  .flag-num{font-size:.82rem!important;}
-  .s-line,.s-line.first{font-size:clamp(.88rem,4.2vw,1rem)!important;}
-  .build-step{font-size:clamp(1rem,4.2vw,1.15rem)!important;}
+/* ─── BODY PARAGRAPH INFOGRAPHIC ─── */
+.bp-infographic{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  flex-shrink:0;
 }
-@media(max-height:580px){
-  .s-line{font-size:clamp(.82rem,2vw,.92rem)!important;}
+
+.bp-two-box{
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.bp-main-box{
+  flex:1;
+  border-radius:12px;
+  padding:10px 10px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.bp-main-claim{
+  background:#111111;
+  flex:0 0 42%;
+}
+.bp-main-support{
+  background:rgba(0,0,0,0.06);
+  border:1.5px solid rgba(0,0,0,0.08);
+  flex:1;
+}
+
+.bp-main-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:900;letter-spacing:2px;
+  text-transform:uppercase;line-height:1;
+  margin-bottom:2px;
+}
+.bp-main-claim .bp-main-title{color:#fff;}
+.bp-main-support .bp-main-title{color:var(--ink);}
+
+.bp-sub-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+
+.bp-sub-btn{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 8px;border-radius:20px;border:none;cursor:pointer;
+  transition:all .18s;
+  white-space:nowrap;
+}
+.bp-main-claim .bp-sub-btn{
+  background:rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.75);
+}
+.bp-main-claim .bp-sub-btn:hover{background:rgba(255,255,255,0.22);color:#fff;}
+.bp-main-claim .bp-sub-btn.active{background:var(--red);color:#fff;}
+
+.bp-main-support .bp-sub-btn{
+  background:rgba(28,28,30,0.07);
+  color:var(--ink3);
+}
+.bp-main-support .bp-sub-btn:hover{background:rgba(0,0,0,0.13);color:var(--ink);}
+.bp-main-support .bp-sub-btn.active{background:#111;color:#fff;}
+
+/* STANCE SPECTRUM */
+.bp-spectrum-bar{margin:0 0 8px;display:flex;align-items:center;}
+.bp-spectrum-track{flex:1;height:3px;border-radius:2px;background:linear-gradient(to right,#4a9fd4,#8a7fbf,#c9140f);}
+
+.bp-stance-card{
+  border-radius:8px;padding:7px 8px;margin-bottom:5px;
+  border:1.5px solid rgba(255,255,255,0.15);
+  cursor:pointer;transition:all .18s;
+  background:rgba(255,255,255,0.06);
+}
+.bp-stance-card:hover{background:rgba(255,255,255,0.12);}
+.bp-stance-card.active{background:rgba(255,255,255,0.14);border-width:2px;}
+.bp-stance-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:900;letter-spacing:2px;
+  line-height:1;margin-bottom:2px;
+}
+.bp-stance-sub{
+  font-family:'DM Mono',monospace;font-size:7.5px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);margin-bottom:4px;
+}
+.bp-stance-phrases{display:flex;flex-direction:column;gap:1px;}
+.bp-stance-phrases span{
+  font-family:'Instrument Sans',sans-serif;
+  font-size:9.5px;color:rgba(255,255,255,0.7);
+  line-height:1.4;
+}
+
+
+  flex-shrink:0;
+  margin:10px 0 0;
+  padding:10px 12px;
+  background:rgba(0,0,0,0.04);
+  border-radius:10px;
+  border-left:3px solid var(--red);
+  min-height:44px;
+  display:flex;align-items:flex-start;gap:8px;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .28s,transform .32s cubic-bezier(.22,1,.36,1);
+}
+.bp-example-box.show{opacity:1;transform:none;}
+.bp-ex-role{
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--red);
+  white-space:nowrap;padding-top:2px;flex-shrink:0;
+}
+.bp-example-box span:last-child{
+  font-family:'Instrument Sans',sans-serif;
+  font-size:13px;line-height:1.5;color:var(--ink);
+}
+
+@media(max-width:400px){
+  .tab-btn{font-size:9px;padding:7px 10px;}
+  .flag-num{font-size:13px!important;}
+  .bp-strat-letter{font-size:16px;}
+  .bp-cell-letter{font-size:18px;}
+}
+@media(max-height:600px){
+  .poster{height:min(440px,72vh);}
 }
 </style>
 </head>
 <body>
 <div class="shell">
-  <div>
-    <div class="topbar">
-      <div class="logo">ESSAY<span>_</span>DROP</div>
-      <div class="spacer"></div>
-      <button class="tips-btn" id="tipsBtn" onclick="toggleTips()">💡 Exam Tips</button>
-      <div class="tbctr" id="ctr">1 / 6</div>
-    </div>
-    <div class="pbar-row" id="pbar"></div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">ESSAY<span>_</span>DROP</div>
+    <div class="spacer"></div>
+    <div class="tbctr" id="ctr">1 / 6</div>
   </div>
 
+  <!-- STAGE -->
   <div class="stage" id="stage">
 
-    <!-- SCENE 0: BLUEPRINT POSTER — HOW TO WRITE AN ESSAY -->
+    <!-- SCENE 0: BLUEPRINT -->
     <div class="scene active" id="sc0">
-      <div class="poster" id="po0">
-
-        <!-- Flag -->
-        <div class="flag">
-          <div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div>
-        </div>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
         <div class="section-lbl" style="color:var(--red)">B2 WRITING</div>
-
-        <!-- Hero headline -->
-        <div style="padding:3.6rem 1.6rem .4rem 1.7rem;flex-shrink:0;">
-          <div style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);margin-bottom:.3rem;">TODAY'S LESSON</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,8.5vw,2.9rem);font-weight:900;line-height:.9;letter-spacing:.02em;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
-          <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-top:.4rem;">
-            <span style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.08em;padding:.1rem .4rem;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">Opinion Essay</span>
-            <span style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.08em;padding:.1rem .4rem;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">140–190 words</span>
-            <span style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.08em;padding:.1rem .4rem;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">5 paragraphs</span>
+        <div style="padding:54px 26px 6px 28px;flex-shrink:0;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;">TODAY'S LESSON</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,6vw,44px);font-weight:900;line-height:.9;letter-spacing:1px;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">Opinion Essay</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">140–190 words</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">5 paragraphs</span>
           </div>
         </div>
-
-        <!-- 5-paragraph rows — pure minimal -->
-        <div style="flex:1;min-height:0;padding:.1rem 1.7rem .2rem;display:flex;flex-direction:column;justify-content:center;gap:.55rem;overflow:hidden;">
-
-          <div style="display:flex;align-items:baseline;gap:.7rem;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:#3d9e95;letter-spacing:.06em;min-width:1.4rem;">P1</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.05em;color:var(--ink);line-height:1.1;">INTRODUCTION</div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--ink3);margin-top:.06rem;">Hook + Thesis statement</div>
-            </div>
+        <div style="flex:1;min-height:0;padding:4px 28px 4px;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden;">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;letter-spacing:1px;min-width:26px;">P1</div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">INTRODUCTION</div>
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Hook + Thesis statement</div></div>
           </div>
-
-          <div style="display:flex;align-items:baseline;gap:.7rem;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:var(--red);letter-spacing:.06em;min-width:1.4rem;">P2</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.05em;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 1</div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--ink3);margin-top:.06rem;">Claim → Reason → Example → Result</div>
-            </div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);letter-spacing:1px;min-width:26px;">P2</div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 1</div>
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Claim → Reason → Example → Result</div></div>
           </div>
-
-          <div style="display:flex;align-items:baseline;gap:.7rem;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:var(--red);letter-spacing:.06em;min-width:1.4rem;">P3</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.05em;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 2</div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--ink3);margin-top:.06rem;">Claim → Reason → Example → Result</div>
-            </div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);letter-spacing:1px;min-width:26px;">P3</div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 2</div>
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Claim → Reason → Example → Result</div></div>
           </div>
-
-          <div style="display:flex;align-items:baseline;gap:.7rem;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:#7b5ea7;letter-spacing:.06em;min-width:1.4rem;">P4</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.05em;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 3 <span style="color:#7b5ea7;font-weight:700;font-size:.8rem;">★ own idea</span></div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--ink3);margin-top:.06rem;">Your original point — required for full marks</div>
-            </div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#7b5ea7;letter-spacing:1px;min-width:26px;">P4</div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">BODY PARAGRAPH 3 <span style="color:#7b5ea7;font-size:13px;">★ own idea</span></div>
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Your original point — required for full marks</div></div>
           </div>
-
-          <div style="display:flex;align-items:baseline;gap:.7rem;flex-shrink:0;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:900;color:#2d7a3a;letter-spacing:.06em;min-width:1.4rem;">P5</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.05em;color:var(--ink);line-height:1.1;">CONCLUSION</div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--ink3);margin-top:.06rem;">Restate opinion · No new ideas</div>
-            </div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2d7a3a;letter-spacing:1px;min-width:26px;">P5</div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1px;color:var(--ink);line-height:1.1;">CONCLUSION</div>
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--ink3);margin-top:2px;">Restate opinion · No new ideas</div></div>
           </div>
-
         </div>
-
-        <!-- Wave footer -->
-        <div class="card-foot">
-          <div class="wave off" id="w0">
-            <div class="wb" style="background:var(--red)"></div><div class="wb" style="background:var(--red)"></div>
-            <div class="wb" style="background:var(--red)"></div><div class="wb" style="background:var(--red)"></div>
-            <div class="wb" style="background:var(--red)"></div><div class="wb" style="background:var(--red)"></div>
-            <div class="wb" style="background:var(--red)"></div>
-          </div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()" disabled>‹</button>
+          <div class="dots" id="dots0"></div>
+          <button class="card-arrow" onclick="nextScene()">›</button>
         </div>
         <div class="accent-bar" style="background:var(--red)"></div>
-
       </div>
-      <div class="swipe-hint">tap ▶ START to begin the lesson</div>
+      <div class="swipe-hint">tap ▶ to begin</div>
     </div>
 
     <!-- SCENE 1: QUESTION -->
     <div class="scene" id="sc1">
-      <div class="poster" id="po1">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">INTRO</span></div></div>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">INTRODUCTION</span></div></div>
         <div class="section-lbl" style="color:var(--c-b1)">THE QUESTION</div>
-
-        <!-- Poster-style layout: fills full card height -->
-        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:3.6rem 1.7rem .4rem;">
-
-          <!-- Kicker -->
-          <div style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);margin-bottom:.55rem;flex-shrink:0;">📱 Today's essay question</div>
-
-          <!-- Giant question — fills the space -->
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,8.5vw,3rem);font-weight:900;line-height:.95;letter-spacing:.01em;color:var(--ink);flex-shrink:0;">
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 28px 10px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;flex-shrink:0;">📱 Today's essay question</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.95;letter-spacing:1px;color:var(--ink);flex-shrink:0;">
             Should the use of phones be <span style="color:var(--red);">limited</span> for young people?
           </div>
-
-          <!-- Spacer pushes bottom content down -->
           <div style="flex:1;"></div>
-
-          <!-- One-line prompt -->
-          <div style="font-family:'Instrument Sans',sans-serif;font-size:clamp(1rem,2.8vw,1.12rem);font-weight:400;line-height:1.5;color:var(--ink2);margin-bottom:.9rem;flex-shrink:0;">
+          <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:400;line-height:1.5;color:var(--ink2);margin-bottom:18px;flex-shrink:0;">
             What do <strong style="color:var(--ink);">you</strong> think? Pick your side.
           </div>
-
-          <!-- Three stance blocks — clean, no inner boxes -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;flex-shrink:0;margin-bottom:.5rem;">
-            <div style="text-align:center;padding:.55rem .3rem;border-top:2px solid #16a34a;">
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#16a34a;line-height:1;">YES</div>
-              <div style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.06em;color:var(--ink3);margin-top:.1rem;">limit them</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex-shrink:0;margin-bottom:12px;">
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;line-height:1;">YES</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--ink3);margin-top:3px;">limit them</div>
             </div>
-            <div style="text-align:center;padding:.55rem .3rem;border-top:2px solid var(--ink3);">
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:var(--ink2);line-height:1;">MAYBE</div>
-              <div style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.06em;color:var(--ink3);margin-top:.1rem;">it depends</div>
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--ink3);">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--ink2);line-height:1;">MAYBE</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--ink3);margin-top:3px;">it depends</div>
             </div>
-            <div style="text-align:center;padding:.55rem .3rem;border-top:2px solid var(--red);">
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:var(--red);line-height:1;">NO</div>
-              <div style="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.06em;color:var(--ink3);margin-top:.1rem;">let them</div>
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--red);">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--red);line-height:1;">NO</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--ink3);margin-top:3px;">let them</div>
             </div>
           </div>
-
         </div>
-
-        <div class="card-foot"><div class="wave off" id="w1">
-          <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-        </div></div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()">‹</button>
+          <div class="dots" id="dots1"></div>
+          <button class="card-arrow" onclick="nextScene()">›</button>
+        </div>
         <div class="accent-bar" style="background:var(--c-b1)"></div>
       </div>
     </div>
 
-    <!-- SCENE 2: BODY P1 -->
+    <!-- SCENE 2 -->
     <div class="scene" id="sc2">
-      <div class="poster" id="po2">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">BODY PARA 1</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b1)">BODY PARAGRAPH 1</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 2 · Academic performance</div>
-          <div class="sentence-scroll" id="stk2"></div>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-b1)"><span class="flag-num">BODY PARAGRAPH 1</span></div></div>
+        <div class="section-lbl" style="color:var(--c-b1)">BODY P1</div>
+        <div class="card-body" style="padding:54px 14px 4px 14px;">
+          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 2 · Build your argument</div>
+          <div class="bp-infographic" id="bpGrid2"></div>
+          <div class="bp-example-box" id="bpEx2"><span class="bp-ex-role" id="bpExRole2"></span><span id="bpExText2"></span></div>
         </div>
-        <div class="card-foot"><div class="wave off" id="w2">
-          <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-        </div></div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()">‹</button>
+          <div class="dots" id="dots2"></div>
+          <button class="card-arrow" onclick="nextScene()">›</button>
+        </div>
         <div class="accent-bar" style="background:var(--c-b1)"></div>
       </div>
     </div>
 
-    <!-- SCENE 3: BODY P2 -->
+    <!-- SCENE 3 -->
     <div class="scene" id="sc3">
-      <div class="poster" id="po3">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b2)"><span class="flag-num">BODY PARA 2</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b2)">BODY PARAGRAPH 2</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 3 · Mental health &amp; sleep</div>
-          <div class="sentence-scroll" id="stk3"></div>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-b2)"><span class="flag-num">BODY PARAGRAPH 2</span></div></div>
+        <div class="section-lbl" style="color:var(--c-b2)">BODY P2</div>
+        <div class="card-body" style="padding:54px 14px 4px 14px;">
+          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 3 · Build your argument</div>
+          <div class="bp-infographic" id="bpGrid3"></div>
+          <div class="bp-example-box" id="bpEx3"><span class="bp-ex-role" id="bpExRole3"></span><span id="bpExText3"></span></div>
         </div>
-        <div class="card-foot"><div class="wave off" id="w3">
-          <div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div>
-        </div></div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()">‹</button>
+          <div class="dots" id="dots3"></div>
+          <button class="card-arrow" onclick="nextScene()">›</button>
+        </div>
         <div class="accent-bar" style="background:var(--c-b2)"></div>
       </div>
     </div>
 
-    <!-- SCENE 4: BODY P3 -->
+    <!-- SCENE 4 -->
     <div class="scene" id="sc4">
-      <div class="poster" id="po4">
-        <div class="flag"><div class="flag-body" style="background:var(--c-b3)"><span class="flag-num">BODY PARA 3</span></div></div>
-        <div class="section-lbl" style="color:var(--c-b3)">BODY PARAGRAPH 3</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 4 · Your own idea</div>
-          <div class="sentence-scroll" id="stk4"></div>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-b3)"><span class="flag-num">BODY PARAGRAPH 3</span></div></div>
+        <div class="section-lbl" style="color:var(--c-b3)">BODY P3</div>
+        <div class="card-body" style="padding:54px 14px 4px 14px;">
+          <div class="card-heading" style="padding:0 4px;margin-bottom:8px;">Paragraph 4 · Your own idea</div>
+          <div class="bp-infographic" id="bpGrid4"></div>
+          <div class="bp-example-box" id="bpEx4"><span class="bp-ex-role" id="bpExRole4"></span><span id="bpExText4"></span></div>
         </div>
-        <div class="card-foot"><div class="wave off" id="w4">
-          <div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div>
-        </div></div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()">‹</button>
+          <div class="dots" id="dots4"></div>
+          <button class="card-arrow" onclick="nextScene()">›</button>
+        </div>
         <div class="accent-bar" style="background:var(--c-b3)"></div>
       </div>
     </div>
 
-    <!-- SCENE 5: CONCLUSION -->
+    <!-- SCENE 5 -->
     <div class="scene" id="sc5">
-      <div class="poster" id="po5">
+      <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
         <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
         <div class="card-body">
           <div class="card-heading">Paragraph 5 · Conclusion</div>
           <div class="sentence-scroll" id="stk5"></div>
         </div>
-        <div class="card-foot"><div class="wave off" id="w5">
-          <div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div>
-        </div></div>
+        <div class="card-dots-row">
+          <button class="card-arrow" onclick="prevScene()">‹</button>
+          <div class="dots" id="dots5"></div>
+          <button class="card-arrow" onclick="nextScene()" disabled>›</button>
+        </div>
         <div class="accent-bar" style="background:var(--c-conc)"></div>
       </div>
     </div>
 
   </div><!-- /stage -->
 
-  <div class="controls">
-    <button class="btn-nav" id="btnPrev" onclick="prevScene()">‹</button>
-    <button class="btn-main" id="btnMain" onclick="handleMain()">▶  START</button>
-    <button class="btn-nav" id="btnNext" onclick="nextScene()">›</button>
-  </div>
-</div>
-  </div>
-<!-- ═══ INTERSTITIAL OVERLAY ═══ -->
-<div class="inter-ov" id="interOv">
-  <div class="inter-card" id="interCard" style="position:relative;">
-    <div class="inter-flag" id="interFlag">
-      <div class="inter-flag-body" id="interFlagBody">
-        <span class="inter-flag-num" id="interFlagNum"></span>
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <!-- TikTok-style playback -->
+    <div class="playback-row">
+      <div class="wave off" id="wL"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+      <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
+      <button class="btn-play" id="btnPlay" onclick="handlePlay()">▶</button>
+      <button class="btn-nav" id="btnNext" onclick="nextScene()">›</button>
+      <div class="wave off" id="wR"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+    </div>
+    <!-- Pill tab bar -->
+    <div class="tab-bar-wrap">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="intro" onclick="jumpTab('intro')">INTRODUCTION</button>
+        <button class="tab-btn" data-tab="body" onclick="jumpTab('body')">BODY</button>
+        <button class="tab-btn" data-tab="conc" onclick="jumpTab('conc')">CONCLUSION</button>
+        <button class="tab-btn" data-tab="notes" onclick="jumpTab('notes')">USEFUL NOTES</button>
       </div>
     </div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- INTERSTITIAL -->
+<div class="inter-ov" id="interOv">
+  <div class="inter-card">
+    <div class="inter-flag"><div class="inter-flag-body" id="interFlagBody"><span class="inter-flag-num" id="interFlagNum"></span></div></div>
     <div class="inter-body">
       <div class="inter-kicker" id="interKicker"></div>
       <div class="inter-big" id="interBig"></div>
@@ -494,15 +629,16 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   </div>
 </div>
 
-<!-- ═══ INTRO PAIRS OVERLAY ═══ -->
+<!-- INTRO PAIRS -->
 <div class="ov" id="ov">
   <div class="ob" id="ob">
-    <div class="ob-flag"><div class="ob-flag-body"><span class="ob-flag-num">🪝</span></div></div>
+    <div class="ob-flag"><div class="ob-flag-body"><span class="ob-flag-num">INTRODUCTION</span></div></div>
     <div class="ob-pair-lbl" id="obNum">1 / 5</div>
     <div class="ob-body">
       <div class="ob-hlbl">🪝 HOOK</div>
       <div class="ob-starter" id="obS"></div>
       <div class="ob-rest" id="obR"></div>
+      <div class="ob-link" id="obL"></div>
       <div class="ob-sep"></div>
       <div class="ob-thesis">
         <div class="ob-tlbl">📌 THESIS</div>
@@ -511,6 +647,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     </div>
     <div class="ob-foot">
       <div class="ob-fl" id="obFL">pair 1 of 5</div>
+      <button class="ob-stop" onclick="hardStop();updateNavBtns()">&#9632; STOP</button>
       <div class="ob-wave" id="obW"><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div></div>
     </div>
     <div class="ob-bottom"></div>
@@ -518,46 +655,29 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   <div class="ob-dots" id="obDots"></div>
 </div>
 
-<!-- ═══ TIPS PANEL ═══ -->
-<div class="tips-panel" id="tipsPanel">
-  <div class="tips-card">
-    <div class="tips-top"></div>
-    <div class="tips-header">
-      <div class="tips-title">💡 EXAM TIPS</div>
-      <div class="tips-close" onclick="closeTips()">✕ Close</div>
+<!-- USEFUL NOTES PANEL -->
+<div class="notes-panel" id="notesPanel">
+  <div class="notes-card">
+    <div class="notes-top"></div>
+    <div class="notes-header">
+      <div class="notes-title">📋 USEFUL NOTES</div>
+      <button class="notes-close" onclick="closeNotes()">✕ Close</button>
     </div>
-    <div class="tips-tabs" id="tipsTabs">
-      <div class="tips-tab on" data-tab="descriptors" onclick="switchTipsTab('descriptors')">📋 Descriptors</div>
-      <div class="tips-tab" data-tab="linking" onclick="switchTipsTab('linking')">🔗 Linking</div>
-      <div class="tips-tab" data-tab="planning" onclick="switchTipsTab('planning')">📝 Planning</div>
-      <div class="tips-tab" data-tab="wordlimit" onclick="switchTipsTab('wordlimit')">🔢 Word Limit</div>
+    <div class="notes-tabs">
+      <button class="ntab on" data-ntab="descriptors" onclick="switchNtab('descriptors')">📋 Descriptors</button>
+      <button class="ntab" data-ntab="linking" onclick="switchNtab('linking')">🔗 Linking</button>
+      <button class="ntab" data-ntab="planning" onclick="switchNtab('planning')">📝 Planning</button>
+      <button class="ntab" data-ntab="wordlimit" onclick="switchNtab('wordlimit')">🔢 Word Limit</button>
     </div>
-    <div class="tips-body" id="tipsBody"></div>
+    <div class="notes-body" id="notesBody"></div>
   </div>
 </div>
 
 <div class="flash" id="flash"></div>
 
 <script>
-
-/* ═══ INTERSTITIAL ═══ */
-function showInter(flag, flagColor, kicker, big, sub, accentColor){
-  const ov=document.getElementById('interOv');
-  document.getElementById('interFlagBody').style.background=flagColor;
-  document.getElementById('interFlagNum').textContent=flag;
-  document.getElementById('interKicker').textContent=kicker;
-  document.getElementById('interBig').innerHTML=big;
-  document.getElementById('interSub').innerHTML=sub;
-  document.getElementById('interBottom').style.background=flagColor;
-  document.getElementById('interCard').style.setProperty('--inter-accent', accentColor||flagColor);
-  ov.classList.add('show');
-}
-function hideInter(){
-  document.getElementById('interOv').classList.remove('show');
-}
-
-/* ═══ TIPS ═══ */
-const TIPS={
+/* ═══ DATA ═══ */
+const NOTES_DATA={
   descriptors:[
     {title:'Content (25%)',items:['<strong>Answer the question directly.</strong> Include both given ideas plus your own third idea.','Each point must be developed — not just stated.','Missing the third idea = automatic loss of marks.']},
     {title:'Communicative Achievement (25%)',items:['<strong>Formal register throughout.</strong> No contractions, no slang.','Every claim needs a reason or example.','Never "I think" — use "In my opinion" or "It seems to me that".']},
@@ -575,7 +695,7 @@ const TIPS={
   ],
   planning:[
     {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Write 3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
-    {title:'The CRER body pattern',items:['<strong>CLAIM</strong> — state your point with a listing marker + viewpoint phrase.','<strong>REASON</strong> — explain why: "This is because…"','<strong>EXAMPLE</strong> — give evidence: "For instance…"','<strong>RESULT</strong> — state the consequence: "As a result…"','B2 minimum: at least 3 development sentences after the claim.']},
+    {title:'The CRER body pattern',items:['<strong>CLAIM</strong> — state your point with a listing marker + viewpoint phrase.','<strong>REASON</strong> — explain why: "This is because…"','<strong>EXAMPLE</strong> — give evidence: "For instance…"','<strong>RESULT</strong> — state the consequence: "As a result…"']},
     {title:'Common mistakes',items:['Never start writing without knowing what P4 will be.','Do not copy the question — rephrase everything.','Plan your linking words — one different word per paragraph.']}
   ],
   wordlimit:[
@@ -583,276 +703,759 @@ const TIPS={
     {title:'Quick fixes if too short',items:['Add a result sentence to each body paragraph.','Expand your example — name a place, study, or statistic.','Add a concession in P4: "While some argue that… I believe…"']}
   ]
 };
-let activeTipsTab='descriptors';
-function renderTips(tab){const body=document.getElementById('tipsBody');const secs=TIPS[tab]||[];let h='';secs.forEach(s=>{h+=`<div class="t-section"><div class="t-stitle">${s.title}</div>`;s.items.forEach(it=>{h+=`<div class="t-item">${it}</div>`;});h+='</div>';});body.innerHTML=h;}
-function switchTipsTab(t){activeTipsTab=t;document.querySelectorAll('.tips-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));renderTips(t);}
-function toggleTips(){const p=document.getElementById('tipsPanel'),b=document.getElementById('tipsBtn'),s=p.classList.contains('show');if(!s){renderTips(activeTipsTab);p.classList.add('show');b.classList.add('active');}else{p.classList.remove('show');b.classList.remove('active');}}
-function closeTips(){document.getElementById('tipsPanel').classList.remove('show');document.getElementById('tipsBtn').classList.remove('active');}
-
-/* ═══ ESSAY DATA ═══ */
-const SC1_NARR="Here is today's essay question. Should the use of phones be limited for young people? What do you think? By the end of this lesson, you will know exactly how to argue it — sentence by sentence.";
 
 const PAIRS=[
-  {s:'Nowadays,',r:'smartphones are used by millions of young people around the world every single day.',f:'Nowadays, smartphones are used by millions of young people around the world every single day.',t:'This essay will discuss the main <strong>advantages and disadvantages</strong> of limiting smartphone use.',tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use.'},
-  {s:'In recent years,',r:'there has been a growing debate about whether young people should have unlimited access to their phones.',f:'In recent years, there has been a growing debate about whether young people should have unlimited access to their phones.',t:'In this essay, I will examine <strong>both sides of the argument</strong> before giving my personal opinion.',tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.'},
-  {s:'It is widely believed that',r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',f:'It is widely believed that smartphone use has fundamentally changed the way young people learn, communicate and relax.',t:'Therefore, it is essential to discuss <strong>the benefits and drawbacks</strong> of restricting these devices.',tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting these devices.'},
-  {s:'Many people argue that',r:'excessive smartphone use is one of the most serious challenges facing young people today.',f:'Many people argue that excessive smartphone use is one of the most serious challenges facing young people today.',t:'The aim of this essay is to consider <strong>whether limiting smartphones</strong> would truly benefit young people.',tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.'},
-  {s:'It is impossible to deny that',r:'smartphones play a significant role in the daily lives of young people worldwide.',f:'It is impossible to deny that smartphones play a significant role in the daily lives of young people worldwide.',t:'This essay will argue that <strong>some restrictions</strong> on smartphone use are both necessary and beneficial.',tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.'}
-];
-
-const BODY_PARAS=[
   {
-    color:'var(--c-b1)',
-    claimBuild:[
-      {speak:'Firstly,',html:'<span class="part-new">Firstly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
-      {speak:'it seems to me that',html:'<span class="part-done">Firstly,</span> <span class="part-new">it seems to me that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-      {speak:'Firstly, it seems to me that the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.',html:'<span class="part-done">Firstly, it seems to me that</span> <span class="part-new">the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.</span>',label:'+ FULL CLAIM ✓'}
-    ],
-    supports:[
-      {role:'REASON',text:'This is because social media and messaging apps are deliberately designed to interrupt attention every few minutes.',kw:'This is because'},
-      {role:'EXAMPLE',text:'For instance, many schools that have introduced phone-free policies have reported a clear improvement in student behaviour and exam results.',kw:'For instance,'},
-      {role:'RESULT',text:'As a result, young people who limit their screen time tend to find it significantly easier to complete homework and achieve higher grades.',kw:'As a result,'}
-    ]
+    s:'Nowadays,',
+    r:'smartphones are used by millions of young people around the world every single day.',
+    f:'Nowadays, smartphones are used by millions of young people around the world every single day.',
+    link:'Although this technology brings undeniable benefits, there is growing concern about its impact on young people\'s health and education.',
+    linkHtml:'<span style="color:var(--red);font-weight:700">Although</span> this technology brings undeniable benefits, there is growing concern about its impact on young people\'s health and education.',
+    t:'This essay will discuss the main <strong>advantages and disadvantages</strong> of limiting smartphone use.',
+    tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use.'
   },
   {
-    color:'var(--c-b2)',
-    claimBuild:[
-      {speak:'Secondly,',html:'<span class="part-new">Secondly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
-      {speak:'as far as I am concerned,',html:'<span class="part-done">Secondly,</span> <span class="part-new">as far as I am concerned,</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-      {speak:"Secondly, as far as I am concerned, restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.",html:"<span class='part-done'>Secondly, as far as I am concerned,</span> <span class='part-new'>restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.</span>",label:'+ FULL CLAIM ✓'}
-    ],
-    supports:[
-      {role:'REASON',text:'This is because the blue light from screens interferes with melatonin production, making it much harder for young people to fall asleep naturally.',kw:'This is because'},
-      {role:'EXAMPLE',text:'For example, research suggests that teenagers who use phones for more than two hours before bed are twice as likely to suffer from sleep deprivation.',kw:'For example,'},
-      {role:'RESULT',text:'Consequently, setting clear boundaries on evening screen time could have a direct and measurable impact on the wellbeing of millions of young people.',kw:'Consequently,'}
-    ]
+    s:'In recent years,',
+    r:'there has been a growing debate about whether young people should have unlimited access to their phones.',
+    f:'In recent years, there has been a growing debate about whether young people should have unlimited access to their phones.',
+    link:'Despite the many educational opportunities that smartphones provide, concerns about their negative effects continue to increase.',
+    linkHtml:'<span style="color:var(--red);font-weight:700">Despite</span> the many educational opportunities that smartphones provide, concerns about their negative effects continue to increase.',
+    t:'In this essay, I will examine <strong>both sides of the argument</strong> before giving my personal opinion.',
+    tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.'
   },
   {
-    color:'var(--c-b3)',
-    claimBuild:[
-      {speak:'On the other hand,',html:'<span class="part-new">On the other hand,</span> <span class="part-dim">…</span>',label:'CONTRAST MARKER'},
-      {speak:'it could be argued that',html:'<span class="part-done">On the other hand,</span> <span class="part-new">it could be argued that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
-      {speak:'On the other hand, it could be argued that smartphones are increasingly valuable tools for independent learning and self-education.',html:'<span class="part-done">On the other hand, it could be argued that</span> <span class="part-new">smartphones are increasingly valuable tools for independent learning and self-education.</span>',label:'+ YOUR OWN IDEA ✓'}
-    ],
-    supports:[
-      {role:'REASON',text:'This is because many students use their phones to access revision apps, research topics, and collaborate with classmates — all of which directly support their education.',kw:'This is because'},
-      {role:'EXAMPLE',text:'Indeed, platforms such as Duolingo and Khan Academy have transformed smartphones into resources that millions of young learners rely on every day.',kw:'Indeed,'},
-      {role:'RESULT',text:'For this reason, teaching young people responsible and mindful use of devices may ultimately be more effective than imposing a complete ban.',kw:'For this reason,'}
-    ]
+    s:'It is widely believed that',
+    r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',
+    f:'It is widely believed that smartphone use has fundamentally changed the way young people learn, communicate and relax.',
+    link:'However, it is becoming increasingly clear that unrestricted use may have serious consequences for young people\'s wellbeing.',
+    linkHtml:'<span style="color:var(--red);font-weight:700">However,</span> it is becoming increasingly clear that unrestricted use may have serious consequences for young people\'s wellbeing.',
+    t:'Therefore, it is essential to discuss <strong>the benefits and drawbacks</strong> of restricting these devices.',
+    tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting these devices.'
+  },
+  {
+    s:'Many people argue that',
+    r:'excessive smartphone use is one of the most serious challenges facing young people today.',
+    f:'Many people argue that excessive smartphone use is one of the most serious challenges facing young people today.',
+    link:'Since smartphones have become such a central part of daily life, the question of how to regulate their use has never been more important.',
+    linkHtml:'<span style="color:var(--red);font-weight:700">Since</span> smartphones have become such a central part of daily life, the question of how to regulate their use has never been more important.',
+    t:'The aim of this essay is to consider <strong>whether limiting smartphones</strong> would truly benefit young people.',
+    tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.'
+  },
+  {
+    s:'It is impossible to deny that',
+    r:'smartphones play a significant role in the daily lives of young people worldwide.',
+    f:'It is impossible to deny that smartphones play a significant role in the daily lives of young people worldwide.',
+    link:'Nevertheless, with growing evidence of the harm caused by excessive screen time, it is vital that we consider whether some form of restriction is necessary.',
+    linkHtml:'<span style="color:var(--red);font-weight:700">Nevertheless,</span> with growing evidence of the harm caused by excessive screen time, it is vital that we consider whether some form of restriction is necessary.',
+    t:'This essay will argue that <strong>some restrictions</strong> on smartphone use are both necessary and beneficial.',
+    tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.'
   }
 ];
 
-const CONCL_DATA=[
-  {role:'SUMMARY',text:'In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration.'},
-  {role:'POINT 1',text:'On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing.'},
-  {role:'POINT 2',text:'On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful.'},
-  {role:'REWORD',text:'In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used.'},
-  {role:'VERDICT',text:'Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people.'}
+const BODY_PARAS=[
+  {claimBuild:[
+    {speak:'Firstly,',html:'<span class="part-new">Firstly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
+    {speak:'it seems to me that',html:'<span class="part-done">Firstly,</span> <span class="part-new">it seems to me that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
+    {speak:'Firstly, it seems to me that the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.',html:'<span class="part-done">Firstly, it seems to me that</span> <span class="part-new">the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.</span>',label:'+ FULL CLAIM ✓'}
+  ],
+  supports:[
+    {role:'REASON',text:'This is because social media and messaging apps are deliberately designed to interrupt attention every few minutes.',kw:'This is because'},
+    {role:'EXAMPLE',text:'For instance, many schools that have introduced phone-free policies have reported a clear improvement in student behaviour and exam results.',kw:'For instance,'},
+    {role:'RESULT',text:'As a result, young people who limit their screen time tend to find it significantly easier to complete homework and achieve higher grades.',kw:'As a result,'}
+  ]},
+  {claimBuild:[
+    {speak:'Secondly,',html:'<span class="part-new">Secondly,</span> <span class="part-dim">…</span>',label:'LISTING MARKER'},
+    {speak:'as far as I am concerned,',html:'<span class="part-done">Secondly,</span> <span class="part-new">as far as I am concerned,</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
+    {speak:"Secondly, as far as I am concerned, restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.",html:"<span class='part-done'>Secondly, as far as I am concerned,</span> <span class='part-new'>restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.</span>",label:'+ FULL CLAIM ✓'}
+  ],
+  supports:[
+    {role:'REASON',text:'This is because the blue light from screens interferes with melatonin production, making it much harder for young people to fall asleep naturally.',kw:'This is because'},
+    {role:'EXAMPLE',text:'For example, research suggests that teenagers who use phones for more than two hours before bed are twice as likely to suffer from sleep deprivation.',kw:'For example,'},
+    {role:'RESULT',text:'Consequently, setting clear boundaries on evening screen time could have a direct and measurable impact on the wellbeing of millions of young people.',kw:'Consequently,'}
+  ]},
+  {claimBuild:[
+    {speak:'On the other hand,',html:'<span class="part-new">On the other hand,</span> <span class="part-dim">…</span>',label:'CONTRAST MARKER'},
+    {speak:'it could be argued that',html:'<span class="part-done">On the other hand,</span> <span class="part-new">it could be argued that</span> <span class="part-dim">…</span>',label:'+ VIEWPOINT PHRASE'},
+    {speak:'On the other hand, it could be argued that smartphones are increasingly valuable tools for independent learning and self-education.',html:'<span class="part-done">On the other hand, it could be argued that</span> <span class="part-new">smartphones are increasingly valuable tools for independent learning and self-education.</span>',label:'+ YOUR OWN IDEA ✓'}
+  ],
+  supports:[
+    {role:'REASON',text:'This is because many students use their phones to access revision apps, research topics, and collaborate with classmates — all of which directly support their education.',kw:'This is because'},
+    {role:'EXAMPLE',text:'Indeed, platforms such as Duolingo and Khan Academy have transformed smartphones into resources that millions of young learners rely on every day.',kw:'Indeed,'},
+    {role:'RESULT',text:'For this reason, teaching young people responsible and mindful use of devices may ultimately be more effective than imposing a complete ban.',kw:'For this reason,'}
+  ]}
 ];
 
-const TOTAL=6;
+const CONCL_DATA=[
+  {role:'SUMMARY',text:'In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration.',kw:'In conclusion,'},
+  {role:'POINT 1',text:'On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing.',kw:'On one hand,'},
+  {role:'POINT 2',text:'On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful.',kw:'On the other hand,'},
+  {role:'REWORD',text:'In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used.',kw:'In other words,'},
+  {role:'VERDICT',text:'Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people.',kw:'Overall,'}
+];
 
-/* ═══ ENGINE ═══ */
-let cur=0,running=false,bannerOn=false,timers=[];
-const synth=window.speechSynthesis;let voice=null;
-function loadVoice(){const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};if(synth.getVoices().length)p();else synth.onvoiceschanged=p;}
+/* ═══ OUP BODY PARAGRAPH DATA ═══ */
+const BP_CLAIM_ITEMS=[{key:'listing',label:'Listing'}];
+
+const BP_STANCE_SPECTRUM=[
+  {key:'neutral', label:'NEUTRAL', sublabel:'Academic distance',
+   phrases:['It is widely believed that…','It is often argued that…','It is commonly known that…'],
+   example:{role:'NEUTRAL STANCE', text:"It is widely believed that excessive smartphone use has a negative impact on young people's ability to concentrate."}},
+  {key:'hedged',  label:'HEDGED',  sublabel:'Tentative & safe',
+   phrases:['It could be argued that…','It appears that…','It seems to me that…'],
+   example:{role:'HEDGED STANCE',  text:"It could be argued that constant connectivity makes it significantly harder for young people to focus on their studies."}},
+  {key:'personal',label:'PERSONAL',sublabel:'Direct conviction',
+   phrases:['In my opinion,','I firmly believe that…','As far as I am concerned,'],
+   example:{role:'PERSONAL STANCE',text:"In my opinion, the unrestricted use of smartphones is one of the most damaging influences on academic performance today."}},
+];
+
+const BP_SUPPORT_ITEMS=[
+  {key:'reason',   label:'Reason'},
+  {key:'example',  label:'Example'},
+  {key:'reword',   label:'Rephrase'},
+  {key:'result',   label:'Result'},
+  {key:'compare',  label:'Compare'},
+  {key:'contrast', label:'Contrast'},
+];
+
+const BP_CLAIM_EXAMPLES={
+  listing:   {role:'LISTING',    text:'Firstly, · Secondly, · Moreover, · Furthermore, · On the other hand,'},
+  generalise:{role:'GENERALISE', text:'Overall, it is clear that… · In general, it seems that… · It is widely accepted that…'},
+  opinion:   {role:'OPINION',    text:'In my opinion, · I firmly believe that · It could be argued that · As far as I am concerned,'},
+  mainclaim: {role:'MAIN CLAIM', text:'…smartphones are increasingly harmful to young people\'s academic performance and wellbeing.'},
+};
+const BP_SUPPORT_EXAMPLES={
+  reason:  {role:'REASON',    text:'This is because social media apps are deliberately designed to interrupt concentration every few minutes.'},
+  example: {role:'EXAMPLE',   text:'For instance, schools that introduced phone-free policies reported clear improvements in exam results.'},
+  reword:  {role:'REPHRASE',  text:'In other words, the constant availability of phones makes it almost impossible for students to focus deeply.'},
+  result:  {role:'RESULT',    text:'As a result, young people who limit screen time tend to achieve significantly higher grades.'},
+  compare: {role:'COMPARE',   text:'Similarly, research from Finland and South Korea shows restricted phone use correlates with better outcomes.'},
+  contrast:{role:'CONTRAST',  text:'By contrast, students with unrestricted phone access consistently report lower concentration and higher stress.'},
+};
+
+const BP_SUPPORT_COLS=[
+  {key:'reason',   letter:'R', name:'REASON',     color:'#1a6b3c',
+   example:{role:'REASON',   text:'This is because social media apps are deliberately designed to interrupt concentration every few minutes.'}},
+  {key:'example',  letter:'E', name:'EXAMPLE',    color:'#1a5c8a',
+   example:{role:'EXAMPLE',  text:'For instance, schools that introduced phone-free policies reported clear improvements in exam results.'}},
+  {key:'reword',   letter:'R', name:'REWORD',     color:'#6b4ea8',
+   example:{role:'REWORD',   text:'In other words, the constant availability of phones makes it almost impossible for students to focus deeply.'}},
+  {key:'result',   letter:'R', name:'RESULT',     color:'#c9140f',
+   example:{role:'RESULT',   text:'As a result, young people who limit screen time tend to achieve significantly higher grades.'}},
+  {key:'compare',  letter:'C', name:'COMPARE',    color:'#8a6a1a',
+   example:{role:'COMPARE',  text:'Similarly, research from Finland and South Korea shows restricted phone use correlates with better outcomes.'}},
+  {key:'contrast', letter:'C', name:'CONTRAST',   color:'#1a6b6b',
+   example:{role:'CONTRAST', text:'By contrast, students with unrestricted phone access consistently report lower concentration and higher stress.'}},
+  {key:'general',  letter:'G', name:'GENERALISE', color:'#555',
+   example:{role:'GENERALISE',text:'Overall, it is clear that the relationship between smartphone use and academic performance cannot be ignored.'}}
+];
+
+const BP_LISTEN_NARRATION=[
+  {key:'listing',    text:'Begin your body paragraph with a listing marker. Words like Firstly, Secondly, or Moreover signal clear organisation to the examiner.'},
+  {key:'opinion',    text:'Follow with a viewpoint expression. Phrases like In my opinion, I firmly believe that, or It could be argued that show your stance.'},
+  {key:'mainclaim',  text:'Now write your main claim — your central point for this paragraph. Make it specific and directly linked to the question.'},
+  {key:'reason',     text:'The first supporting strategy is REASON. Explain why your claim is true. Use This is because or The reason for this is that.'},
+  {key:'example',    text:'EXAMPLE gives concrete evidence. Use For instance, For example, or Indeed to introduce it.'},
+  {key:'reword',     text:'REPHRASE means restating your point differently. Use In other words or That is to say to clarify or reinforce your claim.'},
+  {key:'result',     text:'RESULT shows the consequence. Phrases like As a result, Consequently, and Therefore signal the outcome.'},
+  {key:'compare',    text:'COMPARE links your point to similar situations. Similarly, Likewise, and In the same way make your argument broader.'},
+  {key:'contrast',   text:'CONTRAST highlights an opposing view to strengthen your point. Use By contrast, However, or On the other hand.'},
+  {key:'generalise', text:'Finally, GENERALISE — sum up your paragraph at a higher level. Use Overall, or In general, to show the bigger picture.'}
+];
+
+/* ═══ INFOGRAPHIC BUILDER ═══ */
+function buildBPInfographic(sceneIdx){
+  const grid=document.getElementById('bpGrid'+sceneIdx);
+  if(!grid||grid.dataset.built)return;
+  grid.dataset.built='1';
+  const exBox=document.getElementById('bpEx'+sceneIdx);
+  const exRole=document.getElementById('bpExRole'+sceneIdx);
+  const exText=document.getElementById('bpExText'+sceneIdx);
+
+  function showEx(key, type, btnEl){
+    grid.querySelectorAll('.bp-two-box .bp-sub-btn').forEach(b=>b.classList.remove('active'));
+    btnEl.classList.add('active');
+    const ex=(type==='claim'?BP_CLAIM_EXAMPLES:BP_SUPPORT_EXAMPLES)[key];
+    if(!ex)return;
+    exRole.textContent=ex.role+' ·';
+    exText.textContent=ex.text;
+    exBox.classList.add('show');
+  }
+
+  // ── TWO-BOX ROW ──
+  const twoBox=document.createElement('div');
+  twoBox.className='bp-two-box';
+
+  // LEFT: CLAIM
+  const claimBox=document.createElement('div');
+  claimBox.className='bp-main-box bp-main-claim';
+
+  // Listing pill
+  const listingRow=document.createElement('div');
+  listingRow.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:10px;';
+  const listingLbl=document.createElement('div');
+  listingLbl.style.cssText='font-family:"DM Mono",monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);flex-shrink:0;';
+  listingLbl.textContent='LISTING';
+  const listingBtn=document.createElement('button');
+  listingBtn.className='bp-sub-btn';
+  listingBtn.textContent='Firstly · Secondly · Moreover…';
+  listingBtn.style.cssText='font-size:8px;padding:3px 8px;';
+  listingBtn.onclick=()=>showEx('listing','claim',listingBtn);
+  listingRow.appendChild(listingLbl);
+  listingRow.appendChild(listingBtn);
+  claimBox.appendChild(listingRow);
+
+  // STANCE title
+  const stanceTitle=document.createElement('div');
+  stanceTitle.style.cssText='font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:6px;';
+  stanceTitle.textContent='YOUR STANCE';
+  claimBox.appendChild(stanceTitle);
+
+  // Spectrum bar
+  const specBar=document.createElement('div');
+  specBar.className='bp-spectrum-bar';
+  const specTrack=document.createElement('div');
+  specTrack.className='bp-spectrum-track';
+  // gradient arrow
+  specBar.appendChild(specTrack);
+  claimBox.appendChild(specBar);
+
+  // 3 stance cards
+  BP_STANCE_SPECTRUM.forEach((s,si)=>{
+    const card=document.createElement('div');
+    card.className='bp-stance-card';
+    card.dataset.key=s.key;
+    const temps=['#4a9fd4','#8a7fbf','#c9140f'];
+    card.style.borderColor=temps[si];
+    card.innerHTML=`<div class="bp-stance-label" style="color:${temps[si]}">${s.label}</div><div class="bp-stance-sub">${s.sublabel}</div><div class="bp-stance-phrases">${s.phrases.map(p=>`<span>${p}</span>`).join('')}</div>`;
+    card.onclick=()=>{
+      claimBox.querySelectorAll('.bp-stance-card').forEach(c=>c.classList.remove('active'));
+      card.classList.add('active');
+      grid.querySelectorAll('.bp-sub-btn').forEach(b=>b.classList.remove('active'));
+      exRole.textContent=s.example.role+' ·';
+      exText.textContent=s.example.text;
+      exBox.classList.add('show');
+    };
+    claimBox.appendChild(card);
+  });
+
+  // Main claim pill
+  const claimPillRow=document.createElement('div');
+  claimPillRow.style.cssText='margin-top:8px;';
+  const claimTitle=document.createElement('div');
+  claimTitle.style.cssText='font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:5px;';
+  claimTitle.textContent='MAIN CLAIM';
+  const claimBtn=document.createElement('button');
+  claimBtn.className='bp-sub-btn';
+  claimBtn.textContent='State your central point';
+  claimBtn.style.cssText='font-size:8px;padding:3px 8px;width:100%;text-align:left;';
+  claimBtn.onclick=()=>showEx('mainclaim','claim',claimBtn);
+  claimPillRow.appendChild(claimTitle);
+  claimPillRow.appendChild(claimBtn);
+  claimBox.appendChild(claimPillRow);
+
+  // RIGHT: SUPPORT
+  const supportBox=document.createElement('div');
+  supportBox.className='bp-main-box bp-main-support';
+  supportBox.innerHTML='<div class="bp-main-title">SUPPORT</div>';
+  const supportSubs=document.createElement('div');
+  supportSubs.className='bp-sub-list';
+  BP_SUPPORT_ITEMS.forEach(item=>{
+    const btn=document.createElement('button');
+    btn.className='bp-sub-btn';
+    btn.textContent=item.label;
+    btn.onclick=()=>showEx(item.key,'support',btn);
+    supportSubs.appendChild(btn);
+  });
+  supportBox.appendChild(supportSubs);
+
+  twoBox.appendChild(claimBox);
+  twoBox.appendChild(supportBox);
+  grid.appendChild(twoBox);
+}
+
+/* ═══ STATE ═══ */
+const TOTAL=6;
+let cur=0;
+let running=false;
+let bannerOn=false;
+let gen=0;
+
+/* ═══ SPEECH ═══ */
+const synth=window.speechSynthesis;
+let voice=null;
+function loadVoice(){
+  const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};
+  if(synth.getVoices().length)p();else synth.onvoiceschanged=p;
+}
 let sRes=null;
 function stopSpeech(){if(sRes){sRes();sRes=null;}synth.cancel();}
-function speak(t){return new Promise(r=>{if(!running){r();return;}synth.cancel();sRes=r;const go=()=>{if(!running){r();return;}const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};synth.speak(u);};const t2=setTimeout(go,160);timers.push(t2);});}
-function wait(ms){return new Promise(r=>{const t=setTimeout(r,ms);timers.push(t);});}
 
-function initPbar(){const b=document.getElementById('pbar');b.innerHTML='';for(let i=0;i<TOTAL;i++){const s=document.createElement('div');s.className='pseg';s.id='ps'+i;s.innerHTML='<div class="psegf"></div>';b.appendChild(s);}}
-function updatePbar(i){for(let j=0;j<TOTAL;j++){const s=document.getElementById('ps'+j);if(!s)continue;s.classList.toggle('done',j<i);s.classList.toggle('active',j===i);}}
-function waveOn(i){const w=document.getElementById('w'+i);if(w){w.classList.remove('off');w.classList.add('on');}}
-function waveOff(i){const w=document.getElementById('w'+i);if(w){w.classList.remove('on');w.classList.add('off');}}
+// speak() and wait() both receive the generation at launch time (myGen).
+// If gen has changed by the time they resolve, they resolve immediately without side effects.
+function speak(t, myGen){
+  return new Promise(r=>{
+    if(!running||myGen!==gen){r();return;}
+    synth.cancel();
+    sRes=r;
+    const go=()=>{
+      if(!running||myGen!==gen){sRes=null;r();return;}
+      const u=new SpeechSynthesisUtterance(t);
+      u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;
+      u.onend=()=>{sRes=null;r();};
+      u.onerror=()=>{sRes=null;r();};
+      synth.speak(u);
+    };
+    setTimeout(go,120);
+  });
+}
+function wait(ms, myGen){
+  return new Promise(r=>{
+    setTimeout(()=>{
+      // If stale, resolve immediately (don't block the chain from reaching its !running check)
+      r();
+    }, (myGen!==undefined && myGen!==gen) ? 0 : ms);
+  });
+}
 
+/* ═══ HARD STOP — always call this before any navigation ═══ */
+function hardStop(){
+  gen++;          // invalidate all running async chains instantly
+  running=false;
+  bannerOn=false;
+  stopSpeech();
+  waveOff();
+  closeBanner();
+  hideInter();
+  const b=document.getElementById('btnPlay');
+  b.textContent='▶';b.classList.remove('running');
+}
+
+/* ═══ DOTS ═══ */
+function buildDots(){
+  for(let sc=0;sc<TOTAL;sc++){
+    const c=document.getElementById('dots'+sc);if(!c)continue;
+    c.innerHTML='';
+    for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot';d.id='d'+sc+'-'+i;c.appendChild(d);}
+  }
+}
+function updateDots(i){
+  for(let sc=0;sc<TOTAL;sc++){
+    for(let j=0;j<TOTAL;j++){
+      const d=document.getElementById('d'+sc+'-'+j);if(!d)continue;
+      d.classList.remove('active','done');
+      if(j===i)d.classList.add('active');else if(j<i)d.classList.add('done');
+    }
+  }
+}
+
+/* ═══ TAB SYNC ═══ */
+function syncTab(idx){
+  let t='intro';
+  if(idx>=2&&idx<=4)t='body';
+  else if(idx===5)t='conc';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+}
+
+// jumpTab: always hard-stops first, then navigates. No race possible.
+function jumpTab(tab){
+  if(tab==='notes'){openNotes();return;}
+  hardStop();
+  clearStacks();
+  const map={intro:0,body:2,conc:5};
+  const target=map[tab];
+  if(typeof target==='number'){
+    cur=target;
+    showScene(cur);
+  }
+  updateNavBtns();
+}
+
+/* ═══ SCENE DISPLAY (pure UI, no async) ═══ */
 function showScene(i){
   document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
   const sc=document.getElementById('sc'+i);if(!sc)return;
   sc.classList.add('active');
   document.getElementById('ctr').textContent=(i+1)+' / '+TOTAL;
-  updatePbar(i);updateNavBtns();flashColor();
+  updateDots(i);syncTab(i);updateNavBtns();flashColor();
   if(i>0)spawnEmoji(i);
+  // Build body infographics on first visit
+  if(i>=2&&i<=4)buildBPInfographic(i);
 }
 
-async function speakThenShow(stkId,text,isFirst,role,kw){
-  if(!running)return;
-  await speak(text);if(!running)return;
+/* ═══ WAVE ═══ */
+function waveOn(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}});}
+function waveOff(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}});}
+
+/* ═══ INTERSTITIAL ═══ */
+function showInter(flag,fc,kicker,big,sub,ac){
+  document.getElementById('interFlagBody').style.background=fc;
+  document.getElementById('interFlagNum').textContent=flag;
+  document.getElementById('interKicker').textContent=kicker;
+  document.getElementById('interBig').innerHTML=big;
+  document.getElementById('interSub').innerHTML=sub;
+  document.getElementById('interBottom').style.background=fc;
+  document.getElementById('interOv').style.setProperty('--inter-accent',ac||fc);
+  document.getElementById('interOv').classList.add('show');
+}
+function hideInter(){document.getElementById('interOv').classList.remove('show');}
+
+/* ═══ NOTES ═══ */
+let activeNtab='descriptors';
+function renderNotes(tab){
+  const body=document.getElementById('notesBody');
+  const secs=NOTES_DATA[tab]||[];
+  let h='';secs.forEach(s=>{h+=`<div class="n-section"><div class="n-stitle">${s.title}</div>`;s.items.forEach(it=>{h+=`<div class="n-item">${it}</div>`;});h+='</div>';});
+  body.innerHTML=h;
+}
+function switchNtab(t){activeNtab=t;document.querySelectorAll('.ntab').forEach(b=>b.classList.toggle('on',b.dataset.ntab===t));renderNotes(t);}
+function openNotes(){renderNotes(activeNtab);document.getElementById('notesPanel').classList.add('show');}
+function closeNotes(){document.getElementById('notesPanel').classList.remove('show');syncTab(cur);}
+
+/* ═══ BANNER (intro pairs) ═══ */
+function closeBanner(){
+  document.getElementById('ov').classList.remove('show');
+  document.getElementById('ob').classList.remove('exit');
+  bannerOn=false;
+}
+
+async function runPairs(myGen){
+  bannerOn=true;
+  document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
+  document.getElementById('ov').classList.add('show');
+  for(let i=0;i<PAIRS.length;i++){
+    if(!running||!bannerOn||myGen!==gen)break;
+    await showPair(PAIRS[i],i,myGen);
+  }
+  if(running&&myGen===gen)closeBanner();
+}
+
+async function showPair(p,idx,myGen){
+  const ob=document.getElementById('ob');
+  if(idx>0){
+    ob.classList.add('exit');
+    await wait(190,myGen);
+    if(!running||!bannerOn||myGen!==gen){ob.classList.remove('exit');return;}
+    ob.classList.remove('exit');
+  }
+  if(!running||!bannerOn||myGen!==gen)return;
+
+  document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
+  document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
+  const sEl=document.getElementById('obS');
+  sEl.textContent=p.s;
+  const l=p.s.length;
+  sEl.style.fontSize=l>22?'clamp(1.35rem,5vw,2.2rem)':l>14?'clamp(1.7rem,6.5vw,2.8rem)':'clamp(2rem,7.5vw,3.3rem)';
+  const rEl=document.getElementById('obR');
+  const lEl=document.getElementById('obL');
+  const tEl=document.getElementById('obT');
+  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';
+  lEl.style.cssText='opacity:0;transform:translateY(4px);transition:none;';
+  tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
+  rEl.textContent=p.r;
+  lEl.innerHTML=p.linkHtml;
+  tEl.innerHTML=p.t;
+  await wait(24,myGen);
+  rEl.style.cssText='';lEl.style.cssText='';tEl.style.cssText='';
+  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  document.getElementById('obW').classList.add('on');
+  await speak(p.f,myGen);if(!running||!bannerOn||myGen!==gen)return;
+  await wait(140,myGen);
+  await speak(p.link,myGen);if(!running||!bannerOn||myGen!==gen)return;
+  await wait(140,myGen);
+  await speak(p.tf,myGen);if(!running||!bannerOn||myGen!==gen)return;
+  document.getElementById('obW').classList.remove('on');
+  await wait(460,myGen);
+}
+
+/* ═══ SENTENCE HELPERS ═══ */
+async function speakThenShow(stkId,text,isFirst,role,kw,myGen){
+  if(!running||myGen!==gen)return;
+  await speak(text,myGen);
+  if(!running||myGen!==gen)return;
   const stk=document.getElementById(stkId);if(!stk)return;
   const line=document.createElement('div');
   line.className='s-line'+(isFirst?' first':'');
-  // highlight the keyword in red
   let html=text;
-  if(kw){html=text.replace(kw,`<span style="color:var(--red);font-weight:700">${kw}</span>`);}
-  if(role){line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;}
-  else{line.innerHTML=html;}
+  if(kw)html=text.replace(kw,`<span style="color:var(--red);font-weight:700">${kw}</span>`);
+  if(role)line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;
+  else line.innerHTML=html;
   stk.appendChild(line);
-  await wait(20);line.classList.add('in');
+  await wait(20,myGen);
+  line.classList.add('in');
   line.scrollIntoView({behavior:'smooth',block:'nearest'});
-  await wait(160);
+  await wait(180,myGen);
 }
 
-async function buildClaim(stkId,para){
-  if(!running)return;
+async function buildClaim(stkId,para,myGen){
+  if(!running||myGen!==gen)return;
   const stk=document.getElementById(stkId);if(!stk)return;
-
   const lbl=document.createElement('div');
-  lbl.style.cssText="font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:.18rem;opacity:0;transition:opacity .3s;flex-shrink:0;";
+  lbl.style.cssText="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .3s;flex-shrink:0;";
   lbl.textContent='▸ CLAIM — built in 3 steps';
-  stk.appendChild(lbl);
-  await wait(20);lbl.style.opacity='1';
+  stk.appendChild(lbl);await wait(20,myGen);lbl.style.opacity='1';
 
   const sentEl=document.createElement('div');
   sentEl.className='build-step in';
-  sentEl.style.cssText="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.05rem,3vw,1.25rem);font-weight:700;line-height:1.4;color:var(--ink);flex-shrink:0;padding:.25rem 0;min-height:2.2rem;";
+  sentEl.style.cssText="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;line-height:1.35;color:var(--ink);flex-shrink:0;padding:6px 0;min-height:32px;";
   stk.appendChild(sentEl);
 
   const stepLbl=document.createElement('div');
-  stepLbl.style.cssText="font-family:'DM Mono',monospace;font-size:.25rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.1rem;opacity:0;transition:opacity .22s;flex-shrink:0;";
+  stepLbl.style.cssText="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:3px;opacity:0;transition:opacity .22s;flex-shrink:0;";
   stk.appendChild(stepLbl);
 
-  const steps=para.claimBuild;
-  for(let i=0;i<steps.length;i++){
-    if(!running)return;
-    stepLbl.textContent='STEP '+(i+1)+': '+steps[i].label.replace(/STEP \d+ — /,'');
+  for(let i=0;i<para.claimBuild.length;i++){
+    if(!running||myGen!==gen)return;
+    stepLbl.textContent='STEP '+(i+1)+': '+para.claimBuild[i].label;
     stepLbl.style.opacity='1';
-    sentEl.innerHTML=steps[i].html;
+    sentEl.innerHTML=para.claimBuild[i].html;
     sentEl.scrollIntoView({behavior:'smooth',block:'nearest'});
-    await speak(steps[i].speak);if(!running)return;
-    if(i<steps.length-1){stepLbl.style.opacity='0';await wait(300);}
+    await speak(para.claimBuild[i].speak,myGen);
+    if(!running||myGen!==gen)return;
+    if(i<para.claimBuild.length-1){stepLbl.style.opacity='0';await wait(260,myGen);}
   }
-  await wait(350);
-
+  await wait(300,myGen);
+  if(!running||myGen!==gen)return;
   const div=document.createElement('div');
-  div.style.cssText="font-family:'DM Mono',monospace;font-size:.25rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.25);margin:.3rem 0 .1rem;border-top:1px solid rgba(0,0,0,.07);padding-top:.28rem;flex-shrink:0;";
+  div.style.cssText="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(0,0,0,.25);margin:8px 0 3px;border-top:1px solid rgba(0,0,0,.07);padding-top:8px;flex-shrink:0;";
   div.textContent='▸ DEVELOP — Reason · Example · Result';
-  stk.appendChild(div);
-  await wait(20);
+  stk.appendChild(div);await wait(20,myGen);
 }
 
-/* ══ INTRO PAIRS ══ */
-async function runPairs(){
-  bannerOn=true;
-  const ov=document.getElementById('ov');
-  document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
-  ov.classList.add('show');
-  for(let i=0;i<PAIRS.length;i++){if(!running||!bannerOn)break;await showPair(PAIRS[i],i);}
-  if(running)closeBanner();
-}
-async function showPair(p,idx){
-  const ob=document.getElementById('ob');
-  if(idx>0){ob.classList.add('exit');await wait(190);if(!running||!bannerOn){ob.classList.remove('exit');return;}ob.classList.remove('exit');}
-  if(!running||!bannerOn)return;
-  document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
-  document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
-  const sEl=document.getElementById('obS');sEl.textContent=p.s;
-  const l=p.s.length;sEl.style.fontSize=l>22?'clamp(1.4rem,5.5vw,2.4rem)':l>14?'clamp(1.8rem,7vw,3.1rem)':'clamp(2.1rem,8vw,3.6rem)';
-  const rEl=document.getElementById('obR'),tEl=document.getElementById('obT');
-  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
-  rEl.textContent=p.r;tEl.innerHTML=p.t;
-  await wait(24);rEl.style.cssText='';tEl.style.cssText='';
-  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(!d)continue;d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}
-  document.getElementById('obW').classList.add('on');
-  await speak(p.f);if(!running||!bannerOn)return;
-  await wait(180);await speak(p.tf);if(!running||!bannerOn)return;
-  document.getElementById('obW').classList.remove('on');
-  await wait(480);
-}
-function closeBanner(){document.getElementById('ov').classList.remove('show');document.getElementById('ob').classList.remove('exit');bannerOn=false;}
-
-/* ═══ SCENE RUNNERS ═══ */
-async function runScene(idx){
-  if(!running)return;
+/* ═══ SCENE RUNNER ═══ */
+async function runScene(idx, myGen){
+  // Abort immediately if this chain is already stale
+  if(!running||myGen!==gen)return;
   if(idx>=TOTAL){finishAll();return;}
-  clearStacks();showScene(idx);
+
+  clearStacks();
+  showScene(idx);
 
   if(idx===0){
-    waveOn(0);
-    await speak("Welcome to Essay Drop. By the end of this lesson, you will know exactly how to write a B2 opinion essay — sentence by sentence - paragraph by paragraph");
-    waveOff(0);
+    waveOn();
+    await speak("Welcome to Essay Drop. By the end of this lesson, you will know exactly how to write a B2 opinion essay — sentence by sentence, paragraph by paragraph.",myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
 
   }else if(idx===1){
-    showInter('INTRO','var(--c-intro)','PARAGRAPH 1 OF 5',
-      'A <em>Hook.</em><br>A <em>Thesis.</em>',
-      'Two sentences only. Then watch <strong>5 different ways</strong> to write one — choose yours.',
-      'var(--c-intro)');
-    await speak("The introduction is just two sentences. A hook, then a thesis. Now watch five different ways to write them — pick the one that feels right for you.");
-    if(!running)return;
-    await wait(400);hideInter();await wait(300);
-    waveOn(1);
-    await speak(SC1_NARR);
-    waveOff(1);
-    if(running){await wait(300);await runPairs();}
+    showInter('INTRODUCTION','var(--c-intro)','PARAGRAPH 1 OF 5','A <em>Hook.</em><br>A <em>Thesis.</em>','Two sentences only. Watch <strong>5 different ways</strong> to write them — choose yours.','var(--c-intro)');
+    await speak("The introduction is just two sentences. A hook, then a thesis. Now watch five different ways to write them.",myGen);
+    if(!running||myGen!==gen)return;
+    await wait(400,myGen);if(!running||myGen!==gen)return;
+    hideInter();
+    await wait(280,myGen);if(!running||myGen!==gen)return;
+    waveOn();
+    await speak("Here is today's essay question. Should the use of phones be limited for young people? What do you think? By the end of this lesson, you will know exactly how to argue it.",myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
+    await wait(260,myGen);if(!running||myGen!==gen)return;
+    await runPairs(myGen);
 
-  }else if(idx===2||idx===3||idx===4){
-    const para=BODY_PARAS[idx-2];
-    const stkId='stk'+idx;
-    const topicNames=['academic performance','mental health and sleep','your own idea'];
+  }else if(idx>=2&&idx<=4){
     const bColors=['var(--c-b1)','var(--c-b2)','var(--c-b3)'];
-    const bColor=bColors[idx-2]||'var(--c-b1)';
-    showInter('BODY PARA '+(idx-1), bColor, 'PARAGRAPH '+(idx)+' OF 5',
-      '<em>Claim.</em> Reason. Example. <em>Result.</em>',
-      'One point, four sentences. Start with your <strong>listing marker + viewpoint</strong>. Then explain, prove, and land the impact.',
-      bColor);
-    await speak(`Body paragraph ${idx-1}. Four sentences. Claim. Reason. Example. Result. Watch how each one is built.`);
-    if(!running)return;
-    await wait(400);hideInter();await wait(200);
-    waveOn(idx);
-    if(!running)return;
-    await buildClaim(stkId,para);
-    if(!running)return;
-    await speak('Now listen to how the claim is developed — reason, example, and result. Each sentence adds a new layer.');
-    if(!running)return;
-    await wait(300);
-    for(let i=0;i<para.supports.length;i++){
-      if(!running)return;
-      const s=para.supports[i];
-      await speakThenShow(stkId,s.text,false,s.role,s.kw);
+    const bColor=bColors[idx-2];
+    const bNums=['one','two','three'];
+    const bTopics=['academic performance','mental health and sleep','your own original idea'];
+
+    // BEAT 1 — name the paragraph
+    showInter('BODY PARAGRAPH '+(idx-1),bColor,'PARAGRAPH '+idx+' OF 5',
+      'Body Paragraph <em>'+(idx-1)+'.</em>',
+      'Topic: <strong>'+bTopics[idx-2]+'</strong>',bColor);
+    await speak('Body paragraph '+bNums[idx-2]+'. Your topic is '+bTopics[idx-2]+'.',myGen);
+    if(!running||myGen!==gen)return;
+    await wait(260,myGen);if(!running||myGen!==gen)return;
+
+    // BEAT 2 — the two jobs
+    showInter('BODY PARAGRAPH '+(idx-1),bColor,'EVERY BODY PARAGRAPH HAS 2 JOBS',
+      'Make a <em>Claim.</em><br>Then <em>Support</em> it.',
+      'One focused point. Fully developed.',bColor);
+    await speak('Every body paragraph has exactly two jobs. First — you make your claim. Second — you support it. One focused point, fully developed.',myGen);
+    if(!running||myGen!==gen)return;
+    await wait(260,myGen);if(!running||myGen!==gen)return;
+
+    // BEAT 3 — claim structure
+    showInter('BODY PARAGRAPH '+(idx-1),bColor,'THE CLAIM — 3 PARTS',
+      '<em>Listing</em> + <em>Stance</em> + <em>Point.</em>',
+      'Always in this order.',bColor);
+    await speak('Your claim is built from three parts. A listing marker — Firstly, Secondly, Moreover. Then your stance — how personally you commit to the idea. Then your main point, stated clearly.',myGen);
+    if(!running||myGen!==gen)return;
+    await wait(260,myGen);if(!running||myGen!==gen)return;
+
+    // BEAT 4 — stance spectrum
+    showInter('BODY PARAGRAPH '+(idx-1),bColor,'YOUR STANCE',
+      '<em>Neutral</em> · <em>Hedged</em> · <em>Personal.</em>',
+      'Cold academic distance — or — warm conviction.',bColor);
+    await speak('The stance is your choice. Neutral — It is widely believed that. Hedged — It could be argued that. Personal — In my opinion. Each sends a different signal to the examiner.',myGen);
+    if(!running||myGen!==gen)return;
+    await wait(260,myGen);if(!running||myGen!==gen)return;
+
+    // BEAT 5 — 7 strategies
+    showInter('BODY PARAGRAPH '+(idx-1),bColor,'SUPPORTING YOUR CLAIM',
+      '<strong>7 strategies.</strong><br>You choose any.',
+      'Reason · Example · Rephrase · Result · Compare · Contrast · Generalise',bColor);
+    await speak('Now the support. Most students think they must write reason, example, result — in that order. That is not true. You have seven strategies. You choose which ones to use and in what order. That is what makes a sophisticated essay.',myGen);
+    if(!running||myGen!==gen)return;
+    await wait(400,myGen);if(!running||myGen!==gen)return;
+
+    // REVEAL diagram
+    hideInter();
+    await wait(220,myGen);if(!running||myGen!==gen)return;
+    waveOn();
+    buildBPInfographic(idx);
+    await speak('Here is the full diagram. Tap any section to see example phrases.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await wait(300,myGen);
+
+    // Walk through each narration step, highlighting the relevant column
+    for(let i=0;i<BP_LISTEN_NARRATION.length;i++){
+      if(!running||myGen!==gen){waveOff();return;}
+      const step=BP_LISTEN_NARRATION[i];
+
+      // Highlight the correct button
+      const grid=document.getElementById('bpGrid'+idx);
+      if(grid){
+        grid.querySelectorAll('.bp-sub-btn').forEach(b=>b.classList.remove('active'));
+        // Find button by matching data key stored in onclick
+        const allBtns=grid.querySelectorAll('.bp-sub-btn');
+        allBtns.forEach(b=>{
+          if(b.textContent.toLowerCase().replace(/\s/g,'')===step.key.replace(/\s/g,'')||
+             b.textContent.toLowerCase()===step.key.toLowerCase()||
+             (step.key==='reword'&&b.textContent.toLowerCase()==='rephrase')||
+             (step.key==='general'&&b.textContent.toLowerCase()==='generalise')||
+             (step.key==='generalise'&&b.textContent.toLowerCase()==='generalise')||
+             (step.key==='mainclaim'&&b.textContent.toLowerCase()==='main claim')||
+             (step.key==='listing'&&b.textContent.toLowerCase()==='listing')||
+             (step.key==='opinion'&&b.textContent.toLowerCase()==='opinion')
+            ){b.classList.add('active');}
+        });
+        // Show example in box
+        const claimKeys=BP_CLAIM_ITEMS.map(i=>i.key);
+        const isClaimKey=claimKeys.includes(step.key);
+        const ex=(isClaimKey?BP_CLAIM_EXAMPLES:BP_SUPPORT_EXAMPLES)[step.key]||
+                  BP_SUPPORT_EXAMPLES[step.key==='general'||step.key==='generalise'?'generalise':step.key]||
+                  BP_SUPPORT_EXAMPLES[step.key==='reword'?'reword':step.key];
+        if(ex){
+          const exBox=document.getElementById('bpEx'+idx);
+          const exRole=document.getElementById('bpExRole'+idx);
+          const exText=document.getElementById('bpExText'+idx);
+          if(exBox&&exRole&&exText){
+            exRole.textContent=ex.role+' ·';
+            exText.textContent=ex.text;
+            exBox.classList.add('show');
+          }
+        }
+      }
+      await speak(step.text,myGen);
+      if(!running||myGen!==gen){waveOff();return;}
+      await wait(220,myGen);
     }
-    waveOff(idx);
+    // Clear highlights
+    const grid=document.getElementById('bpGrid'+idx);
+    if(grid)grid.querySelectorAll('.bp-claim-cell,.bp-strat-col').forEach(c=>c.classList.remove('listen-highlight','active'));
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
 
   }else if(idx===5){
-    waveOn(5);
-    await speak('Finally, the conclusion. You restate your opinion in different words. Never introduce new ideas here. Use a summary opener, then echo your two points, then give a final verdict.');
-    if(!running)return;
-    const concKw=['In conclusion,','On one hand,','On the other hand,','In other words,','Overall,'];
+    waveOn();
+    await speak('Finally, the conclusion. Restate your opinion in different words. Never introduce new ideas. Use a summary opener, echo your two points, then give a final verdict.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
     for(let i=0;i<CONCL_DATA.length;i++){
-      if(!running)return;
+      if(!running||myGen!==gen){waveOff();return;}
       const row=CONCL_DATA[i];
-      await speakThenShow('stk5',row.text,i===0,row.role,concKw[i]||null);
+      await speakThenShow('stk5',row.text,i===0,row.role,row.kw,myGen);
     }
-    waveOff(5);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
   }
 
-  if(!running)return;
-  await wait(480);if(!running)return;
-  cur=idx+1;runScene(cur);
+  // Auto-advance to next scene
+  if(!running||myGen!==gen)return;
+  await wait(440,myGen);
+  if(!running||myGen!==gen)return;
+  cur=idx+1;
+  runScene(cur,myGen);
 }
 
-/* ═══ CONTROLS ═══ */
-function handleMain(){
-  if(!running){running=true;const b=document.getElementById('btnMain');b.textContent='⏹  STOP';b.classList.add('running');updateNavBtns();runScene(cur);}
-  else stopAll();
+/* ═══ PLAYBACK CONTROLS ═══ */
+function handlePlay(){
+  if(!running){
+    running=true;
+    const myGen=gen; // capture current gen — this chain owns this gen value
+    const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
+    updateNavBtns();
+    runScene(cur,myGen);
+  }else{
+    hardStop();
+    updateNavBtns();
+  }
 }
-function stopAll(){running=false;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();const b=document.getElementById('btnMain');b.textContent=cur===0?'▶  START':'▶  PLAY';b.classList.remove('running');updateNavBtns();}
-function clearStacks(){['stk0','stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});}
-function nextScene(){bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearStacks();if(cur+1<TOTAL){cur++;running?runScene(cur):showScene(cur);}if(!running){const b=document.getElementById('btnMain');b.textContent='▶  PLAY';}updateNavBtns();}
-function prevScene(){if(cur===0)return;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearStacks();cur=Math.max(0,cur-1);running?runScene(cur):showScene(cur);if(!running){const b=document.getElementById('btnMain');b.textContent='▶  PLAY';}updateNavBtns();}
+
+function stopAll(){hardStop();updateNavBtns();}
+
+function clearStacks(){
+  ['stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
+}
+
+function nextScene(){
+  hardStop();
+  clearStacks();
+  if(cur+1<TOTAL){cur++;}
+  showScene(cur);
+  updateNavBtns();
+}
+
+function prevScene(){
+  if(cur===0)return;
+  hardStop();
+  clearStacks();
+  cur=Math.max(0,cur-1);
+  showScene(cur);
+  updateNavBtns();
+}
+
 function updateNavBtns(){
   document.getElementById('btnPrev').disabled=cur<=0;
   document.getElementById('btnNext').disabled=cur>=TOTAL-1;
 }
-function finishAll(){running=false;const b=document.getElementById('btnMain');b.textContent='↺  RESTART';b.classList.remove('running');updateNavBtns();b.onclick=()=>{cur=0;clearStacks();b.textContent='▶  START';b.onclick=handleMain;initPbar();showScene(0);};}
+
+function finishAll(){
+  hardStop();
+  const b=document.getElementById('btnPlay');
+  b.textContent='↺';
+  updateNavBtns();
+  b.onclick=()=>{
+    cur=0;clearStacks();
+    b.textContent='▶';b.onclick=handlePlay;
+    buildDots();showScene(0);updateNavBtns();
+  };
+}
+
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
 const EMJS=[['📖'],['📱'],['🪝'],['💪'],['💡'],['✅']];
-function spawnEmoji(idx){const list=EMJS[idx]||[];const r=document.getElementById('stage').getBoundingClientRect();list.forEach((em,i)=>{const t=setTimeout(()=>{const el=document.createElement('div');el.className='fem';el.textContent=em;el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.45+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2500);},i*160);timers.push(t);});}
+function spawnEmoji(idx){
+  const list=EMJS[idx]||[];
+  const r=document.getElementById('stage').getBoundingClientRect();
+  list.forEach((em,i)=>{
+    setTimeout(()=>{
+      const el=document.createElement('div');el.className='fem';el.textContent=em;
+      el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.45+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;
+      document.body.appendChild(el);setTimeout(()=>el.remove(),2500);
+    },i*160);
+  });
+}
 
-document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();handleMain();}if(e.key==='ArrowRight')nextScene();if(e.key==='ArrowLeft')prevScene();if(e.key==='Escape'){stopAll();closeTips();}});
+document.addEventListener('keydown',e=>{
+  if(e.key===' '){e.preventDefault();handlePlay();}
+  if(e.key==='ArrowRight')nextScene();
+  if(e.key==='ArrowLeft')prevScene();
+  if(e.key==='Escape'){hardStop();updateNavBtns();closeNotes();}
+});
 let _tx=0;
 document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
 
-loadVoice();initPbar();showScene(0);
+loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
+// Pre-build body paragraph infographics
+[2,3,4].forEach(buildBPInfographic);
 </script>
 </body>
 </html>
