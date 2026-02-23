@@ -899,8 +899,8 @@ async function runScene(idx,myGen){
     await runPairs(myGen);
 
   }else if(idx===2){
-    showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R</em><br>Formula.','Four sentences. One complete argument.','var(--red)');
-    await speak("Now for the body paragraphs. Every single body paragraph follows the same four-step pattern, We call it C R E R C. Claim. Reason. Example. Result. Contrast",myGen);
+    showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R.C</em><br>Formula.','Five sentences. One complete argument.','var(--red)');
+    await speak("Now for the body paragraphs. Every single body paragraph follows the same five-step pattern, We call it C R E R C. Claim. Reason. Example. Result. Contrast",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
@@ -911,7 +911,7 @@ async function runScene(idx,myGen){
 
   }else if(idx===3){
     showInter('BODY PARAGRAPHS','var(--red)','WATCH 5 COMPLETE EXAMPLES','<em>CRER</em><br>in action.','Sentence by sentence — spoken and shown.','var(--red)');
-    await speak("Now watch five complete body paragraphs built sentence by sentence. Listen for the Claim, the Reason, the Example, and the Result — exactly as in the introduction.",myGen);
+    await speak("Now watch five complete body paragraphs built sentence by sentence. Listen for the Claim, the Reason, the Example, and the Result, and the Contrast — exactly as in the introduction.",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
