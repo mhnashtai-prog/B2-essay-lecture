@@ -3,29 +3,27 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ESSAY DROP — V7</title>
+<title>ESSAY BUILDER</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --bg:#FAF9F7;--ink:#1C1C1E;--ink2:rgba(28,28,30,0.92);--ink3:rgba(28,28,30,0.75);
   --red:#c9140f;--red-s:rgba(201,20,15,0.08);--border:rgba(28,28,30,0.08);
   --c-intro:#3d9e95;--c-b1:#c9140f;--c-b3:#7b5ea7;--c-conc:#2d7a3a;
+  --footer-h:148px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{font-size:16px;}
 html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);
   font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;}
-
 .topbar{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 18px 9px;
   background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(14px);z-index:100;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;}
 .logo span{color:var(--red);}
 .spacer{flex:1;}
 .tbctr{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);}
-
 .stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);}
-
 .poster{position:relative;width:min(460px,93vw);height:min(530px,76vh);background:#fff;border-radius:22px;
   border:1px solid rgba(28,28,30,0.10);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
   box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);
@@ -33,14 +31,12 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
 .poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
 @keyframes pIn{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
-
 .flag{position:absolute;top:-2px;left:22px;z-index:10;}
 .flag-body{min-width:80px;padding:11px 14px 10px;display:flex;align-items:center;justify-content:center;position:relative;}
 .flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;white-space:nowrap;}
 .flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;
   clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
 .section-lbl{position:absolute;top:16px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;opacity:.3;}
-
 .card-dots-row{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:7px 16px 6px;border-top:1px solid rgba(0,0,0,.06);}
 .card-arrow{width:30px;height:30px;border-radius:50%;background:transparent;border:none;font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .card-arrow:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.07);}
@@ -50,7 +46,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .dot.active{width:18px;border-radius:3px;background:var(--ink);}
 .dot.done{background:rgba(0,0,0,.34);}
 .accent-bar{height:5px;flex-shrink:0;}
-
 .footer{flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);backdrop-filter:blur(16px);z-index:999;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);}
 .playback-row{display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 18px 8px;}
 .btn-nav{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.07);border:1px solid var(--border);font-size:22px;color:var(--ink3);cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -60,7 +55,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .btn-play{width:64px;height:64px;border-radius:50%;border:none;background:var(--ink);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 0 rgba(0,0,0,.28),0 8px 22px rgba(0,0,0,.22);transition:all .18s;font-size:22px;}
 .btn-play:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28);}
 .btn-play.running{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 8px 22px rgba(201,20,15,.24);}
-
 .wave{display:flex;align-items:flex-end;gap:3px;height:22px;width:32px;}
 .wb{width:4px;border-radius:2px;background:var(--ink3);}
 .wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}.wb:nth-child(4){height:72%}.wb:nth-child(5){height:40%}
@@ -68,17 +62,13 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .wb:nth-child(1){animation-delay:.00s}.wb:nth-child(2){animation-delay:.08s}.wb:nth-child(3){animation-delay:.16s}.wb:nth-child(4){animation-delay:.11s}.wb:nth-child(5){animation-delay:.04s}
 @keyframes wv{0%,100%{transform:scaleY(.22);opacity:.2}50%{transform:scaleY(1);opacity:.65}}
 .wave.off .wb{animation:none;transform:scaleY(.22);opacity:.18;}
-
 .tab-bar-wrap{display:flex;align-items:center;justify-content:center;padding:2px 18px 10px;}
 .tab-bar{display:inline-flex;align-items:center;background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;}
 .tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:8px 16px;border-radius:24px;border:none;cursor:pointer;background:transparent;color:var(--ink3);transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;font-weight:500;}
 .tab-btn.active{background:var(--ink);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.22);}
 .tab-btn:not(.active):hover{color:var(--ink2);}
-
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;pointer-events:none;opacity:0;}
 .scene.active{opacity:1;pointer-events:all;}
-
-/* sentence scroll (conclusion) */
 .sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
 .sentence-scroll::-webkit-scrollbar{display:none;}
 .s-line{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:400;line-height:1.6;color:rgba(17,17,17,.80);flex-shrink:0;opacity:0;transform:translateY(7px);transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);}
@@ -87,10 +77,10 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
 .s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
 
-/* INTERSTITIAL */
-.inter-ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;}
+/* INTERSTITIAL — sits above stage, below footer */
+.inter-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:#FAF9F7;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;}
 .inter-ov.show{opacity:1;}
-.inter-card{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;position:relative;opacity:0;transform:translateY(20px) scale(.97);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
+.inter-card{width:min(460px,92vw);height:min(530px,calc(100vh - var(--footer-h) - 28px));background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;position:relative;opacity:0;transform:translateY(20px) scale(.97);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
 .inter-ov.show .inter-card{opacity:1;transform:none;}
 .inter-flag{position:absolute;top:-2px;left:22px;z-index:10;}
 .inter-flag-body{padding:10px 14px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
@@ -104,10 +94,10 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .inter-sub strong{color:var(--ink);font-weight:600;}
 .inter-bottom{height:5px;flex-shrink:0;}
 
-/* INTRO PAIRS */
-.ov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
-.ov.show{opacity:1;}
-.ob{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
+/* INTRO PAIRS — FIX: bottom stops at footer */
+.ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.ov.show{opacity:1;pointer-events:all;}
+.ob{width:min(460px,92vw);height:min(530px,calc(100vh - var(--footer-h) - 28px));background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
 .ov.show .ob{opacity:1;transform:none;}
 .ob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
 .ob-flag{position:absolute;top:-2px;left:22px;z-index:10;}
@@ -133,24 +123,18 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .ob-foot{display:flex;align-items:center;justify-content:center;padding:10px 26px 14px;flex-shrink:0;}
 .ob-fl{display:none;}
 .ob-stop{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;padding:12px 36px;border-radius:50px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all .18s;box-shadow:0 4px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.18);}
-.ob-stop:hover{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 6px 18px rgba(201,20,15,.24);}
-.ob-stop:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
-.ob-wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
-.ob-wb{width:3px;border-radius:2px;background:var(--c-intro);}
-.ob-wb:nth-child(1){height:30%}.ob-wb:nth-child(2){height:65%}.ob-wb:nth-child(3){height:100%}.ob-wb:nth-child(4){height:60%}.ob-wb:nth-child(5){height:30%}
-.ob-wave.on .ob-wb{animation:wv2 .9s ease-in-out infinite;}
-.ob-wb:nth-child(1){animation-delay:.00s}.ob-wb:nth-child(2){animation-delay:.07s}.ob-wb:nth-child(3){animation-delay:.14s}.ob-wb:nth-child(4){animation-delay:.09s}.ob-wb:nth-child(5){animation-delay:.03s}
-@keyframes wv2{0%,100%{transform:scaleY(.2);opacity:.18}50%{transform:scaleY(1);opacity:1}}
+.ob-stop:hover{background:var(--red);}
+.ob-stop:active{transform:translateY(2px);}
 .ob-bottom{height:5px;background:var(--c-intro);flex-shrink:0;}
 .ob-dots{display:flex;gap:7px;margin-top:10px;}
 .bdot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.14);transition:all .3s cubic-bezier(.22,1,.36,1);}
 .bdot.active{transform:scale(1.8);background:var(--ink);}
 .bdot.done{background:rgba(0,0,0,.3);}
 
-/* BODY PARAGRAPH PAIRS OVERLAY */
-.bov{position:fixed;inset:0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
-.bov.show{opacity:1;}
-.bob{width:min(460px,92vw);height:min(530px,79vh);background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
+/* BODY PARAGRAPH PAIRS — FIX: bottom stops at footer */
+.bov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.bov.show{opacity:1;pointer-events:all;}
+.bob{width:min(460px,92vw);height:min(530px,calc(100vh - var(--footer-h) - 28px));background:#fff;border-radius:22px;box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 55px rgba(0,0,0,.16);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.95);transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);position:relative;flex-shrink:0;}
 .bov.show .bob{opacity:1;transform:none;}
 .bob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
 .bob-flag{position:absolute;top:-2px;left:22px;z-index:10;}
@@ -163,14 +147,9 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .bob-foot{display:flex;align-items:center;justify-content:center;padding:10px 24px 14px;flex-shrink:0;border-top:1px solid rgba(0,0,0,.06);}
 .bob-fl{display:none;}
 .bob-stop{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;padding:12px 36px;border-radius:50px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all .18s;box-shadow:0 4px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.18);}
-.bob-stop:hover{background:var(--red);box-shadow:0 4px 0 rgba(100,6,6,.4),0 6px 18px rgba(201,20,15,.24);}
-.bob-stop:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
-.bob-wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
+.bob-stop:hover{background:var(--red);}
+.bob-stop:active{transform:translateY(2px);}
 .bob-wb{width:3px;border-radius:2px;}
-.bob-wb:nth-child(1){height:30%}.bob-wb:nth-child(2){height:65%}.bob-wb:nth-child(3){height:100%}.bob-wb:nth-child(4){height:60%}.bob-wb:nth-child(5){height:30%}
-.bob-wave.on .bob-wb{animation:wv3 .9s ease-in-out infinite;}
-.bob-wb:nth-child(1){animation-delay:.00s}.bob-wb:nth-child(2){animation-delay:.07s}.bob-wb:nth-child(3){animation-delay:.14s}.bob-wb:nth-child(4){animation-delay:.09s}.bob-wb:nth-child(5){animation-delay:.03s}
-@keyframes wv3{0%,100%{transform:scaleY(.2);opacity:.18}50%{transform:scaleY(1);opacity:1}}
 .bob-bottom{height:5px;flex-shrink:0;}
 .bob-dots{display:flex;gap:7px;margin-top:10px;}
 
@@ -207,7 +186,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .crer-step:last-child .crer-connector{display:none;}
 .crer-content{flex:1;padding:7px 0 10px 12px;}
 .crer-role{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:3px;}
-.crer-desc{font-family:'Instrument Sans',sans-serif;font-size:13px;line-height:1.4;color:var(--ink3);}
 .crer-pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
 .crer-pill{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.5px;padding:3px 8px;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);white-space:nowrap;}
 
@@ -224,13 +202,12 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 <body>
 <div class="shell">
   <div class="topbar">
-    <div class="logo">ESSAY<span>_</span>DROP</div>
+    <div class="logo">ESSAY<span>_</span>BUILDER</div>
     <div class="spacer"></div>
-    <div class="tbctr" id="ctr">1 / 6</div>
+    <div class="tbctr" id="ctr">1 / 5</div>
   </div>
 
   <div class="stage" id="stage">
-
     <!-- SC0: OVERVIEW -->
     <div class="scene active" id="sc0">
       <div class="poster">
@@ -280,6 +257,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div class="accent-bar" style="background:var(--red)"></div>
       </div>
       <div class="swipe-hint">tap ▶ to begin</div>
+
     </div>
 
     <!-- SC1: QUESTION + INTRO PAIRS -->
@@ -322,9 +300,9 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
         <div class="section-lbl" style="color:var(--red)">STRUCTURE</div>
         <div class="crer-wrap">
-          <div class="crer-kicker">Body paragraphs · One suggested pattern</div>
-          <div class="crer-title">Try <em>C · R · E · R</em></div>
-          <div class="crer-oup">📘 Suggested by OUP · not a rule</div>
+          <div class="crer-kicker">A guide — not a rule</div>
+          <div class="crer-title">Claim + <em>Support</em></div>
+          <div class="crer-oup">📘 Use what fits · mix and match</div>
           <div class="crer-steps">
             <div class="crer-step">
               <div class="crer-letter-col">
@@ -347,9 +325,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
               <div class="crer-content">
                 <div class="crer-role" style="color:#1a6b3c;">REASON — explain why</div>
                 <div class="crer-pills">
-                  <span class="crer-pill">This is because…</span>
-                  <span class="crer-pill">This is largely due to…</span>
-                  <span class="crer-pill">Since…</span>
+                  <span class="crer-pill">This is because…</span><span class="crer-pill">This is largely due to…</span><span class="crer-pill">Since…</span>
                 </div>
               </div>
             </div>
@@ -361,9 +337,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
               <div class="crer-content">
                 <div class="crer-role" style="color:#1a5c8a;">EXAMPLE — give evidence</div>
                 <div class="crer-pills">
-                  <span class="crer-pill">For instance,</span>
-                  <span class="crer-pill">For example,</span>
-                  <span class="crer-pill">Indeed,</span>
+                  <span class="crer-pill">For instance,</span><span class="crer-pill">For example,</span><span class="crer-pill">Indeed,</span>
                 </div>
               </div>
             </div>
@@ -374,9 +348,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
               <div class="crer-content">
                 <div class="crer-role" style="color:#6b4ea8;">RESULT — the consequence</div>
                 <div class="crer-pills">
-                  <span class="crer-pill">As a result,</span>
-                  <span class="crer-pill">Consequently,</span>
-                  <span class="crer-pill">Therefore,</span>
+                  <span class="crer-pill">As a result,</span><span class="crer-pill">Consequently,</span><span class="crer-pill">Therefore,</span>
                 </div>
               </div>
             </div>
@@ -399,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 28px 10px;justify-content:center;gap:16px;">
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);">Watch 5 complete body paragraphs</div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.95;color:var(--ink);">See <span style="color:var(--red);">CRER</span><br>in action.</div>
-          <div style="font-family:'Instrument Sans',sans-serif;font-size:15px;line-height:1.65;color:var(--ink2);">Each paragraph is built sentence by sentence — <strong style="color:var(--ink);">Claim → Reason → Example → Result.</strong><br><br>Press <strong style="color:var(--ink);">▶ Play</strong> to watch all five examples spoken aloud, exactly as in the introduction.</div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-size:15px;line-height:1.65;color:var(--ink2);">Each paragraph is built sentence by sentence — <strong style="color:var(--ink);">Claim → Reason → Example → Result.</strong><br><br>Press <strong style="color:var(--ink);">▶ Play</strong> to watch all five examples spoken aloud.</div>
         </div>
         <div class="card-dots-row">
           <button class="card-arrow" onclick="prevScene()">‹</button>
@@ -427,10 +399,9 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div class="accent-bar" style="background:var(--c-conc)"></div>
       </div>
     </div>
-
   </div><!-- /stage -->
 
-  <div class="footer">
+  <div class="footer" id="mainFooter">
     <div class="playback-row">
       <div class="wave off" id="wL"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
       <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
@@ -521,8 +492,13 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 <div class="flash" id="flash"></div>
 
 <script>
-const TOTAL = 6; // 0-5 (sc0–sc4 = 5 scenes, but total counter shows 6 for fun)
 const SCENE_COUNT = 5;
+
+/* Measure real footer height and update CSS variable */
+function updateFooterVar(){
+  const f=document.getElementById('mainFooter');
+  if(f)document.documentElement.style.setProperty('--footer-h',f.offsetHeight+'px');
+}
 
 /* ─── DATA ─── */
 const NOTES_DATA = {
@@ -545,9 +521,10 @@ const NOTES_DATA = {
     {title:'Concluding (Cambridge corpus)',items:['"In conclusion," · "To sum up," · "All things considered," · "On the whole,"']}
   ],
   planning:[
-    {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Write 3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
-    {title:'The CRER body pattern',items:['<strong>CLAIM</strong> — state your point with a listing marker + viewpoint phrase.','<strong>REASON</strong> — explain why: "This is because…"','<strong>EXAMPLE</strong> — give evidence: "For instance…"','<strong>RESULT</strong> — state the consequence: "As a result…"']},
-    {title:'Common mistakes',items:['Never start writing without knowing what P4 will be.','Do not copy the question — rephrase everything.','Plan your linking words — one different word per paragraph.']}
+    {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Jot 2–3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
+    {title:'What every body paragraph needs',items:['<strong>A clear claim</strong> — open with a viewpoint marker + your point.','<strong>Support</strong> — illustrate, explain, develop it. Any combination works: a reason, an example, a result, a contrast, a statistic. Use what fits.','Two or three sentences of support is plenty at 190 words.']},
+    {title:'What the CRER labels actually mean',items:['C·R·E·R is a <strong>guide, not a rule.</strong> It shows one way to build support.','You do not need all four steps. You do not need them in order.','Focus on making your point clear and convincing — the labels will look after themselves.']},
+    {title:'Common mistakes',items:['Starting without knowing what your own third idea will be.','Copying phrases from the question — always rephrase.','Using the same opening marker in two paragraphs — vary them.']}
   ],
   wordlimit:[
     {title:'Target: 140–190 words',items:['<strong>Under 130 = automatic mark penalty.</strong>','190 words = roughly 12–15 sentences across 5 paragraphs.','Intro 2–3 · Each body 3–4 · Conclusion 2–3.']},
@@ -588,51 +565,47 @@ const PAIRS = [
     tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.' }
 ];
 
-/* Body paragraphs — continuous flowing prose, poster style.
-   starter = big Barlow Condensed word. rest = everything after, plain black.
-   links = discourse markers to highlight red inline.                         */
 const BODY_PAIRS = [
-  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 1', topic:'📝 CONCENTRATION',
+  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 1', topic:'📝 P2 — FIRST POINT',
     starter:'Firstly,',
-    rest:" it seems to me that limiting smartphones helps young people concentrate more effectively on their studies. This is because apps are deliberately designed to interrupt attention constantly, making sustained focus very difficult. For instance, phone-free schools have reported clear improvements in behaviour and exam results. As a result, students who limit screen time find it easier to achieve higher grades.",
-    links:['This is because','For instance,','As a result,']
+    opinion:'in my opinion,',
+    keyExpr:'the main advantage of limiting phones',
+    rest:" is improved concentration. This is because apps are designed to interrupt attention constantly. As a result, phone-free schools have reported significant improvements in focus and academic results.",
+    links:['This is because','As a result,'],
+    note:'Open with a listing marker + your opinion. Name the advantage or drawback clearly, then support it.'
   },
-  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 2', topic:'🌙 SLEEP & HEALTH',
+  { color:'#c9140f', flagTitle:'BODY PARAGRAPH 2', topic:'💡 P3 — SECOND POINT',
     starter:'Furthermore,',
-    rest:" as far as I am concerned, restricting phones improves the sleep and mental health of young people. This is because screen light makes it harder to fall asleep naturally. For example, teens who use phones before bed are twice as likely to suffer sleep problems. Consequently, clear limits on evening screen time could benefit millions of young people.",
-    links:['This is because','For example,','Consequently,']
+    opinion:'it seems to me that',
+    keyExpr:'one key drawback of unrestricted phone use',
+    rest:" is the damage it does to sleep. Screen light suppresses melatonin and, consequently, tired students struggle to perform well in class.",
+    links:['consequently,'],
+    note:'Vary your listing marker and opinion phrase each time. Name the drawback, then illustrate it.'
   },
-  { color:'#7b5ea7', flagTitle:'BODY PARAGRAPH 3 ★', topic:'💡 YOUR OWN IDEA',
+  { color:'#7b5ea7', flagTitle:'BODY PARAGRAPH 3 ★', topic:'⭐ P4 — YOUR OWN IDEA',
     starter:'In addition,',
-    rest:" I firmly believe that excessive phone use stops young people developing real social skills. This is because screens replace the face-to-face practice needed to read emotions and handle conflict. For instance, many employers say graduates struggle with teamwork and direct communication. As a consequence, limiting phones during childhood may produce more confident adults.",
-    links:['This is because','For instance,','As a consequence,']
-  },
-  { color:'#c9140f', flagTitle:'BODY P1 — OTHER SIDE', topic:'📚 PHONES HELP LEARNING',
-    starter:'However,',
-    rest:" it could be argued that smartphones are valuable tools for independent learning. This is because students use them to research, revise and collaborate with classmates. For example, apps like Duolingo and Khan Academy are used by millions of learners every day. As a result, teaching responsible use may be more effective than a complete ban.",
-    links:['This is because','For example,','As a result,']
-  },
-  { color:'#c9140f', flagTitle:'BODY P2 — OTHER SIDE', topic:'🛡️ SAFETY',
-    starter:'On the other hand,',
-    rest:" phones help keep young people safe and connected to their families. This is because in an emergency, contacting a parent immediately can make a critical difference. For instance, parents feel far less anxious when their child travels independently with a phone. Consequently, setting clear limits rather than a ban may be the best solution.",
-    links:['This is because','For instance,','Consequently,']
+    opinion:'as far as I am concerned,',
+    keyExpr:'one often overlooked disadvantage',
+    rest:" is the effect on social skills. Face-to-face communication — reading emotions, handling disagreement — needs real practice. Therefore, heavy phone use may leave young people less prepared for adult life.",
+    links:['Therefore,'],
+    note:'This point must be your own — not one from the question. Any support that develops your idea works.'
   }
 ];
 
 const CONCL_DATA = [
-  {role:'SUMMARY', kw:'In conclusion,',    text:"In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration."},
-  {role:'POINT 1', kw:'On one hand,',      text:"On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing."},
-  {role:'POINT 2', kw:'On the other hand,',text:"On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful."},
-  {role:'REWORD',  kw:'In other words,',   text:"In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used."},
-  {role:'VERDICT', kw:'Overall,',          text:"Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people."}
+  {role:'SUMMARY', kw:'In conclusion,',     text:"In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration."},
+  {role:'POINT 1', kw:'On one hand,',       text:"On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing."},
+  {role:'POINT 2', kw:'On the other hand,', text:"On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful."},
+  {role:'REWORD',  kw:'In other words,',    text:"In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used."},
+  {role:'VERDICT', kw:'Overall,',           text:"Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people."}
 ];
 
 /* ─── STATE ─── */
-let cur = 0, running = false, bannerOn = false, bodyBannerOn = false, gen = 0;
+let cur=0, running=false, bannerOn=false, bodyBannerOn=false, gen=0;
 
 /* ─── SPEECH ─── */
-const synth = window.speechSynthesis;
-let voice = null;
+const synth=window.speechSynthesis;
+let voice=null;
 function loadVoice(){
   const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};
   if(synth.getVoices().length)p();else synth.onvoiceschanged=p;
@@ -680,32 +653,38 @@ function updateDots(i){
   }
 }
 
+/* ─── SECTION BOUNDARIES ───────────────────────────────────────
+   Each section has a final scene. runScene stops (finishSection)
+   when the current scene index equals the section's end scene,
+   instead of automatically chaining to the next section.
+─────────────────────────────────────────────────────────────── */
+const SECTION_END = { intro:1, body:3, conc:4 };
+let activeSection = 'intro';
+
+function sectionForScene(idx){
+  if(idx<=1)return 'intro';
+  if(idx<=3)return 'body';
+  return 'conc';
+}
+
 /* ─── TAB SYNC ─── */
 function syncTab(idx){
-  let t='intro';
-  if(idx===2||idx===3)t='body';
-  else if(idx===4)t='conc';
+  const t=sectionForScene(idx);
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
 }
 function jumpTab(tab){
   if(tab==='notes'){openNotes();return;}
   hardStop();clearStacks();
-
-  // Each tab navigates to its scene AND immediately starts playing that section
-  const map={intro:1, body:2, conc:4};
+  const map={intro:1,body:2,conc:4};
   const target=map[tab];
   if(typeof target==='number'){
-    cur=target;
-    showScene(cur);
-    // Small delay so the scene renders before speech starts
+    activeSection=tab;
+    cur=target;showScene(cur);
     setTimeout(()=>{
       if(!running){
-        running=true;
-        const myGen=gen;
-        const b=document.getElementById('btnPlay');
-        b.textContent='⏹';b.classList.add('running');
-        updateNavBtns();
-        runScene(cur,myGen);
+        running=true;const myGen=gen;
+        const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
+        updateNavBtns();runScene(cur,myGen);
       }
     },120);
   }
@@ -758,14 +737,13 @@ async function runPairs(myGen){
   document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
   document.getElementById('ov').classList.add('show');
   for(let i=0;i<PAIRS.length;i++){if(!running||!bannerOn||myGen!==gen)break;await showPair(PAIRS[i],i,myGen);}
-  if(running&&myGen===gen)closeBanner();
+  closeBanner();
 }
 async function showPair(p,idx,myGen){
   const ob=document.getElementById('ob');
   if(idx>0){ob.classList.add('exit');await wait(190,myGen);if(!running||!bannerOn||myGen!==gen){ob.classList.remove('exit');return;}ob.classList.remove('exit');}
   if(!running||!bannerOn||myGen!==gen)return;
   document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
-  document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
   const sEl=document.getElementById('obS');
   sEl.textContent=p.s;
   const l=p.s.length;
@@ -778,79 +756,135 @@ async function showPair(p,idx,myGen){
   await wait(24,myGen);
   rEl.style.cssText='';lEl.style.cssText='';tEl.style.cssText='';
   for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
-  document.getElementById('obW')&&document.getElementById('obW').classList.add('on');
   waveOn();
   await speak(p.f,myGen);if(!running||!bannerOn||myGen!==gen)return;
   await wait(140,myGen);
   await speak(p.link,myGen);if(!running||!bannerOn||myGen!==gen)return;
   await wait(140,myGen);
   await speak(p.tf,myGen);if(!running||!bannerOn||myGen!==gen)return;
-  document.getElementById('obW')&&document.getElementById('obW').classList.remove('on');
   waveOff();
   await wait(460,myGen);
 }
 
 /* ─── BODY PARAGRAPH BANNER ─── */
-function closeBodyBanner(){document.getElementById('bov').classList.remove('show');document.getElementById('bob').classList.remove('exit');bodyBannerOn=false;}
+function closeBodyBanner(){
+  document.getElementById('bov').classList.remove('show');
+  document.getElementById('bob').classList.remove('exit');
+  bodyBannerOn=false;
+}
 
 async function runBodyPairs(myGen){
   bodyBannerOn=true;
   document.getElementById('bobDots').innerHTML=BODY_PAIRS.map((_,i)=>`<div class="bdot" id="bbd${i}"></div>`).join('');
   document.getElementById('bov').classList.add('show');
-  for(let i=0;i<BODY_PAIRS.length;i++){if(!running||!bodyBannerOn||myGen!==gen)break;await showBodyPair(BODY_PAIRS[i],i,myGen);}
-  if(running&&myGen===gen)closeBodyBanner();
+  for(let i=0;i<BODY_PAIRS.length;i++){
+    if(!running||!bodyBannerOn||myGen!==gen)break;
+    await showBodyPair(BODY_PAIRS[i],i,myGen);
+  }
+  /* FIX 1: Always close banner after loop — whether completed or interrupted */
+  closeBodyBanner();
+  /* runScene continuation happens in the caller after this await resolves */
 }
 
 async function showBodyPair(para,idx,myGen){
   const bob=document.getElementById('bob');
-  if(idx>0){bob.classList.add('exit');await wait(190,myGen);if(!running||!bodyBannerOn||myGen!==gen){bob.classList.remove('exit');return;}bob.classList.remove('exit');}
+  if(idx>0){
+    bob.classList.add('exit');
+    await wait(190,myGen);
+    if(!running||!bodyBannerOn||myGen!==gen){bob.classList.remove('exit');return;}
+    bob.classList.remove('exit');
+  }
   if(!running||!bodyBannerOn||myGen!==gen)return;
 
   document.getElementById('bobNum').textContent=(idx+1)+' / '+BODY_PAIRS.length;
-  document.getElementById('bobFL').textContent='example '+(idx+1)+' of '+BODY_PAIRS.length;
   document.getElementById('bobFlagNum').textContent=para.flagTitle;
   document.getElementById('bobFlagBody').style.background=para.color;
   document.getElementById('bobBottom').style.background=para.color;
   document.querySelectorAll('.bob-wb').forEach(w=>w.style.background=para.color);
-  for(let i=0;i<BODY_PAIRS.length;i++){const d=document.getElementById('bbd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  for(let i=0;i<BODY_PAIRS.length;i++){
+    const d=document.getElementById('bbd'+i);
+    if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}
+  }
 
   const body=document.getElementById('bobBody');
   body.innerHTML='';
 
-  // Topic kicker — small label, like ob-hlbl
+  /* ── Topic kicker ── */
   const topicLbl=document.createElement('div');
   topicLbl.style.cssText=`font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;flex-shrink:0;color:${para.color};`;
   topicLbl.textContent=para.topic;
   body.appendChild(topicLbl);
 
-  // Starter word — large Barlow Condensed, exactly like ob-starter
-  const starterEl=document.createElement('div');
-  const sLen=para.starter.length;
-  const sFontSize=sLen>16?'clamp(1.6rem,5.5vw,2.2rem)':sLen>10?'clamp(2rem,7vw,3rem)':'clamp(2.4rem,8vw,3.6rem)';
-  starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.92;letter-spacing:.5px;color:var(--ink);flex-shrink:0;margin-bottom:8px;`;
-  starterEl.textContent=para.starter;
-  body.appendChild(starterEl);
+  /* ── Row 1: Listing marker (big) + opinion phrase (smaller, inline) ── */
+  const claimRow=document.createElement('div');
+  claimRow.style.cssText='display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;flex-shrink:0;margin-bottom:10px;';
 
-  // Flowing paragraph — black text, linking words highlighted red
-  // Build HTML by replacing each linking word with red span
+  const starterEl=document.createElement('span');
+  const sLen=para.starter.length;
+  const sFontSize=sLen>16?'clamp(1.6rem,5.5vw,2.2rem)':sLen>10?'clamp(2rem,7vw,2.8rem)':'clamp(2.4rem,8vw,3.4rem)';
+  starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.9;letter-spacing:.5px;color:var(--ink);`;
+  starterEl.textContent=para.starter;
+  claimRow.appendChild(starterEl);
+
+  if(para.opinion){
+    const opEl=document.createElement('span');
+    opEl.style.cssText=`font-family:"Instrument Sans",sans-serif;font-size:13px;font-weight:500;font-style:italic;color:${para.color};line-height:1;`;
+    opEl.textContent=para.opinion;
+    claimRow.appendChild(opEl);
+  }
+  body.appendChild(claimRow);
+
+  /* ── Key expression pill ── */
+  if(para.keyExpr){
+    const keyEl=document.createElement('div');
+    keyEl.style.cssText=`font-family:"DM Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.5px;color:#fff;background:${para.color};display:inline-block;padding:4px 10px;border-radius:4px;margin-bottom:12px;flex-shrink:0;`;
+    keyEl.textContent=para.keyExpr;
+    body.appendChild(keyEl);
+  }
+
+  /* ── Body sentences with linking words highlighted ── */
   let html=para.rest;
-  para.links.forEach(lw=>{
-    html=html.replace(lw,`<span style="color:var(--red);font-weight:700">${lw}</span>`);
+  (para.links||[]).forEach(lw=>{
+    const escaped=lw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    html=html.replace(new RegExp(escaped),'<span style="color:var(--red);font-weight:700;font-family:\'DM Mono\',monospace;font-size:12px;letter-spacing:.3px;">'+lw+'</span>');
   });
 
   const paraEl=document.createElement('div');
-  paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:15px;font-weight:400;line-height:1.65;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(6px);transition:opacity .38s .18s,transform .44s .18s cubic-bezier(.22,1,.36,1);';
+  paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:15px;font-weight:400;line-height:1.65;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .5s cubic-bezier(.22,1,.36,1);';
   paraEl.innerHTML=html;
   body.appendChild(paraEl);
 
-  // Speak the whole paragraph as one natural flow
-  waveOn();
-  await speak(para.starter+para.rest, myGen);
-  if(!running||!bodyBannerOn||myGen!==gen){waveOff();return;}
+  /* ── Spacer ── */
+  const spacer=document.createElement('div');
+  spacer.style.cssText='flex:1;min-height:6px;';
+  body.appendChild(spacer);
 
-  // Reveal paragraph text after speaking
+  /* ── Encouraging note ── */
+  if(para.note){
+    const noteEl=document.createElement('div');
+    noteEl.style.cssText='font-family:"DM Mono",monospace;font-size:9.5px;line-height:1.55;letter-spacing:.2px;color:rgba(28,28,30,.5);background:rgba(0,0,0,.04);border-left:2.5px solid rgba(0,0,0,.12);padding:7px 10px;border-radius:0 5px 5px 0;flex-shrink:0;opacity:0;transition:opacity .5s .6s ease;';
+    noteEl.textContent='💡 ' + para.note;
+    body.appendChild(noteEl);
+    setTimeout(()=>{ noteEl.style.opacity='1'; }, 700);
+  }
+
+  /* Reveal text BEFORE speaking so it's readable while audio plays */
+  await wait(60,myGen); /* one tick for DOM paint */
+  if(!running||!bodyBannerOn||myGen!==gen){return;}
+  paraEl.offsetHeight; /* force reflow so transition fires */
   paraEl.style.opacity='1';
   paraEl.style.transform='none';
+
+  /* Small pause so fade-in is visible before speech starts */
+  await wait(180,myGen);
+  if(!running||!bodyBannerOn||myGen!==gen){return;}
+
+  /* Speak whole paragraph while text is already showing */
+  waveOn();
+  const fullText = para.starter + (para.opinion ? " " + para.opinion + "," : "") + (para.keyExpr ? " " + para.keyExpr : "") + para.rest;
+  await speak(fullText,myGen);
+  if(!running||!bodyBannerOn||myGen!==gen){waveOff();return;}
+
   waveOff();
   await wait(600,myGen);
 }
@@ -881,7 +915,7 @@ async function runScene(idx,myGen){
 
   if(idx===0){
     waveOn();
-    await speak("Welcome to Essay Drop. By the end of this lesson, you will know exactly how to write a B2 opinion essay — sentence by sentence, paragraph by paragraph.",myGen);
+    await speak("Welcome to Essay Builder. By the end of this lesson, you will know exactly how to write a B2 opinion essay — sentence by sentence, paragraph by paragraph.",myGen);
     if(!running||myGen!==gen){waveOff();return;}
     waveOff();
 
@@ -899,23 +933,23 @@ async function runScene(idx,myGen){
     await runPairs(myGen);
 
   }else if(idx===2){
-    showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R.C</em><br>Formula.','Five sentences. One complete argument.','var(--red)');
-    await speak("Now for the body paragraphs. Every single body paragraph follows the same five-step pattern, We call it C R E R C. Claim. Reason. Example. Result. Contrast",myGen);
+    showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R</em><br>Formula.','Four sentences. One complete argument.','var(--red)');
+    await speak("Now for the body paragraphs. Every paragraph needs a claim — your point — and support. This card shows one way to build that support. Use what fits your argument.",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
     waveOn();
-    await speak("Here is the full structure. The Claim states your point. The Reason explains why. The Example gives concrete evidence.  The Result shows the consequence. And the Contrast provides a contradictory view. Four sentences. One complete paragraph.",myGen);
+    await speak("Every body paragraph needs a claim and some support. The claim opens with a viewpoint marker — your clear point. The support is up to you: a reason, an example, a result, a contrast. Two or three sentences is plenty at this word count.",myGen);
     if(!running||myGen!==gen){waveOff();return;}
     waveOff();
 
   }else if(idx===3){
-    showInter('BODY PARAGRAPHS','var(--red)','WATCH 5 COMPLETE EXAMPLES','<em>CRER</em><br>in action.','Sentence by sentence — spoken and shown.','var(--red)');
-    await speak("Now watch five complete body paragraphs built sentence by sentence. Listen for the Claim, the Reason, the Example, and the Result, and the Contrast — exactly as in the introduction.",myGen);
+    showInter('BODY PARAGRAPHS','var(--red)','5 SHORT EXAMPLES','<em>Claim</em><br>+ Support.','See how a clear point + 2–3 sentences of support is enough.','var(--red)');
+    await speak("Here are five short body paragraph examples. Each one opens with a claim, then supports it in just two or three sentences. Notice how different each one is — there is no single correct pattern.",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
-    await runBodyPairs(myGen);
+    await runBodyPairs(myGen); /* awaits all 5, banner closes inside, then falls through */
 
   }else if(idx===4){
     waveOn();
@@ -933,29 +967,39 @@ async function runScene(idx,myGen){
   if(!running||myGen!==gen)return;
   await wait(440,myGen);
   if(!running||myGen!==gen)return;
-  cur=idx+1;runScene(cur,myGen);
+
+  /* Stop at section end — do not chain into next section */
+  const sectionEnd = SECTION_END[activeSection] ?? (SCENE_COUNT-1);
+  if(idx >= sectionEnd){ finishSection(); return; }
+  cur=idx+1;
+  runScene(cur,myGen);
 }
 
 /* ─── PLAYBACK ─── */
 function handlePlay(){
   if(!running){
+    if(cur===0) activeSection='intro'; // overview defaults to intro section
     running=true;const myGen=gen;
     const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
     updateNavBtns();runScene(cur,myGen);
   }else{hardStop();updateNavBtns();}
 }
 function clearStacks(){const el=document.getElementById('stk4');if(el)el.innerHTML='';}
-function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;showScene(cur);updateNavBtns();}
-function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);showScene(cur);updateNavBtns();}
+function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
+function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
 function updateNavBtns(){
   document.getElementById('btnPrev').disabled=cur<=0;
   document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;
 }
-function finishAll(){
+/* Resets play button after a section finishes naturally */
+function finishSection(){
   hardStop();
-  const b=document.getElementById('btnPlay');b.textContent='↺';updateNavBtns();
-  b.onclick=()=>{cur=0;clearStacks();b.textContent='▶';b.onclick=handlePlay;buildDots();showScene(0);updateNavBtns();};
+  const b=document.getElementById('btnPlay');
+  b.textContent='▶';b.classList.remove('running');
+  b.onclick=handlePlay;
+  updateNavBtns();
 }
+function finishAll(){ finishSection(); }
 
 /* ─── FX ─── */
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
@@ -982,7 +1026,9 @@ let _tx=0;
 document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
 
+window.addEventListener('resize',updateFooterVar);
 loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
+requestAnimationFrame(updateFooterVar);
 </script>
 </body>
 </html>
