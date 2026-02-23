@@ -900,12 +900,12 @@ async function runScene(idx,myGen){
 
   }else if(idx===2){
     showInter('BODY PARAGRAPHS','var(--red)','PARAGRAPHS 2–4 OF 5','The <em>C·R·E·R</em><br>Formula.','Four sentences. One complete argument.','var(--red)');
-    await speak("Now for the body paragraphs. Every single body paragraph follows the same four-step pattern, recommended by Oxford University Press. We call it C R E R. Claim. Reason. Example. Result.",myGen);
+    await speak("Now for the body paragraphs. Every single body paragraph follows the same four-step pattern, We call it C R E R C. Claim. Reason. Example. Result. Contrast",myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
     waveOn();
-    await speak("Here is the full structure. The Claim states your point. The Reason explains why. The Example gives concrete evidence. And the Result shows the consequence. Four sentences. One complete paragraph.",myGen);
+    await speak("Here is the full structure. The Claim states your point. The Reason explains why. The Example gives concrete evidence.  The Result shows the consequence. And the Contrast provides a contradictory view. Four sentences. One complete paragraph.",myGen);
     if(!running||myGen!==gen){waveOff();return;}
     waveOff();
 
