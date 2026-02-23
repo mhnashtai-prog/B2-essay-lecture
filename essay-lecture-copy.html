@@ -3,977 +3,1537 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ESSAY DROP — V4</title>
+<title>ESSAY BUILDER</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ═══ PALETTE ═══ */
 :root{
-  --bg:#f0efec;
-  --card:#ffffff;
-  --ink:#111111;
-  --ink2:rgba(17,17,17,0.62);
-  --ink3:rgba(17,17,17,0.28);
-  --red:#c9140f;
-  --red-s:rgba(201,20,15,0.08);
-  --border:rgba(0,0,0,0.07);
-
-  /* paragraph accent colours */
-  --c-intro:#3d9e95;
-  --c-b1:#c9140f;
-  --c-b2:#c9140f;
-  --c-b3:#7b5ea7;
-  --c-conc:#2d7a3a;
+  --bg:#FAF9F7;--ink:#1C1C1E;--ink2:rgba(28,28,30,0.92);--ink3:rgba(28,28,30,0.68);
+  --red:#c9140f;--red-s:rgba(201,20,15,0.08);--border:rgba(28,28,30,0.08);
+  --c-intro:#3d9e95;--c-b1:#c9140f;--c-b3:#7b5ea7;--c-conc:#2d7a3a;
+  --footer-h:148px;
 }
-
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;overflow:hidden;position:fixed;
-  background:var(--bg);font-family:'Instrument Sans',sans-serif;
-  color:var(--ink);-webkit-font-smoothing:antialiased;}
-
-/* ─── SHELL ─── */
+html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);
+  font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;}
 
-/* ─── TOPBAR ─── */
-.topbar{
-  flex-shrink:0;display:flex;align-items:center;gap:.55rem;
-  padding:.48rem .9rem .38rem;
-  background:rgba(240,239,236,0.97);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(14px);z-index:100;
-}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;
-  letter-spacing:.22em;text-transform:uppercase;color:var(--ink);}
+/* TOPBAR */
+.topbar{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 18px 9px;
+  background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(14px);z-index:100;position:relative;overflow:hidden;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;position:relative;z-index:2;}
 .logo span{color:var(--red);}
 .spacer{flex:1;}
-.tips-btn{
-  font-family:'DM Mono',monospace;font-size:.3rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:.2rem .6rem;border-radius:20px;background:rgba(0,0,0,.06);
-  color:var(--ink3);border:1px solid var(--border);cursor:pointer;transition:all .2s;
-}
-.tips-btn:hover{background:rgba(0,0,0,.1);color:var(--ink2);}
-.tips-btn.active{background:var(--red-s);color:var(--red);border-color:rgba(201,20,15,.2);}
-.tbctr{font-family:'DM Mono',monospace;font-size:.36rem;letter-spacing:.14em;color:var(--ink3);}
+.tbctr{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);position:relative;z-index:2;}
+.topbar-words{position:absolute;inset:0;display:flex;align-items:center;gap:18px;padding:0 160px 0 190px;overflow:hidden;pointer-events:none;z-index:1;}
+.tw{font-family:'DM Mono',monospace;font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(28,28,30,0.055);white-space:nowrap;flex-shrink:0;}
+.tw.red{color:rgba(201,20,15,0.07);}
+.tw.lg{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;color:rgba(28,28,30,0.06);}
 
-/* progress bar */
-.pbar-row{flex-shrink:0;display:flex;gap:2.5px;padding:.0rem .9rem .3rem;background:rgba(240,239,236,0.97);}
-.pseg{flex:1;height:2px;border-radius:2px;background:rgba(0,0,0,.09);overflow:hidden;position:relative;}
-.psegf{position:absolute;inset:0;border-radius:2px;transform:scaleX(0);transform-origin:left;
-  transition:transform .45s cubic-bezier(.22,1,.36,1);}
-.pseg.done .psegf{transform:scaleX(1);background:var(--red);}
-.pseg.active .psegf{transform:scaleX(1);background:var(--ink);}
+/* STAGE */
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);padding-bottom:20px;}
+.bg-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
+.bw{position:absolute;font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:2px;line-height:1;user-select:none;white-space:nowrap;}
+.bw.mono{font-family:'DM Mono',monospace;font-weight:500;letter-spacing:3px;}
+.bw.l1{top:4%;left:1%;font-size:clamp(9px,1.4vw,13px);color:rgba(201,20,15,0.13);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l2{top:16%;left:1%;font-size:clamp(8px,1.1vw,11px);color:rgba(28,28,30,0.09);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l3{top:30%;left:1%;font-size:clamp(8px,1.1vw,11px);color:rgba(61,158,149,0.12);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l4{top:44%;left:1%;font-size:clamp(9px,1.4vw,13px);color:rgba(28,28,30,0.08);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l5{top:58%;left:1%;font-size:clamp(8px,1.1vw,11px);color:rgba(201,20,15,0.1);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l6{top:72%;left:1%;font-size:clamp(8px,1.1vw,11px);color:rgba(28,28,30,0.07);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.l7{top:84%;left:1%;font-size:clamp(9px,1.3vw,12px);color:rgba(123,94,167,0.1);transform:rotate(-90deg) translateX(-100%);transform-origin:top left;}
+.bw.r1{top:6%;right:0;font-size:clamp(9px,1.4vw,13px);color:rgba(28,28,30,0.09);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r2{top:18%;right:0;font-size:clamp(8px,1.1vw,11px);color:rgba(201,20,15,0.12);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r3{top:32%;right:0;font-size:clamp(8px,1.1vw,11px);color:rgba(28,28,30,0.07);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r4{top:46%;right:0;font-size:clamp(9px,1.3vw,12px);color:rgba(61,158,149,0.11);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r5{top:60%;right:0;font-size:clamp(8px,1.1vw,11px);color:rgba(28,28,30,0.09);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r6{top:74%;right:0;font-size:clamp(8px,1.1vw,11px);color:rgba(201,20,15,0.1);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.r7{top:86%;right:0;font-size:clamp(9px,1.4vw,13px);color:rgba(123,94,167,0.11);transform:rotate(90deg) translateX(100%);transform-origin:top right;}
+.bw.t2{top:6%;left:50%;transform:translateX(-50%);font-size:clamp(34px,5.5vw,52px);color:rgba(28,28,30,0.025);letter-spacing:2px;}
+.bw.b2{bottom:8%;left:50%;transform:translateX(-50%);font-size:clamp(30px,4.5vw,46px);color:rgba(201,20,15,0.025);letter-spacing:2px;}
+.wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-22deg);font-family:'Barlow Condensed',sans-serif;font-size:clamp(70px,14vw,130px);font-weight:900;letter-spacing:6px;text-transform:uppercase;color:rgba(28,28,30,0.018);white-space:nowrap;pointer-events:none;user-select:none;z-index:0;}
+.marquee-strip{position:absolute;left:0;right:0;overflow:hidden;white-space:nowrap;pointer-events:none;}
+.marquee-strip.top-s{top:0;height:22px;border-bottom:1px solid rgba(28,28,30,0.04);}
+.marquee-strip.bot-s{bottom:0;height:22px;border-top:1px solid rgba(28,28,30,0.04);}
+.marquee-inner{display:inline-block;animation:mq 28s linear infinite;}
+.marquee-inner.rev{animation-direction:reverse;animation-duration:34s;}
+.mword{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:rgba(28,28,30,0.07);padding:0 14px;line-height:22px;}
+.mword.accent{color:rgba(201,20,15,0.09);}
+.mword.teal{color:rgba(61,158,149,0.09);}
+.mword.purple{color:rgba(123,94,167,0.09);}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.stat-block{position:absolute;pointer-events:none;}
+.stat-block.sb1{top:50%;left:1.5%;transform:translateY(-50%);}
+.stat-block.sb2{top:50%;right:1.5%;transform:translateY(-50%);}
+.sb-inner{display:flex;flex-direction:column;gap:8px;}
+.sb-item{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(28,28,30,0.07);line-height:1.4;writing-mode:vertical-rl;}
+.sb-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,2.5vw,22px);font-weight:900;color:rgba(28,28,30,0.055);letter-spacing:1px;writing-mode:vertical-rl;}
+.sb-num.red{color:rgba(201,20,15,0.08);}
+.sb-num.teal{color:rgba(61,158,149,0.08);}
 
-/* ─── STAGE ─── */
-.stage{
-  flex:1;min-height:0;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--bg);
-}
-
-/* ═══════════════════════════════════════════════
-   THE POSTER CARD — fixed size, from INTUITY plan
-   min(400px,88vw) × min(500px,80vh)
-═══════════════════════════════════════════════ */
-.poster{
-  position:relative;
-  width:min(400px,88vw);
-  height:min(500px,80vh);
-  background:var(--card);
-  border-radius:1.4rem;
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  box-shadow:
-    0 2px 0 rgba(255,255,255,0.9) inset,
-    4px 6px 0 rgba(0,0,0,0.06),
-    0 20px 50px rgba(0,0,0,0.18),
-    0 4px 12px rgba(0,0,0,0.1);
-  flex-shrink:0;
-  animation:pIn .42s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes pIn{
-  from{opacity:0;transform:translateY(18px) scale(.96);}
-  to{opacity:1;transform:none;}
-}
-
-/* FLAG — big number badge, zigzag bottom, from INTUITY */
-.flag{
-  position:absolute;top:-2px;left:1.6rem;
-  width:72px;z-index:10;
-  display:flex;flex-direction:column;align-items:center;
-}
-.flag-body{
-  width:100%;padding:.75rem .3rem .6rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  position:relative;gap:.06rem;
-}
-.flag-num{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(.9rem,2.8vw,1.1rem);font-weight:900;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:#fff;line-height:1.1;text-align:center;
-  padding:0 .2rem;
-}
-/* zigzag bottom edge */
-.flag-body::after{
-  content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;
-  background:inherit;
-  clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);
-}
-
-/* SECTION LABEL — subtle top right, orientation only */
-.section-lbl{
-  position:absolute;top:1rem;right:1.3rem;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.72rem;font-weight:900;letter-spacing:.18em;
-  text-transform:uppercase;opacity:.35;
-}
-
-/* CARD BODY — scrollable sentences */
-.card-body{
-  flex:1;min-height:0;
-  display:flex;flex-direction:column;
-  padding:3.6rem 1.6rem .6rem 1.7rem;
-  overflow:hidden;
-}
-
-/* micro heading */
-.card-heading{
-  font-family:'DM Mono',monospace;
-  font-size:.28rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(0,0,0,.28);margin-bottom:.5rem;flex-shrink:0;
-}
-
-/* Scrollable sentence area */
-.sentence-scroll{
-  flex:1;min-height:0;
-  overflow-y:auto;
-  display:flex;flex-direction:column;
-  gap:.32rem;
-  /* hide scrollbar but allow scroll */
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-}
-.sentence-scroll::-webkit-scrollbar{display:none;}
-
-/* Each sentence line */
-.s-line{
-  font-family:'Instrument Sans',sans-serif;
-  font-size:clamp(.92rem,2.5vw,1.06rem);
-  font-weight:400;line-height:1.62;
-  color:rgba(17,17,17,.78);
-  flex-shrink:0;
-  opacity:0;transform:translateY(7px);
-  transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);
-  padding:.14rem 0;
-  border-bottom:1px solid rgba(0,0,0,.04);
-}
-.s-line:last-child{border-bottom:none;}
-.s-line.in{opacity:1;transform:none;}
-.s-line.first{
-  color:var(--ink);font-weight:600;
-  font-size:clamp(.98rem,2.6vw,1.12rem);
-}
-/* role badge */
-.s-role{
-  display:inline-block;
-  font-family:'DM Mono',monospace;
-  font-size:.26rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  padding:.1rem .4rem;border-radius:2px;
-  margin-right:.38rem;
-  vertical-align:middle;flex-shrink:0;
-  border-left:2.5px solid currentColor;
-}
-/* BUILD MODE — claim construction steps */
-.build-step{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(1rem,3.2vw,1.2rem);
-  font-weight:700;letter-spacing:.01em;
-  line-height:1.35;color:var(--ink);
-  flex-shrink:0;padding:.2rem 0;
-  opacity:0;transform:translateX(-6px);
-  transition:opacity .32s ease,transform .36s cubic-bezier(.22,1,.36,1);
-}
-.build-step.in{opacity:1;transform:none;}
-.build-step .part-dim{color:rgba(17,17,17,.28);}
-.build-step .part-new{color:var(--red);}
-.build-step .part-done{color:var(--ink);}
-
-/* ACCENT BAR — bottom */
+/* POSTER CARD */
+.poster{position:relative;width:min(460px,93vw);height:min(530px,calc(var(--stage-h,100vh) - 48px));background:#fff;border-radius:22px;border:1px solid rgba(28,28,30,0.10);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);animation:pIn .42s cubic-bezier(.22,1,.36,1) both;z-index:1;}
+.poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
+.poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
+@keyframes pIn{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
+.flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.flag-body{min-width:80px;padding:11px 14px 10px;display:flex;align-items:center;justify-content:center;position:relative;}
+.flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff;white-space:nowrap;}
+.flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.section-lbl{position:absolute;top:16px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;opacity:.3;}
+.card-dots-row{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:7px 16px 6px;border-top:1px solid rgba(0,0,0,.06);}
+.card-arrow{width:30px;height:30px;border-radius:50%;background:transparent;border:none;font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.card-arrow:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.07);}
+.card-arrow[disabled]{opacity:.15;cursor:not-allowed;}
+.dots{display:flex;gap:5px;align-items:center;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.16);transition:all .3s cubic-bezier(.22,1,.36,1);}
+.dot.active{width:18px;border-radius:3px;background:var(--ink);}
+.dot.done{background:rgba(0,0,0,.34);}
 .accent-bar{height:5px;flex-shrink:0;}
 
-/* WAVE in footer of card */
-.card-foot{
-  display:flex;align-items:flex-end;justify-content:flex-end;
-  padding:.28rem 1.4rem .4rem 0;flex-shrink:0;
-}
-.wave{display:flex;align-items:flex-end;gap:3px;height:16px;}
-.wb{width:3px;border-radius:2px;}
-.wb:nth-child(1){height:28%}.wb:nth-child(2){height:62%}.wb:nth-child(3){height:100%}
-.wb:nth-child(4){height:72%}.wb:nth-child(5){height:44%}.wb:nth-child(6){height:84%}.wb:nth-child(7){height:52%}
-.wave.on .wb{animation:wv .95s ease-in-out infinite;}
-.wb:nth-child(1){animation-delay:.00s}.wb:nth-child(2){animation-delay:.08s}
-.wb:nth-child(3){animation-delay:.17s}.wb:nth-child(4){animation-delay:.12s}
-.wb:nth-child(5){animation-delay:.04s}.wb:nth-child(6){animation-delay:.2s}.wb:nth-child(7){animation-delay:.09s}
-@keyframes wv{0%,100%{transform:scaleY(.22);opacity:.18}50%{transform:scaleY(1);opacity:1}}
-.wave.off .wb{animation:none;transform:scaleY(.22);opacity:.15;}
+/* FOOTER — tab bar only */
+.footer{flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);backdrop-filter:blur(16px);z-index:999;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);position:relative;}
 
-/* ─── CONTROLS ─── */
-.controls{
-  flex-shrink:0;display:flex;align-items:center;gap:.4rem;
-  padding:.42rem .85rem calc(env(safe-area-inset-bottom,0px)+.42rem);
-  background:rgba(232,231,228,0.97);border-top:1px solid var(--border);
-  backdrop-filter:blur(14px);z-index:50;
+/* FLOATING PLAY CLUSTER — overlaps card bottom, sits above tab bar */
+.play-cluster{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(var(--footer-h, 60px) + 10px);
+  z-index:1000;
+  display:flex;align-items:center;gap:10px;
+  background:rgba(250,249,247,0.92);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(28,28,30,0.10);
+  border-radius:50px;
+  padding:5px 10px 5px 10px;
+  box-shadow:0 4px 18px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);
 }
-.btn-main{
-  flex:1;display:flex;align-items:center;justify-content:center;gap:.35rem;
-  padding:.55rem;border:none;border-radius:.55rem;
-  font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:900;
-  letter-spacing:.14em;cursor:pointer;transition:all .18s;
-  background:var(--red);color:#fff;
-  box-shadow:0 3px 0 rgba(100,6,6,.4),0 5px 14px rgba(201,20,15,.13);
+.btn-play-inline{
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:var(--ink);color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:12px;
+  box-shadow:0 2px 0 rgba(0,0,0,.28),0 4px 10px rgba(0,0,0,.18);
+  transition:all .18s;
 }
-.btn-main:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(100,6,6,.4);}
-.btn-main.running{background:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.28);}
-.btn-nav{
-  width:2.5rem;height:2.5rem;border-radius:.55rem;
-  background:rgba(0,0,0,.06);border:1px solid var(--border);
-  font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;
-  color:var(--ink3);cursor:pointer;transition:all .18s;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.btn-nav:hover:not(:disabled){color:var(--ink);background:rgba(0,0,0,.10);}
-.btn-nav:active:not(:disabled){transform:scale(.94);}
-.btn-nav:disabled{opacity:.15;cursor:not-allowed;}
+.btn-play-inline:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.28);}
+.btn-play-inline.running{background:var(--red);box-shadow:0 3px 0 rgba(100,6,6,.4),0 5px 14px rgba(201,20,15,.24);}
+.btn-nav{width:34px;height:34px;border-radius:50%;background:transparent;border:none;font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.btn-nav:hover:not([disabled]){color:var(--ink);background:rgba(0,0,0,.07);}
+.btn-nav:active:not([disabled]){transform:scale(.92);}
+.btn-nav[disabled]{opacity:.15;cursor:not-allowed;}
+.wave-mini{display:flex;align-items:flex-end;gap:2px;height:16px;width:22px;}
+.wave-mini .wb{width:3px;border-radius:1.5px;background:var(--ink3);}
+.wave-mini.on .wb{animation:wv .9s ease-in-out infinite;}
+.wave-mini.off .wb{animation:none;transform:scaleY(.22);opacity:.18;}
+.tab-bar-wrap{display:flex;align-items:center;justify-content:center;padding:10px 18px 10px;}
+.tab-bar{display:inline-flex;align-items:center;background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;}
+.tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:8px 16px;border-radius:24px;border:none;cursor:pointer;background:transparent;color:var(--ink3);transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;font-weight:500;}
+.tab-btn.active{background:var(--ink);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.22);}
+@media(max-width:400px){.tab-btn{font-size:9px;padding:7px 10px;}}
 
-/* ═══ INTRO PAIRS OVERLAY ═══ */
-.ov{
-  position:fixed;inset:0;z-index:300;
-  background:rgba(240,239,236,0.94);backdrop-filter:blur(20px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;
-}
-.ov.show{opacity:1;pointer-events:all;}
+/* SCENES */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;pointer-events:none;opacity:0;}
+.scene.active{opacity:1;pointer-events:all;}
+.sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
+.sentence-scroll::-webkit-scrollbar{display:none;}
+.s-line{font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:400;line-height:1.6;color:rgba(17,17,17,.80);flex-shrink:0;opacity:0;transform:translateY(7px);transition:opacity .36s ease,transform .42s cubic-bezier(.22,1,.36,1);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05);}
+.s-line:last-child{border-bottom:none;}
+.s-line.in{opacity:1;transform:none;}
+.s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
+.s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
 
-/* The pair poster uses the same poster geometry */
-.ob{
-  width:min(400px,88vw);height:min(480px,78vh);
-  background:var(--card);border-radius:1.4rem;
-  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 22px 55px rgba(0,0,0,.18),0 4px 12px rgba(0,0,0,.1);
-  overflow:hidden;display:flex;flex-direction:column;
-  opacity:0;transform:translateY(24px) scale(.95);
-  transition:opacity .36s,transform .44s cubic-bezier(.22,1,.36,1);
-  position:relative;flex-shrink:0;
+/* ═══════════════════════════════════════════════════════
+   PHRASE-BANK POSTER — FULL BLEED (SC2 overlay)
+   Two-column grid: LEFT = CLAIM section, RIGHT = SUPPORT section
+   Each category row = big coloured heading + phrase pills
+═══════════════════════════════════════════════════════ */
+.pb-ov{
+  position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;
+  background:#fff;display:flex;flex-direction:column;
+  pointer-events:none;opacity:0;transition:opacity .24s;overflow:hidden;
 }
-.ov.show .ob{opacity:1;transform:none;}
-.ob.exit{opacity:0!important;transform:translateX(-44px) scale(.93)!important;transition:opacity .17s,transform .2s ease!important;}
+.pb-ov::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(28,28,30,0.03) 47px,rgba(28,28,30,0.03) 48px);
+  pointer-events:none;z-index:0;
+}
+.pb-ov.show{opacity:1;pointer-events:all;}
 
-.ob-flag{position:absolute;top:-2px;left:1.6rem;width:72px;z-index:10;}
-.ob-flag-body{
-  width:100%;padding:.45rem 0 .3rem;background:var(--c-intro);
-  display:flex;align-items:center;justify-content:center;position:relative;
+/* Header bar */
+.pb-header{
+  flex-shrink:0;display:flex;align-items:stretch;
+  border-bottom:3px solid var(--ink);position:relative;z-index:2;background:#fff;
 }
-.ob-flag-body::after{
-  content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;
-  background:var(--c-intro);
-  clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);
+.pb-hflag{
+  background:var(--red);padding:13px 22px;
+  display:flex;align-items:center;gap:10px;border-right:2px solid var(--ink);
 }
-.ob-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:1.75rem;font-weight:900;color:#fff;line-height:1;}
-.ob-pair-lbl{position:absolute;top:1rem;right:1.3rem;font-family:'DM Mono',monospace;font-size:.3rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);}
+.pb-hflag span{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+.pb-htitle{flex:1;padding:13px 24px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;}
+.pb-hsub{padding:13px 22px;display:flex;align-items:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);border-left:2px solid var(--ink);}
+.pb-hstop{padding:10px 18px;display:flex;align-items:center;border-left:2px solid var(--ink);}
+.pb-stop-btn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border-radius:4px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:all .15s;}
+.pb-stop-btn:hover{background:var(--ink);color:#fff;}
 
-.ob-body{flex:1;min-height:0;padding:3.4rem 1.6rem .5rem 1.7rem;display:flex;flex-direction:column;overflow:hidden;}
-.ob-hlbl{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.28);display:flex;align-items:center;gap:.38rem;margin-bottom:.3rem;flex-shrink:0;}
-.ob-hlbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.06);}
-.ob-rl{width:1.5rem;height:3px;border-radius:2px;background:var(--c-intro);margin-bottom:.38rem;flex-shrink:0;}
-.ob-starter{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:clamp(2rem,8vw,3.5rem);font-weight:900;
-  line-height:.9;letter-spacing:.02em;color:var(--ink);flex-shrink:0;
+/* Two-column body */
+.pb-body{
+  flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;
+  position:relative;z-index:1;overflow:hidden;
 }
-.ob-rest{
-  font-family:'Instrument Sans',sans-serif;font-weight:400;
-  font-size:clamp(.85rem,2.4vw,1rem);line-height:1.55;color:var(--ink2);
-  margin-top:.28rem;flex:1;
-  opacity:0;transform:translateY(6px);
-  transition:opacity .34s .46s,transform .4s .46s cubic-bezier(.22,1,.36,1);
-}
-.ov.show .ob:not(.exit) .ob-rest{opacity:1;transform:none;}
 
-.ob-sep{height:1px;background:rgba(0,0,0,.06);flex-shrink:0;margin:0 -1.6rem;}
-.ob-thesis{flex:1;padding:.6rem 0 0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
-.ob-tlbl{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.28);display:flex;align-items:center;gap:.38rem;margin-bottom:.28rem;flex-shrink:0;opacity:0;transform:translateX(-5px);transition:opacity .28s .5s,transform .32s .5s;}
-.ov.show .ob:not(.exit) .ob-tlbl{opacity:1;transform:none;}
-.ob-tlbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.06);}
-.ob-tt{
-  font-family:'Instrument Sans',sans-serif;font-weight:500;
-  font-size:clamp(.85rem,2.4vw,1rem);line-height:1.55;color:var(--ink2);
-  flex:1;opacity:0;transform:translateY(8px);
-  transition:opacity .36s .58s,transform .42s .58s cubic-bezier(.22,1,.36,1);
-}
-.ob-tt strong{color:var(--c-intro);font-weight:700;}
-.ov.show .ob:not(.exit) .ob-tt{opacity:1;transform:none;}
-.ob-foot{display:flex;align-items:center;justify-content:space-between;padding:.38rem 1.4rem .5rem 1.7rem;flex-shrink:0;}
-.ob-fl{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);}
-.ob-wave{display:flex;align-items:flex-end;gap:2.5px;height:13px;}
-.ob-wb{width:3px;border-radius:2px;background:var(--c-intro);}
-.ob-wb:nth-child(1){height:30%}.ob-wb:nth-child(2){height:65%}.ob-wb:nth-child(3){height:100%}.ob-wb:nth-child(4){height:60%}.ob-wb:nth-child(5){height:30%}
-.ob-wave.on .ob-wb{animation:wv2 .9s ease-in-out infinite;}
-.ob-wb:nth-child(1){animation-delay:.00s}.ob-wb:nth-child(2){animation-delay:.07s}.ob-wb:nth-child(3){animation-delay:.14s}.ob-wb:nth-child(4){animation-delay:.09s}.ob-wb:nth-child(5){animation-delay:.03s}
-@keyframes wv2{0%,100%{transform:scaleY(.2);opacity:.18}50%{transform:scaleY(1);opacity:1}}
-.ob-bottom{height:4px;background:var(--c-intro);flex-shrink:0;}
+/* Column */
+.pb-col{display:flex;flex-direction:column;overflow:hidden;}
+.pb-col.left{border-right:3px solid var(--ink);}
 
-.ob-dots{display:flex;gap:6px;margin-top:.5rem;}
-.bdot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.14);transition:all .3s cubic-bezier(.22,1,.36,1);}
+/* Column heading — CLAIM / SUPPORT */
+.pb-col-head{
+  flex-shrink:0;display:flex;align-items:center;gap:16px;
+  padding:14px 24px 12px;
+  border-bottom:2px solid rgba(28,28,30,0.1);
+}
+.pb-col-word{
+  font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,7vw,64px);font-weight:900;
+  letter-spacing:1px;line-height:.88;color:var(--ink);
+}
+.pb-col-word.red{color:var(--red);}
+.pb-col-desc{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink3);line-height:1.5;
+}
+
+/* Category rows inside each column */
+.pb-cats{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
+.pb-cat{
+  flex:1;display:flex;align-items:stretch;
+  border-bottom:1px solid rgba(28,28,30,0.07);
+}
+.pb-cat:last-child{border-bottom:none;}
+
+/* Left accent bar = category colour */
+.pb-cat-bar{width:6px;flex-shrink:0;}
+
+/* Category content */
+.pb-cat-body{flex:1;padding:8px 18px;display:flex;flex-direction:column;justify-content:center;gap:5px;}
+.pb-cat-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,2.4vw,22px);font-weight:900;
+  letter-spacing:1px;text-transform:uppercase;line-height:1;
+}
+.pb-cat-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.pb-pill{
+  font-family:'DM Mono',monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:.3px;
+  padding:4px 10px;border-radius:3px;
+  background:rgba(28,28,30,0.05);color:var(--ink2);
+  white-space:nowrap;border:1px solid rgba(28,28,30,0.08);
+}
+.pb-pill.hi{font-weight:600;}
+
+/* Bottom accent stripe */
+.pb-foot{height:5px;background:var(--red);flex-shrink:0;position:relative;z-index:2;}
+
+/* ═══════════════════════════════════════════════════════
+   LISTING MARKERS POSTER
+═══════════════════════════════════════════════════════ */
+.listing-ov{
+  position:fixed;inset:0 0 var(--footer-h) 0;z-index:210;
+  background:#fff;display:flex;flex-direction:column;
+  pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;
+}
+.listing-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(28,28,30,0.03) 47px,rgba(28,28,30,0.03) 48px);pointer-events:none;z-index:0;}
+.listing-ov.show{opacity:1;}
+.listing-header{flex-shrink:0;display:flex;align-items:stretch;border-bottom:3px solid var(--ink);position:relative;z-index:2;background:#fff;}
+.listing-hflag{background:var(--red);padding:13px 22px;display:flex;align-items:center;border-right:2px solid var(--ink);}
+.listing-hflag span{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+.listing-htitle{flex:1;padding:13px 24px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;}
+.listing-hsub{padding:13px 20px;display:flex;align-items:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);border-left:2px solid var(--ink);}
+.listing-kicker-row{flex-shrink:0;padding:14px 32px 10px;border-bottom:1px solid rgba(28,28,30,0.08);position:relative;z-index:1;}
+.listing-kicker-big{font-family:'Barlow Condensed',sans-serif;font-size:clamp(20px,3.2vw,28px);font-weight:900;letter-spacing:1px;color:var(--ink);}
+.listing-kicker-big em{font-style:normal;color:var(--red);}
+.listing-sub-text{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);margin-top:3px;}
+.listing-rows{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;position:relative;z-index:1;}
+.listing-row{display:flex;align-items:stretch;flex:1;border-bottom:1px solid rgba(28,28,30,0.07);}
+.listing-row:last-child{border-bottom:none;}
+.listing-row-marker{flex-shrink:0;width:clamp(150px,24vw,210px);display:flex;align-items:center;padding:10px 20px;border-right:2px solid rgba(28,28,30,0.08);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(20px,3.5vw,34px);line-height:1;}
+.listing-row-mid{flex-shrink:0;width:clamp(80px,11vw,105px);display:flex;align-items:center;justify-content:center;padding:8px 10px;border-right:1px solid rgba(28,28,30,0.06);}
+.listing-row-mid-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:center;line-height:1.3;}
+.listing-row-example{flex:1;display:flex;align-items:center;padding:10px 22px;font-family:'Instrument Sans',sans-serif;font-size:clamp(16px,2.3vw,22px);line-height:1.45;color:var(--ink2);}
+.listing-row-example em{font-style:italic;}
+.listing-foot{height:5px;background:var(--red);flex-shrink:0;position:relative;z-index:1;}
+
+/* ═══════════════════════════════════════════════════════
+   INTRO PAIRS OVERLAY
+═══════════════════════════════════════════════════════ */
+.poster-ov{
+  position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;
+  background:#fff;display:flex;align-items:stretch;
+  pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;
+}
+.poster-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(28,28,30,0.03) 39px,rgba(28,28,30,0.03) 40px);pointer-events:none;z-index:0;}
+.poster-ov.show{opacity:1;pointer-events:all;}
+.pov-pillar{width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+.pov-pillar.left{border-right:1px solid rgba(28,28,30,0.08);}
+.pov-pillar.right{border-left:1px solid rgba(28,28,30,0.08);}
+.pov-pillar-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(28,28,30,0.15);writing-mode:vertical-rl;white-space:nowrap;}
+.pov-card{flex:1;position:relative;background:#fff;overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateX(20px);transition:opacity .3s .04s,transform .38s .04s cubic-bezier(.22,1,.36,1);z-index:1;}
+.poster-ov.show .pov-card{opacity:1;transform:none;}
+.pov-card.exit{opacity:0!important;transform:translateX(-44px)!important;transition:opacity .13s,transform .17s ease!important;}
+.pov-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.pov-flag-body{padding:10px 14px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
+.pov-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.pov-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:2px;text-transform:uppercase;}
+.pov-pair-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+.pov-bottom-bar{height:5px;flex-shrink:0;}
+.pov-card-foot{display:flex;align-items:center;justify-content:center;padding:10px 24px 14px;flex-shrink:0;border-top:1px solid rgba(0,0,0,.06);}
+.pov-stop-btn{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;padding:12px 36px;border-radius:50px;border:none;background:var(--ink);color:#fff;cursor:pointer;transition:all .18s;box-shadow:0 4px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.18);}
+.pov-stop-btn:hover{background:var(--red);}
+.pov-dots{display:flex;gap:7px;margin-top:12px;}
+.bdot{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.14);transition:all .3s cubic-bezier(.22,1,.36,1);}
 .bdot.active{transform:scale(1.8);background:var(--ink);}
 .bdot.done{background:rgba(0,0,0,.3);}
+.pov-intro-body{flex:1;min-height:0;padding:56px 48px 16px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
+.ob-hlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:8px;flex-shrink:0;}
+.ob-starter{font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,8vw,80px);font-weight:900;line-height:.88;letter-spacing:1px;color:var(--ink);flex-shrink:0;}
+.ob-rest{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:clamp(16px,2.2vw,22px);line-height:1.52;color:var(--ink2);margin-top:12px;flex-shrink:0;}
+.ob-link{font-family:'Instrument Sans',sans-serif;font-weight:400;font-size:clamp(16px,2.2vw,22px);line-height:1.52;color:var(--ink2);margin-top:10px;flex-shrink:0;opacity:0;transform:translateY(4px);transition:opacity .34s .28s,transform .4s .28s cubic-bezier(.22,1,.36,1);}
+.poster-ov.show .pov-card:not(.exit) .ob-link{opacity:1;transform:none;}
+.ob-sep{margin:12px 0;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ob-sep::before{content:'';flex:1;height:1px;background:rgba(0,0,0,.08);}
+.ob-sep::after{content:'↓';font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--c-intro);flex-shrink:0;line-height:1;}
+.ob-tlbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--c-intro);margin-bottom:6px;flex-shrink:0;opacity:0;transform:translateY(4px);transition:opacity .28s .44s,transform .32s .44s;}
+.poster-ov.show .pov-card:not(.exit) .ob-tlbl{opacity:1;transform:none;}
+.ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:clamp(16px,2.2vw,22px);line-height:1.52;color:var(--ink2);opacity:0;transform:translateY(8px);transition:opacity .36s .52s,transform .42s .52s cubic-bezier(.22,1,.36,1);}
+.ob-tt strong{color:var(--c-intro);font-weight:700;}
+.poster-ov.show .pov-card:not(.exit) .ob-tt{opacity:1;transform:none;}
 
-/* ═══ TIPS PANEL ═══ */
-.tips-panel{
-  position:fixed;inset:0;z-index:400;
-  background:rgba(240,239,236,0.95);backdrop-filter:blur(22px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:.75rem;pointer-events:none;opacity:0;transition:opacity .26s;
+/* BODY PARAGRAPH OVERLAY */
+.pov-body-body{flex:1;min-height:0;padding:64px 60px 16px;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;}
+.pov-body-body::-webkit-scrollbar{display:none;}
+
+/* INTERSTITIAL — matches poster card geometry */
+.inter-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:rgba(250,249,247,0.97);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;overflow:hidden;}
+.inter-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(28,28,30,0.03) 39px,rgba(28,28,30,0.03) 40px);pointer-events:none;}
+.inter-ov.show{opacity:1;}
+.inter-card{
+  width:min(460px,93vw);height:min(530px,calc(var(--stage-h,100vh) - 48px));
+  background:#fff;border-radius:22px;border:1px solid rgba(28,28,30,0.10);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;position:relative;
+  box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);
+  opacity:0;transform:translateY(20px) scale(.96);
+  transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);
 }
-.tips-panel.show{opacity:1;pointer-events:all;}
-.tips-card{
-  width:min(420px,96vw);height:min(600px,90vh);
-  background:var(--card);border-radius:1.4rem;
-  border:1px solid rgba(0,0,0,.06);
-  box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);
-  overflow:hidden;display:flex;flex-direction:column;
-  opacity:0;transform:translateX(36px) scale(.96);
-  transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);
+.inter-card::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
+.inter-card::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
+.inter-ov.show .inter-card{opacity:1;transform:none;}
+.inter-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.inter-flag-body{min-width:80px;padding:11px 14px 10px;display:flex;align-items:center;justify-content:center;position:relative;}
+.inter-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.inter-flag-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+.inter-section-lbl{position:absolute;top:16px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;opacity:.3;}
+.inter-body{flex:1;min-height:0;padding:52px 28px 16px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+.inter-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);}
+.inter-big{font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,8vw,66px);font-weight:900;line-height:.88;letter-spacing:1px;color:var(--ink);}
+.inter-big em{font-style:normal;color:var(--inter-accent,var(--red));}
+.inter-sub{font-family:'Instrument Sans',sans-serif;font-size:clamp(14px,2vw,16px);line-height:1.55;color:var(--ink2);margin-top:4px;}
+.inter-sub strong{color:var(--ink);font-weight:600;}
+.inter-bottom{height:5px;flex-shrink:0;}
+
+
+/* ═══════════════════════════════════════════════════
+   SECONDARY MODAL CARDS — dark inversion
+   Same poster geometry, opposite polarity
+═══════════════════════════════════════════════════ */
+.sm-backdrop{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,0);
+  pointer-events:none;
+  transition:background .28s;
 }
-.tips-panel.show .tips-card{opacity:1;transform:none;}
-.tips-top{height:4px;background:var(--ink);flex-shrink:0;}
-.tips-header{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
-.tips-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;letter-spacing:.08em;color:var(--ink);}
-.tips-close{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;transition:all .18s;}
-.tips-close:hover{background:rgba(0,0,0,.12);}
-.tips-tabs{display:flex;gap:.25rem;padding:.38rem 1rem .3rem;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
-.tips-tabs::-webkit-scrollbar{display:none;}
-.tips-tab{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:20px;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border);cursor:pointer;white-space:nowrap;transition:all .18s;}
-.tips-tab.on{background:var(--ink);color:#fff;border-color:var(--ink);}
-.tips-body{flex:1;overflow-y:auto;padding:.65rem 1rem;-webkit-overflow-scrolling:touch;}
-.tips-body::-webkit-scrollbar{width:3px;}
-.tips-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px;}
-.t-section{margin-bottom:.75rem;}
-.t-stitle{font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.32rem;}
-.t-item{font-family:'Instrument Sans',sans-serif;font-size:clamp(.78rem,2.1vw,.92rem);font-weight:400;line-height:1.55;color:var(--ink2);padding:.24rem 0;border-bottom:1px dashed rgba(0,0,0,.06);}
-.t-item:last-child{border-bottom:none;}
-.t-item strong{color:var(--ink);font-weight:600;}
-.video-wrap{display:flex;flex-direction:column;align-items:center;gap:.55rem;padding:1.2rem .5rem;text-align:center;}
-.video-box{width:100%;max-width:300px;aspect-ratio:16/9;background:rgba(0,0,0,.05);border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
-.video-sub{font-family:'Instrument Sans',sans-serif;font-size:clamp(.78rem,2vw,.9rem);color:var(--ink2);line-height:1.5;}
+.sm-backdrop.open{
+  background:rgba(0,0,0,.55);
+  pointer-events:all;
+}
+.sm-backdrop.dim{
+  background:rgba(0,0,0,.35);
+  pointer-events:none;
+}
+.sm-wrap{
+  position:fixed;left:50%;bottom:calc(var(--footer-h) + 18px);
+  transform:translateX(-50%) translateY(30px);
+  width:min(460px,93vw);
+  max-height:calc(var(--stage-h, 80vh) - 36px);
+  z-index:610;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .26s,transform .36s cubic-bezier(.22,1,.36,1);
+}
+.sm-wrap.open{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:all;
+}
+/* The dark card itself */
+.sm-card{
+  background:#1C1C1E;
+  border-radius:22px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  max-height:inherit;
+  box-shadow:
+    4px 6px 0 rgba(0,0,0,.5),
+    0 0 0 1px rgba(255,255,255,.06),
+    0 24px 55px rgba(0,0,0,.55),
+    0 0 60px var(--sm-glow,rgba(201,20,15,.18));
+}
+.sm-card::before{
+  content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;
+  background:#111;border-radius:22px;z-index:-1;
+  border:1px solid rgba(255,255,255,.04);
+}
+.sm-card::after{
+  content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;
+  background:#0a0a0a;border-radius:22px;z-index:-2;
+  border:1px solid rgba(255,255,255,.03);
+}
+/* flag — uses same zigzag geometry */
+.sm-flag{position:absolute;top:-2px;left:22px;z-index:10;}
+.sm-flag-body{padding:10px 16px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
+.sm-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
+.sm-flag-txt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff;white-space:nowrap;}
+.sm-section-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+/* body */
+.sm-body{flex:1;min-height:0;padding:54px 26px 12px;display:flex;flex-direction:column;gap:0;overflow-y:auto;scrollbar-width:none;}
+.sm-body::-webkit-scrollbar{display:none;}
+.sm-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(38px,8vw,58px);font-weight:900;line-height:.86;letter-spacing:1px;color:#fff;flex-shrink:0;margin-bottom:16px;}
+.sm-divider{height:1px;background:rgba(255,255,255,.08);flex-shrink:0;margin:0 0 12px;}
+/* phrase rows */
+.sm-phrase{
+  display:flex;align-items:baseline;gap:12px;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .3s,transform .35s cubic-bezier(.22,1,.36,1);
+}
+.sm-phrase:last-child{border-bottom:none;}
+.sm-phrase.in{opacity:1;transform:none;}
+.sm-phrase-bullet{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.sm-phrase-text{font-family:'Instrument Sans',sans-serif;font-size:clamp(15px,2.2vw,19px);font-weight:500;line-height:1.4;color:rgba(255,255,255,.88);}
+.sm-phrase-note{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.35);margin-top:2px;}
+/* footer row */
+.sm-foot-row{padding:0 0 2px;flex-shrink:0;}
+.sm-timer-bar-wrap{height:4px;background:rgba(255,255,255,.08);border-radius:0 0 22px 22px;overflow:hidden;}
+.sm-timer-bar{height:100%;width:100%;border-radius:0 0 22px 22px;transition:width linear;}
+/* accent bottom bar */
+.sm-accent-bar{height:5px;flex-shrink:0;}
+
+/* chip buttons on SC2 card */
+.sc2-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'Instrument Sans',sans-serif;font-size:clamp(13px,1.8vw,15px);font-weight:500;
+  padding:2px 0;
+  background:transparent;border:none;
+  opacity:0;transform:translateX(-6px);
+  transition:opacity .15s;
+}
+.sc2-chip.in{
+  opacity:1;transform:none;
+  animation:chipLand .5s cubic-bezier(.22,1,.36,1) both;
+}
+.sc2-chip:hover{opacity:.7;}
+.sc2-chip:active{transform:scale(.97);}
+@keyframes chipLand{
+  0%  {transform:translateX(-8px) rotate(-6deg);opacity:0;}
+  45% {transform:translateX(2px) rotate(3deg);opacity:1;}
+  70% {transform:translateX(-1px) rotate(-1deg);}
+  100%{transform:none;}
+}
+
+/* NOTES */
+.notes-panel{position:fixed;inset:0;z-index:500;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
+.notes-panel.show{opacity:1;pointer-events:all;}
+.notes-card{width:min(460px,96vw);height:min(600px,88vh);background:#fff;border-radius:22px;border:1px solid rgba(0,0,0,.06);box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.96);transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);}
+.notes-panel.show .notes-card{opacity:1;transform:none;}
+.notes-top{height:5px;background:var(--ink);flex-shrink:0;}
+.notes-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.notes-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;}
+.notes-close{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:20px;background:rgba(0,0,0,.06);color:var(--ink3);border:1px solid var(--border);cursor:pointer;}
+.notes-tabs{display:flex;gap:4px;padding:10px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+.ntab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;padding:6px 14px;border-radius:16px;border:none;background:rgba(0,0,0,.05);color:var(--ink3);cursor:pointer;white-space:nowrap;transition:all .18s;}
+.ntab.on{background:var(--ink);color:#fff;}
+.notes-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.n-section{margin-bottom:18px;}
+.n-stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.n-item{font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.55;color:var(--ink2);padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.07);}
+.n-item:last-child{border-bottom:none;}
+.n-item strong{color:var(--ink);font-weight:600;}
 
 .flash{position:fixed;inset:0;z-index:900;pointer-events:none;opacity:0;transition:opacity .08s;background:var(--red);}
 .flash.pop{opacity:.04;transition:opacity 0s;}
-.fem{position:fixed;pointer-events:none;z-index:800;font-size:clamp(.9rem,3vw,1.2rem);animation:femUp 2s ease-out forwards;}
+.fem{position:fixed;pointer-events:none;z-index:800;font-size:20px;animation:femUp 2s ease-out forwards;}
 @keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-10px) scale(1.1);}80%{opacity:.8;transform:translateY(-90px);}100%{opacity:0;transform:translateY(-130px);}}
-
-/* SWIPE HINT */
-.swipe-hint{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.26rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);animation:ph 2.5s ease-in-out infinite;pointer-events:none;white-space:nowrap;}
-@keyframes ph{0%,100%{opacity:.14}50%{opacity:.32}}
-
-/* SCENE WRAPPER — hidden until active */
-.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.6rem;pointer-events:none;opacity:0;}
-.scene.active{opacity:1;pointer-events:all;}
-
-@media(max-width:480px){
-  .flag-num{font-size:.85rem!important;}
-  .section-lbl{font-size:.6rem!important;}
-  .s-line,.s-line.first{font-size:clamp(.8rem,4vw,.92rem)!important;}
-  .build-step{font-size:clamp(.92rem,4vw,1.1rem)!important;}
-}
-@media(max-height:580px){
-  .s-line{font-size:clamp(.78rem,2vw,.88rem)!important;}
-}
 </style>
 </head>
 <body>
 <div class="shell">
-
-  <div>
-    <div class="topbar">
-      <div class="logo">ESSAY<span>_</span>DROP</div>
-      <div class="spacer"></div>
-      <button class="tips-btn" id="tipsBtn" onclick="toggleTips()">💡 Exam Tips</button>
-      <div class="tbctr" id="ctr">1 / 6</div>
+  <div class="topbar">
+    <div class="topbar-words">
+      <span class="tw red lg">THESIS</span><span class="tw">·</span><span class="tw">CLAIM</span><span class="tw">·</span><span class="tw red">REASON</span><span class="tw">·</span><span class="tw">EXAMPLE</span><span class="tw">·</span><span class="tw lg">RESULT</span><span class="tw">·</span><span class="tw">HOOK</span><span class="tw">·</span><span class="tw red">OPINION</span><span class="tw">·</span><span class="tw">LINKING WORD</span><span class="tw">·</span><span class="tw lg">FORMAL</span><span class="tw">·</span><span class="tw">TOPIC SENTENCE</span><span class="tw">·</span><span class="tw red">PARAGRAPH</span><span class="tw">·</span><span class="tw">EVIDENCE</span><span class="tw">·</span><span class="tw lg">B2 LEVEL</span>
     </div>
-    <div class="pbar-row" id="pbar"></div>
+    <div class="logo">ESSAY<span>_</span>BUILDER</div>
+    <div class="spacer"></div>
+    <div class="tbctr" id="ctr">1 / 4</div>
   </div>
 
   <div class="stage" id="stage">
+    <div class="bg-layer">
+      <div class="wm">WRITE</div>
+      <div class="marquee-strip top-s"><div class="marquee-inner"><span class="mword accent">HOOK</span><span class="mword">·</span><span class="mword">THESIS STATEMENT</span><span class="mword">·</span><span class="mword teal">TOPIC SENTENCE</span><span class="mword">·</span><span class="mword">CLAIM</span><span class="mword">·</span><span class="mword accent">REASON</span><span class="mword">·</span><span class="mword">EXAMPLE</span><span class="mword">·</span><span class="mword accent">RESULT</span><span class="mword">·</span><span class="mword purple">OWN IDEA</span><span class="mword">·</span><span class="mword teal">LINKING WORD</span><span class="mword">·</span><span class="mword">RESTATE OPINION</span><span class="mword">·</span><span class="mword accent">B2 WRITING</span><span class="mword">·</span><span class="mword">FORMAL REGISTER</span><span class="mword">·</span><span class="mword">140–190 WORDS</span><span class="mword">·</span><span class="mword purple">5 PARAGRAPHS</span><span class="mword">·</span><span class="mword accent">HOOK</span><span class="mword">·</span><span class="mword">THESIS STATEMENT</span><span class="mword">·</span><span class="mword teal">TOPIC SENTENCE</span><span class="mword">·</span><span class="mword">CLAIM</span><span class="mword">·</span><span class="mword accent">REASON</span><span class="mword">·</span><span class="mword">EXAMPLE</span><span class="mword">·</span><span class="mword accent">RESULT</span><span class="mword">·</span><span class="mword purple">OWN IDEA</span><span class="mword">·</span><span class="mword teal">LINKING WORD</span><span class="mword">·</span><span class="mword">RESTATE OPINION</span><span class="mword">·</span><span class="mword accent">B2 WRITING</span><span class="mword">·</span><span class="mword">FORMAL REGISTER</span><span class="mword">·</span><span class="mword">140–190 WORDS</span><span class="mword">·</span><span class="mword purple">5 PARAGRAPHS</span><span class="mword">·</span></div></div>
+      <div class="marquee-strip bot-s"><div class="marquee-inner rev"><span class="mword">IN MY OPINION</span><span class="mword">·</span><span class="mword teal">FURTHERMORE</span><span class="mword">·</span><span class="mword accent">IN ADDITION</span><span class="mword">·</span><span class="mword">HOWEVER</span><span class="mword">·</span><span class="mword purple">ON THE OTHER HAND</span><span class="mword">·</span><span class="mword">THIS IS BECAUSE</span><span class="mword">·</span><span class="mword accent">FOR EXAMPLE</span><span class="mword">·</span><span class="mword">AS A RESULT</span><span class="mword">·</span><span class="mword teal">CONSEQUENTLY</span><span class="mword">·</span><span class="mword">IN CONCLUSION</span><span class="mword">·</span><span class="mword accent">TO SUM UP</span><span class="mword">·</span><span class="mword">FIRSTLY</span><span class="mword">·</span><span class="mword purple">THEREFORE</span><span class="mword">·</span><span class="mword">IN MY OPINION</span><span class="mword">·</span><span class="mword teal">FURTHERMORE</span><span class="mword">·</span><span class="mword accent">IN ADDITION</span><span class="mword">·</span><span class="mword">HOWEVER</span><span class="mword">·</span><span class="mword purple">ON THE OTHER HAND</span><span class="mword">·</span><span class="mword">THIS IS BECAUSE</span><span class="mword">·</span><span class="mword accent">FOR EXAMPLE</span><span class="mword">·</span><span class="mword">AS A RESULT</span><span class="mword">·</span><span class="mword teal">CONSEQUENTLY</span><span class="mword">·</span><span class="mword">IN CONCLUSION</span><span class="mword">·</span><span class="mword accent">TO SUM UP</span><span class="mword">·</span><span class="mword">FIRSTLY</span><span class="mword">·</span><span class="mword purple">THEREFORE</span><span class="mword">·</span></div></div>
+      <div class="bw l1">INTRODUCTION</div><div class="bw l2 mono">P1 · HOOK</div><div class="bw l3">THESIS</div><div class="bw l4 mono">P2 · CLAIM</div><div class="bw l5">BODY PARAGRAPH</div><div class="bw l6 mono">SUPPORT</div><div class="bw l7">CONCLUSION</div>
+      <div class="bw r1 mono">FORMAL REGISTER</div><div class="bw r2">OPINION ESSAY</div><div class="bw r3 mono">B2 · CAMBRIDGE</div><div class="bw r4">LINKING WORDS</div><div class="bw r5 mono">TOPIC SENTENCE</div><div class="bw r6">OWN IDEA ★</div><div class="bw r7 mono">140–190 WORDS</div>
+      <div class="bw t2">ESSAY</div><div class="bw b2">WRITE</div>
+      <div class="stat-block sb1"><div class="sb-inner"><span class="sb-num red">25%</span><span class="sb-item">CONTENT</span><span class="sb-num teal">25%</span><span class="sb-item">COMM. ACHIEVEMENT</span><span class="sb-num">25%</span><span class="sb-item">ORGANISATION</span><span class="sb-num">25%</span><span class="sb-item">LANGUAGE</span></div></div>
+      <div class="stat-block sb2"><div class="sb-inner"><span class="sb-num">5</span><span class="sb-item">PARAGRAPHS</span><span class="sb-num red">190</span><span class="sb-item">MAX WORDS</span><span class="sb-num teal">3</span><span class="sb-item">BODY POINTS</span><span class="sb-num">1</span><span class="sb-item">OWN IDEA REQ.</span></div></div>
+    </div>
 
-    <!-- ══ SCENE 0: WHAT IS AN ESSAY ══ -->
+    <!-- SC0: OVERVIEW -->
     <div class="scene active" id="sc0">
-      <div class="poster" id="po0">
-        <!-- flag -->
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-intro)">
-            <span class="flag-num">ESSAY</span>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
+        <div class="section-lbl" style="color:var(--red)">B2 WRITING</div>
+        <div style="padding:52px 24px 6px 26px;flex-shrink:0;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.9;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">Opinion Essay</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">140–190 words</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">5 paragraphs</span>
           </div>
         </div>
-        <div class="section-lbl" style="color:var(--c-intro)">ESSAY BASICS</div>
-        <div class="card-body">
-          <div class="card-heading">What is an essay?</div>
-          <div class="sentence-scroll" id="stk0">
-            <div class="s-line first in">A <span style="color:var(--red);font-weight:700">formal, structured discussion</span> — not a story, not a list.</div>
-            <div class="s-line in">You give your <span style="color:var(--red);font-weight:700">opinion</span> clearly, then prove it with reasons and examples.</div>
-            <div class="s-line in"><span style="color:var(--red);font-weight:700">Five paragraphs:</span> Introduction → three body paragraphs → Conclusion.</div>
-            <div class="s-line in"><span style="color:var(--red);font-weight:700">Formal style</span> throughout: no contractions, no slang.</div>
-            <div class="s-line in">Aim for <span style="color:var(--red);font-weight:700">140–190 words.</span> Every claim needs at least three development sentences.</div>
+        <div style="flex:1;min-height:0;padding:4px 26px 4px;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow:hidden;">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;min-width:26px;">P1</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">INTRODUCTION</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Hook + Thesis statement</div></div></div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P2</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 1</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P3</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 2</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#7b5ea7;min-width:26px;">P4</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 3 <span style="color:#7b5ea7;font-size:12px;">★ own idea</span></div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Your original point — required for full marks</div></div></div>
+          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2d7a3a;min-width:26px;">P5</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">CONCLUSION</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Restate opinion · No new ideas</div></div></div>
+        </div>
+        <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()" disabled>‹</button><div class="dots" id="dots0"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
+        <div class="accent-bar" style="background:var(--red)"></div>
+      </div>
+    </div>
+
+    <!-- SC1: QUESTION -->
+    <div class="scene" id="sc1">
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-intro)"><span class="flag-num">INTRODUCTION</span></div></div>
+        <div class="section-lbl" style="color:var(--c-intro)">THE QUESTION</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:54px 24px 10px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;flex-shrink:0;">📱 Today's essay question</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:.95;color:var(--ink);flex-shrink:0;">Should the use of phones be <span style="color:var(--red);">limited</span> for young people?</div>
+          <div style="flex:1;"></div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink2);margin-bottom:14px;flex-shrink:0;">What do <strong style="color:var(--ink);">you</strong> think? Pick your side.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex-shrink:0;margin-bottom:12px;">
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;">YES</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">limit them</div></div>
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--ink3);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--ink2);">MAYBE</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">it depends</div></div>
+            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--red);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--red);">NO</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">let them</div></div>
           </div>
         </div>
-        <div class="card-foot">
-          <div class="wave off" id="w0">
-            <div class="wb" style="background:var(--c-intro)"></div><div class="wb" style="background:var(--c-intro)"></div>
-            <div class="wb" style="background:var(--c-intro)"></div><div class="wb" style="background:var(--c-intro)"></div>
-            <div class="wb" style="background:var(--c-intro)"></div><div class="wb" style="background:var(--c-intro)"></div>
-            <div class="wb" style="background:var(--c-intro)"></div>
-          </div>
-        </div>
+        <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots1"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
         <div class="accent-bar" style="background:var(--c-intro)"></div>
       </div>
-      <div class="swipe-hint">tap start to begin · swipe to navigate</div>
     </div>
 
-    <!-- ══ SCENE 1: QUESTION ══ -->
-    <div class="scene" id="sc1">
-      <div class="poster" id="po1">
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-b1)">
-            <span class="flag-num">INTRO</span>
-          </div>
-        </div>
-        <div class="section-lbl" style="color:var(--c-b1)">THE QUESTION</div>
-        <div class="card-body">
-          <div class="card-heading">📱 Today's essay question</div>
-          <div class="sentence-scroll" id="stk1">
-            <!-- static content — always visible -->
-            <div class="s-line first in" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.3rem,4vw,1.7rem);font-weight:900;line-height:1.15;color:var(--ink);border-bottom:none;">
-              Should the use of phones be <span style="color:var(--red)">limited</span> for young people?
-            </div>
-            <div class="s-line in" style="margin-top:.3rem;color:var(--ink2);border-bottom:none;">What do <span style="color:var(--red);font-weight:700">you</span> think? Pick your side — then watch how to argue it perfectly.</div>
-            <div style="display:flex;gap:.28rem;flex-wrap:wrap;margin-top:.42rem;">
-              <span style="font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;padding:.12rem .48rem;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">B2 essay</span>
-              <span style="font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;padding:.12rem .48rem;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid rgba(0,0,0,.07)">140–190 words</span>
-              <span style="font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;padding:.12rem .48rem;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid rgba(0,0,0,.07)">5 paragraphs</span>
-              <span style="font-family:'DM Mono',monospace;font-size:.28rem;letter-spacing:.1em;padding:.12rem .48rem;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">own idea required</span>
-            </div>
-            <div style="display:flex;gap:.28rem;margin-top:.5rem;">
-              <div style="flex:1;padding:.38rem .4rem;border-radius:8px;background:rgba(22,163,74,.07);color:#15803d;border:1.5px solid rgba(22,163,74,.18);font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.04em;text-align:center;line-height:1.4;">✅ YES<br>limit them</div>
-              <div style="flex:1;padding:.38rem .4rem;border-radius:8px;background:rgba(0,0,0,.04);color:var(--ink2);border:1.5px solid rgba(0,0,0,.09);font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.04em;text-align:center;line-height:1.4;">🤔 IT<br>depends</div>
-              <div style="flex:1;padding:.38rem .4rem;border-radius:8px;background:var(--red-s);color:var(--red);border:1.5px solid rgba(201,20,15,.16);font-family:'DM Mono',monospace;font-size:.32rem;letter-spacing:.04em;text-align:center;line-height:1.4;">❌ NO<br>let them</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-foot">
-          <div class="wave off" id="w1">
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div>
-          </div>
-        </div>
-        <div class="accent-bar" style="background:var(--c-b1)"></div>
-      </div>
-    </div>
-
-    <!-- ══ SCENE 2: BODY P1 ══ -->
+    <!-- SC2: BODY — cinematic animated reveal on the card itself -->
     <div class="scene" id="sc2">
-      <div class="poster" id="po2">
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-b1)">
-            <span class="flag-num">BODY 1</span>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
+        <div class="section-lbl" style="color:var(--red)">STRUCTURE</div>
+
+        <!-- IDLE STATE: shown before ▶ is pressed -->
+        <div id="sc2Idle" style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:46px 20px 12px;gap:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);">Each body paragraph has two parts</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,9vw,64px);font-weight:900;line-height:.86;text-align:center;color:var(--ink);">CLAIM<br><span style="color:var(--red);font-size:clamp(20px,4vw,28px);">+</span><br>SUPPORT</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(0,0,0,.22);text-align:center;margin-top:4px;">tap ▶ to learn what each part does</div>
+        </div>
+
+        <!-- ANIMATED STATE: built by JS during narration -->
+        <div id="sc2Build" style="flex:1;min-height:0;display:none;flex-direction:column;padding:46px 20px 6px;overflow:hidden;">
+
+          <!-- kicker -->
+          <div id="sc2Kicker" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .4s;flex-shrink:0;">Each body paragraph has two parts</div>
+
+          <!-- CLAIM block -->
+          <div id="sc2ClaimBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">CLAIM</div>
           </div>
-        </div>
-        <div class="section-lbl" style="color:var(--c-b1)">BODY PARAGRAPH 1</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 2 · Academic performance</div>
-          <div class="sentence-scroll" id="stk2"></div>
-        </div>
-        <div class="card-foot">
-          <div class="wave off" id="w2">
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div><div class="wb" style="background:var(--c-b1)"></div>
-            <div class="wb" style="background:var(--c-b1)"></div>
+          <!-- CLAIM sub-items container -->
+          <div id="sc2ClaimItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;margin-bottom:6px;padding-left:4px;border-left:3px solid var(--red);"></div>
+
+          <!-- separator + SUPPORT -->
+          <div id="sc2Sep" style="flex-shrink:0;opacity:0;transition:opacity .3s;margin:2px 0 4px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:900;color:var(--red);line-height:1;">+</div>
           </div>
+
+          <div id="sc2SupportBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">SUPPORT</div>
+          </div>
+          <!-- SUPPORT sub-items container -->
+          <div id="sc2SupportItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;padding-left:4px;border-left:3px solid rgba(28,28,30,.18);"></div>
+
         </div>
-        <div class="accent-bar" style="background:var(--c-b1)"></div>
+
+        <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots2"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
+        <div class="accent-bar" style="background:var(--red)"></div>
       </div>
     </div>
 
-    <!-- ══ SCENE 3: BODY P2 ══ -->
+    <!-- SC3: CONCLUSION -->
     <div class="scene" id="sc3">
-      <div class="poster" id="po3">
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-b2)">
-            <span class="flag-num">BODY 2</span>
+      <div class="poster">
+        <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
+        <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:54px 24px 6px;overflow:hidden;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.28);margin-bottom:10px;flex-shrink:0;">Paragraph 5 · Conclusion</div>
+          <div id="conclSkeleton" style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;opacity:.22;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">SUMMARY</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:10px;opacity:.18;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">POINT 1</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:10px;opacity:.14;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">POINT 2</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:10px;opacity:.10;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">REWORD</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
+            <div style="display:flex;align-items:center;gap:10px;opacity:.07;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">VERDICT</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
           </div>
-        </div>
-        <div class="section-lbl" style="color:var(--c-b2)">BODY PARAGRAPH 2</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 3 · Mental health &amp; sleep</div>
+          <div id="conclHint" style="margin-top:14px;flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.2);text-align:center;">tap ▶ to build this paragraph</div>
           <div class="sentence-scroll" id="stk3"></div>
         </div>
-        <div class="card-foot">
-          <div class="wave off" id="w3">
-            <div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div>
-            <div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div>
-            <div class="wb" style="background:var(--c-b2)"></div><div class="wb" style="background:var(--c-b2)"></div>
-            <div class="wb" style="background:var(--c-b2)"></div>
-          </div>
-        </div>
-        <div class="accent-bar" style="background:var(--c-b2)"></div>
-      </div>
-    </div>
-
-    <!-- ══ SCENE 4: BODY P3 OWN IDEA ══ -->
-    <div class="scene" id="sc4">
-      <div class="poster" id="po4">
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-b3)">
-            <span class="flag-num">BODY 3</span>
-          </div>
-        </div>
-        <div class="section-lbl" style="color:var(--c-b3)">BODY PARAGRAPH 3</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 4 · Your own idea</div>
-          <div class="sentence-scroll" id="stk4"></div>
-        </div>
-        <div class="card-foot">
-          <div class="wave off" id="w4">
-            <div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div>
-            <div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div>
-            <div class="wb" style="background:var(--c-b3)"></div><div class="wb" style="background:var(--c-b3)"></div>
-            <div class="wb" style="background:var(--c-b3)"></div>
-          </div>
-        </div>
-        <div class="accent-bar" style="background:var(--c-b3)"></div>
-      </div>
-    </div>
-
-    <!-- ══ SCENE 5: CONCLUSION ══ -->
-    <div class="scene" id="sc5">
-      <div class="poster" id="po5">
-        <div class="flag">
-          <div class="flag-body" style="background:var(--c-conc)">
-            <span class="flag-num">CONCLU&shy;SION</span>
-          </div>
-        </div>
-        <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
-        <div class="card-body">
-          <div class="card-heading">Paragraph 5 · Conclusion</div>
-          <div class="sentence-scroll" id="stk5"></div>
-        </div>
-        <div class="card-foot">
-          <div class="wave off" id="w5">
-            <div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div>
-            <div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div>
-            <div class="wb" style="background:var(--c-conc)"></div><div class="wb" style="background:var(--c-conc)"></div>
-            <div class="wb" style="background:var(--c-conc)"></div>
-          </div>
-        </div>
+        <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots3"></div><button class="card-arrow" onclick="nextScene()" disabled>›</button></div>
         <div class="accent-bar" style="background:var(--c-conc)"></div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /stage -->
+  <div class="footer" id="mainFooter">
+    <div class="tab-bar-wrap">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="intro" onclick="jumpTab('intro')">INTRODUCTION</button>
+        <button class="tab-btn" data-tab="body" onclick="jumpTab('body')">BODY</button>
+        <button class="tab-btn" data-tab="conc" onclick="jumpTab('conc')">CONCLUSION</button>
+        <button class="tab-btn" data-tab="notes" onclick="jumpTab('notes')">USEFUL NOTES</button>
+      </div>
+    </div>
+  </div>
 
-  <div class="controls">
+  <!-- FLOATING PLAY CLUSTER — sits above footer, always visible -->
+  <div class="play-cluster" id="playCluster">
+    <div class="wave-mini off" id="wL"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
     <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
-    <button class="btn-main" id="btnMain" onclick="handleMain()">▶  START</button>
-    <button class="btn-nav" id="btnNext" onclick="nextScene()" disabled>›</button>
+    <button class="btn-play-inline" id="btnPlay" onclick="handlePlay()">▶</button>
+    <button class="btn-nav" id="btnNext" onclick="nextScene()">›</button>
+    <div class="wave-mini off" id="wR"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
   </div>
 </div>
 
-<!-- ══ INTRO PAIRS OVERLAY ══ -->
-<div class="ov" id="ov">
-  <div class="ob" id="ob">
-    <div class="ob-flag">
-      <div class="ob-flag-body"><span class="ob-flag-num">🪝</span></div>
+<!-- ══ PHRASE BANK POSTER (SC2 full-bleed overlay) ══ -->
+<div class="pb-ov" id="pbOv">
+  <div class="pb-header">
+    <div class="pb-hflag"><span>BODY PARAGRAPHS · PHRASE BANK</span></div>
+    <div class="pb-htitle">Every phrase you need — in one poster</div>
+    <div class="pb-hsub">Read all options · Choose what fits</div>
+    <div class="pb-hstop"><button class="pb-stop-btn" onclick="hardStop();updateNavBtns()">⏹ STOP</button></div>
+  </div>
+  <div class="pb-body">
+    <!-- LEFT: CLAIM -->
+    <div class="pb-col left">
+      <div class="pb-col-head">
+        <div class="pb-col-word red">CLAIM</div>
+        <div class="pb-col-desc">Open your paragraph.<br>State your point.</div>
+      </div>
+      <div class="pb-cats">
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#c9140f;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#c9140f;">Listing Marker</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">Firstly,</span>
+              <span class="pb-pill hi">Furthermore,</span>
+              <span class="pb-pill hi">In addition,</span>
+              <span class="pb-pill hi">However,</span>
+              <span class="pb-pill hi">On the other hand,</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#1a5c8a;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#1a5c8a;">Expressing a View</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">in my opinion,</span>
+              <span class="pb-pill hi">it seems to me that</span>
+              <span class="pb-pill hi">as far as I am concerned,</span>
+              <span class="pb-pill">I firmly believe that</span>
+              <span class="pb-pill">It is widely believed that</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#1a6b3c;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#1a6b3c;">Making a Claim</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">the main advantage of … is</span>
+              <span class="pb-pill hi">one key problem with … is</span>
+              <span class="pb-pill">The key benefit of … is</span>
+              <span class="pb-pill">One clear drawback is…</span>
+              <span class="pb-pill">An important point is…</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="ob-pair-lbl" id="obNum">1 / 5</div>
-    <div class="ob-body">
-      <div class="ob-hlbl">Hook — how to open</div>
-      <div class="ob-rl"></div>
+
+    <!-- RIGHT: SUPPORT -->
+    <div class="pb-col">
+      <div class="pb-col-head">
+        <div class="pb-col-word">SUPPORT</div>
+        <div class="pb-col-desc">Develop your claim.<br>Use what fits best.</div>
+      </div>
+      <div class="pb-cats">
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#1a6b3c;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#1a6b3c;">Reason — why?</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">This is because…</span>
+              <span class="pb-pill hi">The reason is that…</span>
+              <span class="pb-pill">This is largely due to…</span>
+              <span class="pb-pill">Since…</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#1a5c8a;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#1a5c8a;">Example — evidence</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">For example,</span>
+              <span class="pb-pill hi">For instance,</span>
+              <span class="pb-pill">Indeed,</span>
+              <span class="pb-pill">This can be seen in…</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#6b4ea8;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#6b4ea8;">Result — consequence</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">As a result,</span>
+              <span class="pb-pill hi">Consequently,</span>
+              <span class="pb-pill hi">Therefore,</span>
+              <span class="pb-pill">This means that…</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pb-cat">
+          <div class="pb-cat-bar" style="background:#e07b00;"></div>
+          <div class="pb-cat-body">
+            <div class="pb-cat-label" style="color:#e07b00;">Contrast / Compare</div>
+            <div class="pb-cat-pills">
+              <span class="pb-pill hi">Although…</span>
+              <span class="pb-pill hi">However,</span>
+              <span class="pb-pill">Even though…</span>
+              <span class="pb-pill">While…</span>
+              <span class="pb-pill">Unlike…</span>
+              <span class="pb-pill">In other words,</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="pb-foot"></div>
+</div>
+
+<!-- ══ LISTING MARKERS ══ -->
+<div class="listing-ov" id="listingOv">
+  <div class="listing-header">
+    <div class="listing-hflag"><span>LISTING MARKERS</span></div>
+    <div class="listing-htitle">Open each paragraph differently</div>
+    <div class="listing-hsub">Never repeat the same marker</div>
+  </div>
+  <div class="listing-kicker-row">
+    <div class="listing-kicker-big">Choose a <em>different</em> one for each paragraph.</div>
+    <div class="listing-sub-text">Marker → opinion phrase → your claim.</div>
+  </div>
+  <div class="listing-rows" id="listingRows"></div>
+  <div class="listing-foot"></div>
+</div>
+
+<!-- ══ INTRO PAIRS ══ -->
+<div class="poster-ov" id="introOv" onclick="if(event.target===this){hardStop();updateNavBtns();}">
+  <div class="pov-pillar left"><span class="pov-pillar-text">INTRODUCTION · HOOK + THESIS</span></div>
+  <div class="pov-pillar right"><span class="pov-pillar-text">1 EXAMPLE · FOLLOW THE PATTERN</span></div>
+  <div class="pov-card" id="introCard">
+    <div class="pov-flag"><div class="pov-flag-body" style="background:var(--c-intro)"><span class="pov-flag-num">INTRODUCTION</span></div></div>
+    <div class="pov-pair-lbl" id="introNum">1 / 5</div>
+    <div class="pov-intro-body">
+      <div class="ob-hlbl">🪝 HOOK</div>
       <div class="ob-starter" id="obS"></div>
       <div class="ob-rest" id="obR"></div>
+      <div class="ob-link" id="obL"></div>
       <div class="ob-sep"></div>
-      <div class="ob-thesis">
-        <div class="ob-tlbl">📌 Thesis — your argument</div>
+      <div>
+        <div class="ob-tlbl">📌 THESIS</div>
         <div class="ob-tt" id="obT"></div>
       </div>
     </div>
-    <div class="ob-foot">
-      <div class="ob-fl" id="obFL">pair 1 of 5</div>
-      <div class="ob-wave" id="obW">
-        <div class="ob-wb"></div><div class="ob-wb"></div><div class="ob-wb"></div>
-        <div class="ob-wb"></div><div class="ob-wb"></div>
-      </div>
-    </div>
-    <div class="ob-bottom"></div>
+    <div class="pov-card-foot"><button class="pov-stop-btn" onclick="hardStop();updateNavBtns()">⏹ STOP</button></div>
+    <div class="pov-bottom-bar" style="background:var(--c-intro)"></div>
   </div>
-  <div class="ob-dots" id="obDots"></div>
+  <div class="pov-dots" id="introDots"></div>
 </div>
 
-<!-- ══ TIPS PANEL ══ -->
-<div class="tips-panel" id="tipsPanel">
-  <div class="tips-card">
-    <div class="tips-top"></div>
-    <div class="tips-header">
-      <div class="tips-title">💡 EXAM TIPS</div>
-      <div class="tips-close" onclick="closeTips()">✕ Close</div>
+<!-- ══ BODY PARAGRAPH PAIRS ══ -->
+<div class="poster-ov" id="bodyOv" onclick="if(event.target===this){hardStop();updateNavBtns();}">
+  <div class="pov-pillar left"><span class="pov-pillar-text" id="bodyPillarLeft">BODY PARAGRAPH 1 · P2</span></div>
+  <div class="pov-pillar right"><span class="pov-pillar-text" id="bodyPillarRight">CLAIM + SUPPORT + RESULT</span></div>
+  <div class="pov-card" id="bodyCard">
+    <div class="pov-flag"><div class="pov-flag-body" id="bodyFlagBody"><span class="pov-flag-num" id="bodyFlagNum">BODY PARAGRAPH 1</span></div></div>
+    <div class="pov-pair-lbl" id="bodyNum">1 / 3</div>
+    <div class="pov-body-body" id="bodyCardBody"></div>
+    <div class="pov-card-foot"><button class="pov-stop-btn" onclick="hardStop();updateNavBtns()">⏹ STOP</button></div>
+    <div class="pov-bottom-bar" id="bodyBottomBar"></div>
+  </div>
+  <div class="pov-dots" id="bodyDots"></div>
+</div>
+
+<!-- ══ INTERSTITIAL ══ -->
+<div class="inter-ov" id="interOv">
+  <div class="inter-card">
+    <div class="inter-flag"><div class="inter-flag-body" id="interFlagBody"><span class="inter-flag-num" id="interFlagNum"></span></div></div>
+    <div class="inter-section-lbl" id="interSectionLbl"></div>
+    <div class="inter-body">
+      <div class="inter-kicker" id="interKicker"></div>
+      <div class="inter-big" id="interBig"></div>
+      <div class="inter-sub" id="interSub"></div>
     </div>
-    <div class="tips-tabs" id="tipsTabs">
-      <div class="tips-tab on" data-tab="descriptors" onclick="switchTipsTab('descriptors')">📋 Descriptors</div>
-      <div class="tips-tab" data-tab="linking" onclick="switchTipsTab('linking')">🔗 Linking</div>
-      <div class="tips-tab" data-tab="planning" onclick="switchTipsTab('planning')">📝 Planning</div>
-      <div class="tips-tab" data-tab="wordlimit" onclick="switchTipsTab('wordlimit')">🔢 Word Limit</div>
-      <div class="tips-tab" data-tab="video" onclick="switchTipsTab('video')">▶ Video</div>
+    <div class="inter-bottom" id="interBottom"></div>
+  </div>
+</div>
+
+<!-- ══ NOTES ══ -->
+<div class="notes-panel" id="notesPanel">
+  <div class="notes-card">
+    <div class="notes-top"></div>
+    <div class="notes-header"><div class="notes-title">📋 USEFUL NOTES</div><button class="notes-close" onclick="closeNotes()">✕ Close</button></div>
+    <div class="notes-tabs">
+      <button class="ntab on" data-ntab="descriptors" onclick="switchNtab('descriptors')">📋 Descriptors</button>
+      <button class="ntab" data-ntab="linking" onclick="switchNtab('linking')">🔗 Linking Words</button>
+      <button class="ntab" data-ntab="phrases" onclick="switchNtab('phrases')">💬 All Phrases</button>
+      <button class="ntab" data-ntab="planning" onclick="switchNtab('planning')">📝 Planning</button>
+      <button class="ntab" data-ntab="wordlimit" onclick="switchNtab('wordlimit')">🔢 Word Limit</button>
     </div>
-    <div class="tips-body" id="tipsBody"></div>
+    <div class="notes-body" id="notesBody"></div>
   </div>
 </div>
 
 <div class="flash" id="flash"></div>
 
+<!-- ══ SECONDARY MODAL — dark phrase cards ══ -->
+<div class="sm-backdrop" id="smBackdrop" onclick="closeSecModal()"></div>
+<div class="sm-wrap" id="smWrap">
+  <div class="sm-card" id="smCard">
+    <div class="sm-flag"><div class="sm-flag-body" id="smFlagBody"><span class="sm-flag-txt" id="smFlagTxt"></span></div></div>
+    <div class="sm-section-lbl" id="smSectionLbl"></div>
+    <div class="sm-body">
+      <div class="sm-title" id="smTitle"></div>
+      <div class="sm-divider"></div>
+      <div id="smPhrases"></div>
+    </div>
+    <div class="sm-foot-row">
+      <div class="sm-timer-bar-wrap"><div class="sm-timer-bar" id="smTimerBar"></div></div>
+    </div>
+    <div class="sm-accent-bar" id="smAccentBar"></div>
+  </div>
+</div>
+
 <script>
-/* ═══ TIPS ═══ */
-const TIPS={
+const SCENE_COUNT=4;
+function updateFooterVar(){
+  const f=document.getElementById('mainFooter');
+  const tb=document.querySelector('.topbar');
+  if(f){
+    const fh=f.offsetHeight;
+    const tbh=tb?tb.offsetHeight:0;
+    document.documentElement.style.setProperty('--footer-h',fh+'px');
+    document.documentElement.style.setProperty('--stage-h',(window.innerHeight-fh-tbh)+'px');
+  }
+}
+
+const NOTES_DATA={
   descriptors:[
-    {title:'Content (25%)',items:['<strong>Answer the question directly.</strong> Include both given ideas plus your own third idea.','Each point must be developed — not just stated.','Missing the third idea = immediate loss of marks.']},
+    {title:'Content (25%)',items:['<strong>Answer the question directly.</strong> Include both given ideas plus your own third idea.','Each point must be developed — not just stated.','Missing the third idea = automatic loss of marks.']},
     {title:'Communicative Achievement (25%)',items:['<strong>Formal register throughout.</strong> No contractions, no slang.','Every claim needs a reason or example.','Never "I think" — use "In my opinion" or "It seems to me that".']},
     {title:'Organisation (25%)',items:['<strong>Clear paragraphs</strong> with a topic sentence in each.','Logical: claim → reason → example → result.','Different linking word to begin each paragraph.']},
     {title:'Language (25%)',items:['<strong>Range of vocabulary</strong> — avoid repetition.','Variety of grammar: passive, relative clauses, conditionals.','Accurate spelling and punctuation.']}
   ],
   linking:[
-    {title:'Opinion',items:['"In my opinion," · "I firmly believe that" · "As far as I am concerned,"']},
-    {title:'Adding ideas',items:['"Moreover," · "Furthermore," · "In addition," · "What is more,"']},
-    {title:'Contrasting',items:['"However," · "On the other hand," · "Although" · "Nevertheless,"']},
-    {title:'Examples',items:['"For instance," · "For example," · "Indeed,"']},
-    {title:'Result',items:['"As a result," · "Consequently," · "Therefore,"']},
-    {title:'Concluding',items:['"In conclusion," · "To sum up," · "Overall,"']},
-    {title:'Sequencing',items:['"Firstly," · "Secondly," · "Thirdly," · "Finally,"']}
+    {title:'📌 Opening — DIFFERENT one each time',items:['<strong>Firstly,</strong> · <strong>Furthermore,</strong> · <strong>In addition,</strong> · <strong>However,</strong> · <strong>On the other hand,</strong>','⚠️ Never use "Secondly," in a B2 First for Schools essay.','⚠️ Never repeat the same opening marker.']},
+    {title:'💬 Expressing a view',items:['it seems to me · In my opinion, · As far as I am concerned,','It is widely believed · I firmly believe that']},
+    {title:'🔍 Reason',items:['This is because… · This is largely due to… · Since… · The reason is that…']},
+    {title:'📖 Example',items:['For example, · For instance, · Indeed, · This can be seen in…']},
+    {title:'⚡ Result',items:['As a result, · Consequently, · Therefore, · This means that…']},
+    {title:'↔️ Contrast',items:['Although… · Even though… · Despite… · However,']},
+    {title:'🏁 Concluding',items:['In conclusion, · To sum up, · All things considered, · On balance,']}
   ],
   planning:[
-    {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Write 3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
-    {title:'The CRER body pattern',items:['<strong>CLAIM</strong> — state your point with a listing marker + viewpoint phrase.','<strong>REASON</strong> — explain why: "This is because…"','<strong>EXAMPLE</strong> — give evidence: "For instance…"','<strong>RESULT</strong> — state the consequence: "As a result…"','B2 minimum: at least 3 development sentences after the claim.']},
-    {title:'Common mistakes',items:['Never start writing without knowing what P4 will be.','Do not copy the question — rephrase everything.','Plan your linking words — one different word per paragraph.']}
+    {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Jot 2–3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
+    {title:'What every body paragraph needs',items:['<strong>A clear claim</strong> — open with a listing marker + your point.','<strong>Support</strong> — a reason, an example, a result. Use what fits.','Two or three sentences of support is enough.']},
+    {title:'Common mistakes',items:['Starting without knowing what your own third idea will be.','Copying phrases from the question — always rephrase.','Using the same opening marker in two paragraphs.']}
+  ],
+  phrases:[
+    {title:'CLAIM — Listing marker',items:['Firstly,','Furthermore,','In addition,','However,','On the other hand,']},
+    {title:'CLAIM — Expressing a view',items:['in my opinion,','it seems to me that','as far as I am concerned,','I firmly believe that','It is widely believed that']},
+    {title:'CLAIM — Making a claim',items:['the main advantage of … is','one key problem with … is','The key benefit of … is','One clear drawback is…','An important point is…']},
+    {title:'SUPPORT — Reason',items:['This is because…','The reason is that…','This is largely due to…','Since…']},
+    {title:'SUPPORT — Example',items:['For example,','For instance,','Indeed,','This can be seen in…']},
+    {title:'SUPPORT — Result',items:['As a result,','Consequently,','Therefore,','This means that…']},
+    {title:'SUPPORT — Contrast',items:['Although…','However,','Even though…','While…','Unlike…']},
+    {title:'SUPPORT — Rephrase',items:['In other words,','That is to say,','Simply put,']}
   ],
   wordlimit:[
     {title:'Target: 140–190 words',items:['<strong>Under 130 = automatic mark penalty.</strong>','190 words = roughly 12–15 sentences across 5 paragraphs.','Intro 2–3 · Each body 3–4 · Conclusion 2–3.']},
-    {title:'Quick fixes if too short',items:['Add a result sentence to each body paragraph.','Expand your example — name a place, study, or statistic.','Add a concession in P4: "While some argue that… I believe…"']}
-  ],
-  video:null
+    {title:'Quick fixes if too short',items:['Add a result sentence to each body paragraph.','Expand your example with a specific detail.','Add a concession in P4: "While some argue that… I believe…"']}
+  ]
 };
-let activeTipsTab='descriptors';
-function renderTips(tab){
-  const body=document.getElementById('tipsBody');
-  if(tab==='video'){body.innerHTML=`<div class="video-wrap"><div class="video-box">▶</div><div class="video-sub">Paste your YouTube link to embed a lesson video here.</div></div>`;return;}
-  const secs=TIPS[tab]||[];let h='';
-  secs.forEach(s=>{h+=`<div class="t-section"><div class="t-stitle">${s.title}</div>`;s.items.forEach(it=>{h+=`<div class="t-item">${it}</div>`;});h+='</div>';});
-  body.innerHTML=h;
-}
-function switchTipsTab(t){activeTipsTab=t;document.querySelectorAll('.tips-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));renderTips(t);}
-function toggleTips(){const p=document.getElementById('tipsPanel'),b=document.getElementById('tipsBtn'),s=p.classList.contains('show');if(!s){renderTips(activeTipsTab);p.classList.add('show');b.classList.add('active');}else{p.classList.remove('show');b.classList.remove('active');}}
-function closeTips(){document.getElementById('tipsPanel').classList.remove('show');document.getElementById('tipsBtn').classList.remove('active');}
-
-/* ═══ ESSAY DATA ═══ */
-const WHAT_IS=[
-  {t:'A formal, structured discussion — not a story, not a list.',        h:'A <k>formal, structured discussion</k> — not a story, not a list.'},
-  {t:'You give your opinion clearly, then prove it with reasons and examples.', h:'You give your <k>opinion</k> clearly, then prove it with reasons and examples.'},
-  {t:'Five paragraphs: Introduction, three body paragraphs, Conclusion.',  h:'<k>Five paragraphs:</k> Introduction → three body paragraphs → Conclusion.'},
-  {t:'Formal style throughout: no contractions, no slang.',                h:'<k>Formal style</k> throughout: no contractions, no slang.'},
-  {t:'Aim for 140 to 190 words. Every claim needs at least three development sentences.', h:'Aim for <k>140–190 words.</k> Every claim needs at least three development sentences.'}
-];
-
-const SC1_NARR="Here is today's essay question. Should the use of phones be limited for young people? What do you think? By the end of this lesson you will know exactly how to argue it, sentence by sentence.";
 
 const PAIRS=[
-  {s:'Nowadays,',f:'Nowadays, smartphones are used by millions of young people around the world every single day.',r:'smartphones are used by millions of young people around the world every single day.',t:'This essay will discuss the main <strong>advantages and disadvantages</strong> of limiting smartphone use.',tf:'This essay will discuss the main advantages and disadvantages of limiting smartphone use.'},
-  {s:'In recent years,',f:'In recent years, there has been a growing debate about whether young people should have unlimited access to their phones.',r:'there has been a growing debate about whether young people should have unlimited access to their phones.',t:'In this essay, I will examine <strong>both sides of the argument</strong> before giving my personal opinion.',tf:'In this essay, I will examine both sides of the argument before giving my personal opinion.'},
-  {s:'It is widely believed that',f:'It is widely believed that smartphone use has fundamentally changed the way young people learn, communicate and relax.',r:'smartphone use has fundamentally changed the way young people learn, communicate and relax.',t:'Therefore, it is essential to discuss <strong>the benefits and drawbacks</strong> of restricting these devices.',tf:'Therefore, it is essential to discuss the benefits and drawbacks of restricting these devices.'},
-  {s:'Many people argue that',f:'Many people argue that excessive smartphone use is one of the most serious challenges facing young people today.',r:'excessive smartphone use is one of the most serious challenges facing young people today.',t:'The aim of this essay is to consider <strong>whether limiting smartphones</strong> would truly benefit young people.',tf:'The aim of this essay is to consider whether limiting smartphones would truly benefit young people.'},
-  {s:'It is impossible to deny that',f:'It is impossible to deny that smartphones play a significant role in the daily lives of young people worldwide.',r:'smartphones play a significant role in the daily lives of young people worldwide.',t:'This essay will argue that <strong>some restrictions</strong> on smartphone use are both necessary and beneficial.',tf:'This essay will argue that some restrictions on smartphone use are both necessary and beneficial.'}
+  {s:'Nowadays,',r:'smartphones are used by millions of young people around the world every single day.',f:'Nowadays, smartphones are used by millions of young people around the world every single day.',link:'Although this technology brings many benefits, there is growing concern about its effect on young people.',linkHtml:'<span style="color:var(--red);font-weight:700">Although</span> this technology brings many benefits, there is growing concern about its effect on young people.',t:'This essay will discuss whether it is a good idea to <strong>limit how much young people use their phones.</strong>',tf:'This essay will discuss whether it is a good idea to limit how much young people use their phones.'},
 ];
 
-/* ══ BODY PARAGRAPH DATA
-   Each paragraph has:
-   - claimBuild: the claim assembled in 3 steps (listing → viewpoint → full claim)
-   - supports: array of {role, text} development sentences (min 3 for B2)
-══ */
-const BODY_PARAS=[
-  {
-    claimBuild:[
-      {speak:'Firstly,', html:'<span class="part-new">Firstly,</span> <span class="part-dim">it seems to me that… [viewpoint]… [claim]</span>', label:'LISTING MARKER'},
-      {speak:'Firstly, it seems to me that…', html:'<span class="part-done">Firstly,</span> <span class="part-new">it seems to me that</span> <span class="part-dim">… [the claim]</span>', label:'+ VIEWPOINT'},
-      {speak:'Firstly, it seems to me that the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.',
-       html:'<span class="part-done">Firstly, it seems to me that</span> <span class="part-new">the key advantage of limiting smartphones is that young people can concentrate more deeply on their studies.</span>',label:'FULL CLAIM'}
-    ],
-    supports:[
-      {role:'EXPLAIN',  text:'In other words, without constant alerts and notifications, students are far more able to focus for extended periods.',  html:'In other words, without constant alerts, students are far more able to <k>focus for extended periods</k>.'},
-      {role:'REASON',   text:'This is because social media and messaging apps are deliberately designed to interrupt attention every few minutes.',   html:'This is because social media apps are <k>deliberately designed to interrupt attention</k> every few minutes.'},
-      {role:'EXAMPLE',  text:'For instance, many schools that have introduced phone-free policies have reported a clear improvement in student behaviour and exam results.', html:'For instance, schools with <k>phone-free policies</k> report clear improvement in behaviour and exam results.'},
-      {role:'RESULT',   text:'As a result, young people who limit their screen time tend to find it significantly easier to complete homework and achieve higher grades.', html:'As a result, students who limit screen time find it easier to <k>achieve higher grades.</k>'}
-    ]
-  },
-  {
-    claimBuild:[
-      {speak:'Secondly,', html:'<span class="part-new">Secondly,</span> <span class="part-dim">as far as I am concerned… [viewpoint]… [claim]</span>', label:'LISTING MARKER'},
-      {speak:'Secondly, as far as I am concerned…', html:'<span class="part-done">Secondly,</span> <span class="part-new">as far as I am concerned,</span> <span class="part-dim">… [the claim]</span>', label:'+ VIEWPOINT'},
-      {speak:"Secondly, as far as I am concerned, restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.",
-       html:"<span class='part-done'>Secondly, as far as I am concerned,</span> <span class='part-new'>restricting smartphones has a direct and positive effect on young people's mental health and quality of sleep.</span>", label:'FULL CLAIM'}
-    ],
-    supports:[
-      {role:'EXPLAIN',  text:'Put differently, when teenagers are not checking their phones at night, both the quality and duration of their sleep improves significantly.', html:'Put differently, less phone use at night means <k>better quality sleep.</k>'},
-      {role:'REASON',   text:'This is because the blue light from screens interferes with melatonin production, making it much harder for young people to fall asleep naturally.', html:'This is because <k>blue light</k> from screens interferes with melatonin production.'},
-      {role:'EXAMPLE',  text:'For example, research suggests that teenagers who use phones for more than two hours before bed are twice as likely to suffer from sleep deprivation.', html:'For example, research shows teens using phones before bed are <k>twice as likely</k> to suffer sleep deprivation.'},
-      {role:'RESULT',   text:'Consequently, setting clear boundaries on evening screen time could have a direct and measurable impact on the wellbeing of millions of young people.', html:'Consequently, <k>clear limits on screen time</k> could measurably improve the wellbeing of millions.'}
-    ]
-  },
-  {
-    claimBuild:[
-      {speak:'On the other hand,', html:'<span class="part-new">On the other hand,</span> <span class="part-dim">it could be argued that… [viewpoint]… [claim]</span>', label:'CONTRAST MARKER'},
-      {speak:'On the other hand, it could be argued that…', html:'<span class="part-done">On the other hand,</span> <span class="part-new">it could be argued that</span> <span class="part-dim">… [the claim]</span>', label:'+ VIEWPOINT'},
-      {speak:'On the other hand, it could be argued that smartphones are increasingly valuable tools for independent learning and self-education.',
-       html:'<span class="part-done">On the other hand, it could be argued that</span> <span class="part-new">smartphones are increasingly valuable tools for independent learning and self-education.</span>', label:'FULL CLAIM — YOUR OWN IDEA'}
-    ],
-    supports:[
-      {role:'EXPLAIN',  text:'In other words, rather than simply being a distraction, a phone in the right hands can become a powerful personal learning device.', html:'In other words, a phone in the right hands can become a <k>powerful learning device.</k>'},
-      {role:'REASON',   text:'Many students use their phones to access revision apps, research topics, and collaborate with classmates — all of which directly support their education.', html:'Students use phones for <k>revision apps, research and collaboration</k> — all supporting education.'},
-      {role:'EXAMPLE',  text:'Indeed, platforms such as Duolingo and Khan Academy have transformed smartphones into resources that millions of young learners rely on every day.', html:'Indeed, platforms like <k>Duolingo and Khan Academy</k> have transformed smartphones into learning tools.'},
-      {role:'COMPARE',  text:'Unlike a textbook, which is fixed and static, a smartphone gives a student instant access to an entire world of knowledge and learning tools.', html:'Unlike a textbook, a smartphone gives <k>instant access to a world of knowledge.</k>'},
-      {role:'BALANCE',  text:'For this reason, teaching young people responsible and mindful use of devices may ultimately be more effective than imposing a complete ban.', html:'For this reason, <k>responsible use</k> may be more effective than a complete ban.'}
-    ]
-  }
+const BODY_PAIRS=[
+  {color:'#c9140f',flagTitle:'BODY PARAGRAPH 1',topic:'📝 P2 — FIRST POINT',starter:'Firstly,',opinion:'in my opinion,',keyExpr:'the main advantage of limiting phones',rest:" is that students can focus better in class. This is because phones are full of apps that keep interrupting you. As a result, schools that ban phones have seen big improvements in students' results.",links:['This is because','As a result,'],note:'Open with a listing marker. State your point. Then give one or two reasons or examples.'},
+  {color:'#c9140f',flagTitle:'BODY PARAGRAPH 2',topic:'💡 P3 — SECOND POINT',starter:'Furthermore,',opinion:'it seems to me that',keyExpr:'one key problem with too much phone use',rest:" is the damage it does to sleep. Looking at a bright screen late at night makes it harder to fall asleep. Consequently, tired students find it much more difficult to learn.",links:['Consequently,'],note:'Use a DIFFERENT listing marker. Name your point clearly, then show why it matters.'},
+  {color:'#7b5ea7',flagTitle:'BODY PARAGRAPH 3 ★',topic:'⭐ P4 — YOUR OWN IDEA',starter:'On the other hand,',opinion:'as far as I am concerned,',keyExpr:'one problem that is often forgotten',rest:" is the effect on social skills. When young people are always on their phones, they get less practice at talking face to face. Therefore, they may find real conversations more difficult as they get older.",links:['Therefore,'],note:'This MUST be your own idea — not one from the question. Explain it simply and clearly.'}
+];
+
+const LISTING_MARKERS=[
+  {marker:'Firstly,',color:'#c9140f',label:'TO INTRODUCE',example:'<em>Firstly,</em> in my opinion, the main benefit of limiting phones is better sleep.'},
+  {marker:'Furthermore,',color:'#1a6b3c',label:'TO ADD A POINT',example:'<em>Furthermore,</em> it seems to me that phone use affects concentration in class.'},
+  {marker:'In addition,',color:'#1a5c8a',label:'TO ADD MORE',example:'<em>In addition,</em> as far as I am concerned, phones can damage social skills.'},
+  {marker:'However,',color:'#e07b00',label:'TO CONTRAST',example:'<em>However,</em> some people believe that phones are useful for learning.'},
+  {marker:'On the other hand,',color:'#6b4ea8',label:'TO CONTRAST',example:'<em>On the other hand,</em> smartphones give students access to a great deal of information.'}
 ];
 
 const CONCL_DATA=[
-  {role:'SUMMARY', text:'In conclusion, I firmly believe that the question of smartphone use for young people requires careful and balanced consideration.', html:'In conclusion, I firmly believe this question requires <k>careful, balanced consideration.</k>'},
-  {role:'POINT 1', text:'On one hand, restricting phones leads to improved academic performance, better sleep, and greater overall wellbeing.', html:'On one hand, <k>restricting phones</k> leads to better academic performance, sleep, and wellbeing.'},
-  {role:'POINT 2', text:'On the other hand, smartphones offer genuine educational value and should not be dismissed as purely harmful.', html:'On the other hand, smartphones offer <k>genuine educational value</k> and should not be dismissed.'},
-  {role:'REWORD',  text:'In other words, it is not the phone itself that is the problem — it is how, when, and for how long it is used.', html:'In other words, the problem is not the phone — it is <k>how, when, and how long</k> it is used.'},
-  {role:'VERDICT', text:'Overall, a measured and balanced approach to limiting smartphone use would benefit the vast majority of young people.', html:'Overall, a <k>measured, balanced approach</k> would benefit the vast majority of young people.'}
+  {role:'SUMMARY',kw:'In conclusion,',text:"In conclusion, I firmly believe that the question of phone use for young people requires careful thought."},
+  {role:'POINT 1',kw:'On one hand,',text:"On one hand, limiting phones leads to better focus, better sleep, and better wellbeing."},
+  {role:'POINT 2',kw:'On the other hand,',text:"On the other hand, smartphones have real benefits and should not be seen as purely harmful."},
+  {role:'REWORD',kw:'In other words,',text:"In other words, it is not the phone itself that is the problem — it is how and when it is used."},
+  {role:'VERDICT',kw:'Overall,',text:"Overall, a balanced approach to limiting smartphone use would benefit most young people."}
 ];
 
-const TOTAL=6;
-
-/* ═══ ENGINE ═══ */
-let cur=0,running=false,bannerOn=false,timers=[];
-const synth=window.speechSynthesis;let voice=null;
+let cur=0,running=false,introOvOn=false,bodyOvOn=false,pbOvOn=false,gen=0;
+const synth=window.speechSynthesis;
+let voice=null;
 function loadVoice(){const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};if(synth.getVoices().length)p();else synth.onvoiceschanged=p;}
 let sRes=null;
 function stopSpeech(){if(sRes){sRes();sRes=null;}synth.cancel();}
-function speak(t){return new Promise(r=>{if(!running){r();return;}synth.cancel();sRes=r;const go=()=>{if(!running){r();return;}const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};synth.speak(u);};const t2=setTimeout(go,160);timers.push(t2);});}
-function wait(ms){return new Promise(r=>{const t=setTimeout(r,ms);timers.push(t);});}
+function speak(t,myGen){return new Promise(r=>{if(!running||myGen!==gen){r();return;}synth.cancel();sRes=r;const go=()=>{if(!running||myGen!==gen){sRes=null;r();return;}const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};synth.speak(u);};setTimeout(go,120);});}
+function wait(ms,myGen){return new Promise(r=>setTimeout(()=>r(),(myGen!==undefined&&myGen!==gen)?0:ms));}
 
-/* ─── Progress bar ─── */
-function initPbar(){const b=document.getElementById('pbar');b.innerHTML='';for(let i=0;i<TOTAL;i++){const s=document.createElement('div');s.className='pseg';s.id='ps'+i;s.innerHTML='<div class="psegf"></div>';b.appendChild(s);}}
-function updatePbar(i){for(let j=0;j<TOTAL;j++){const s=document.getElementById('ps'+j);if(!s)continue;s.classList.toggle('done',j<i);s.classList.toggle('active',j===i);}}
-
-function waveOn(i){const w=document.getElementById('w'+i);if(w){w.classList.remove('off');w.classList.add('on');}}
-function waveOff(i){const w=document.getElementById('w'+i);if(w){w.classList.remove('on');w.classList.add('off');}}
-
-function showScene(i){
-  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
-  const sc=document.getElementById('sc'+i);if(!sc)return;
-  sc.classList.add('active');
-  document.getElementById('ctr').textContent=(i+1)+' / '+TOTAL;
-  updatePbar(i);updateNavBtns();flashColor();
-  if(i>0)spawnEmoji(i);
+function hardStop(){
+  gen++;running=false;introOvOn=false;bodyOvOn=false;pbOvOn=false;
+  stopSpeech();waveOff();
+  document.getElementById('introOv').classList.remove('show');
+  document.getElementById('introCard').classList.remove('exit');
+  document.getElementById('bodyOv').classList.remove('show');
+  document.getElementById('bodyCard').classList.remove('exit');
+  document.getElementById('pbOv').classList.remove('show');
+  document.getElementById('listingOv').classList.remove('show');
+  document.getElementById('interOv').classList.remove('show');
+  closeSecModal();
+  const b=document.getElementById('btnPlay');if(b){b.textContent='▶';b.classList.remove('running');}
 }
 
-/* Speak text, then append a sentence line */
-async function speakThenShow(stkId,text,isFirst,role){
-  if(!running)return;
-  await speak(text);if(!running)return;
-  const stk=document.getElementById(stkId);if(!stk)return;
-  const line=document.createElement('div');
-  line.className='s-line'+(isFirst?' first':'');
-  if(role){
-    line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${text}`;
-  } else {
-    line.textContent=text;
-  }
-  stk.appendChild(line);
-  await wait(20);line.classList.add('in');
-  // scroll the new line into view
-  line.scrollIntoView({behavior:'smooth',block:'nearest'});
-  await wait(160);
+function buildDots(){for(let sc=0;sc<SCENE_COUNT;sc++){const c=document.getElementById('dots'+sc);if(!c)continue;c.innerHTML='';for(let i=0;i<SCENE_COUNT;i++){const d=document.createElement('div');d.className='dot';d.id='d'+sc+'-'+i;c.appendChild(d);}}}
+function updateDots(i){for(let sc=0;sc<SCENE_COUNT;sc++){for(let j=0;j<SCENE_COUNT;j++){const d=document.getElementById('d'+sc+'-'+j);if(!d)continue;d.classList.remove('active','done');if(j===i)d.classList.add('active');else if(j<i)d.classList.add('done');}}}
+
+const SECTION_END={intro:1,body:2,conc:3};
+let activeSection='intro';
+function sectionForScene(idx){if(idx<=1)return 'intro';if(idx<=2)return 'body';return 'conc';}
+function syncTab(idx){const t=sectionForScene(idx);document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));}
+function jumpTab(tab){if(tab==='notes'){openNotes();return;}hardStop();clearStacks();const map={intro:0,body:2,conc:3};const target=map[tab];if(typeof target==='number'){activeSection=tab;cur=target;showScene(cur);setTimeout(()=>{if(!running){running=true;const myGen=gen;const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');updateNavBtns();runScene(cur,myGen);}},120);}updateNavBtns();}
+
+function showScene(i){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));const sc=document.getElementById('sc'+i);if(!sc)return;sc.classList.add('active');document.getElementById('ctr').textContent=(i+1)+' / '+SCENE_COUNT;updateDots(i);syncTab(i);updateNavBtns();flashColor();if(i>0)spawnEmoji(i);}
+function waveOn(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}});}
+function waveOff(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}});}
+
+function showInter(flag,fc,kicker,big,sub,ac){
+  document.getElementById('interFlagBody').style.background=fc;
+  document.getElementById('interFlagNum').textContent=flag;
+  document.getElementById('interKicker').textContent=kicker;
+  document.getElementById('interBig').innerHTML=big;
+  document.getElementById('interSub').innerHTML=sub;
+  document.getElementById('interBottom').style.background=fc;
+  document.getElementById('interSectionLbl').textContent=kicker;
+  document.getElementById('interOv').style.setProperty('--inter-accent',ac||fc);
+  document.getElementById('interOv').classList.add('show');
 }
+function hideInter(){document.getElementById('interOv').classList.remove('show');}
 
-/* ══ CLAIM BUILD — the key pedagogical sequence
-   Shows the sentence being assembled piece by piece:
-   1. Listing marker alone
-   2. + Viewpoint phrase
-   3. Full claim lands
-   Then clears the build steps and shows final claim as a line
-══ */
-async function buildClaim(stkId,para){
-  if(!running)return;
-  const stk=document.getElementById(stkId);if(!stk)return;
+/* PHRASE BANK POSTER */
+function showPhraseBank(){pbOvOn=true;document.getElementById('pbOv').classList.add('show');}
+function hidePhraseBank(){document.getElementById('pbOv').classList.remove('show');pbOvOn=false;}
 
-  // heading
-  const heading=document.createElement('div');
-  heading.className='s-line first in';
-  heading.style.fontFamily="'Barlow Condensed',sans-serif";
-  heading.style.fontSize='clamp(.62rem,1.8vw,.72rem)';
-  heading.style.fontWeight='900';
-  heading.style.letterSpacing='.16em';
-  heading.style.textTransform='uppercase';
-  heading.style.color='var(--red)';
-  heading.style.borderBottom='1px solid rgba(0,0,0,.06)';
-  heading.style.paddingBottom='.28rem';
-  heading.style.marginBottom='.28rem';
-  heading.textContent='BUILDING THE CLAIM — step by step';
-  stk.appendChild(heading);
-  await wait(300);
-
-  let stepEl=null;
-  for(let i=0;i<para.claimBuild.length;i++){
-    const step=para.claimBuild[i];
-    if(!running)return;
-
-    // label
-    const lbl=document.createElement('div');
-    lbl.style.cssText='font-family:\'DM Mono\',monospace;font-size:.24rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:.1rem;opacity:0;transition:opacity .3s;';
-    stk.appendChild(lbl);
-    await wait(20);lbl.style.opacity='1';
-    lbl.textContent=step.label;
-
-    // build step
-    if(stepEl) stepEl.style.opacity='.28'; // dim previous
-    stepEl=document.createElement('div');
-    stepEl.className='build-step';
-    stepEl.innerHTML=step.html;
-    stk.appendChild(stepEl);
-    await wait(20);stepEl.classList.add('in');
-    stepEl.scrollIntoView({behavior:'smooth',block:'nearest'});
-
-    await speak(step.speak);
-    if(!running)return;
-    await wait(i<para.claimBuild.length-1?550:300);
-  }
-  await wait(400);
+/* LISTING MARKERS */
+function showListing(){
+  const el=document.getElementById('listingRows');el.innerHTML='';
+  LISTING_MARKERS.forEach(m=>{
+    const row=document.createElement('div');row.className='listing-row';
+    row.innerHTML=`<div class="listing-row-marker" style="color:${m.color};background:${m.color}12;">${m.marker}</div><div class="listing-row-mid"><div class="listing-row-mid-label" style="color:${m.color};">${m.label}</div></div><div class="listing-row-example">${m.example}</div>`;
+    el.appendChild(row);
+  });
+  document.getElementById('listingOv').classList.add('show');
 }
+function hideListing(){document.getElementById('listingOv').classList.remove('show');}
 
-/* ══ INTRO PAIRS ══ */
-async function runPairs(){
-  bannerOn=true;
-  const ov=document.getElementById('ov');
-  document.getElementById('obDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
-  ov.classList.add('show');
-  for(let i=0;i<PAIRS.length;i++){if(!running||!bannerOn)break;await showPair(PAIRS[i],i);}
-  if(running)closeBanner();
+/* INTRO PAIRS */
+async function runIntroPairs(myGen){
+  introOvOn=true;
+  document.getElementById('introDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
+  document.getElementById('introOv').classList.add('show');
+  for(let i=0;i<PAIRS.length;i++){if(!running||!introOvOn||myGen!==gen)break;await showIntroPair(PAIRS[i],i,myGen);}
+  document.getElementById('introOv').classList.remove('show');document.getElementById('introCard').classList.remove('exit');introOvOn=false;
 }
-async function showPair(p,idx){
-  const ob=document.getElementById('ob');
-  if(idx>0){ob.classList.add('exit');await wait(190);if(!running||!bannerOn){ob.classList.remove('exit');return;}ob.classList.remove('exit');}
-  if(!running||!bannerOn)return;
-  document.getElementById('obNum').textContent=(idx+1)+' / '+PAIRS.length;
-  document.getElementById('obFL').textContent='pair '+(idx+1)+' of '+PAIRS.length;
+async function showIntroPair(p,idx,myGen){
+  const card=document.getElementById('introCard');
+  if(idx>0){card.classList.add('exit');await wait(190,myGen);if(!running||!introOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');}
+  if(!running||!introOvOn||myGen!==gen)return;
+  document.getElementById('introNum').textContent=(idx+1)+' / '+PAIRS.length;
   const sEl=document.getElementById('obS');sEl.textContent=p.s;
-  const l=p.s.length;sEl.style.fontSize=l>22?'clamp(1.4rem,5.5vw,2.4rem)':l>14?'clamp(1.8rem,7vw,3.1rem)':'clamp(2.1rem,8vw,3.6rem)';
-  const rEl=document.getElementById('obR'),tEl=document.getElementById('obT');
-  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
-  rEl.textContent=p.r;tEl.innerHTML=p.t;
-  await wait(24);rEl.style.cssText='';tEl.style.cssText='';
-  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(!d)continue;d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}
-  document.getElementById('obW').classList.add('on');
-  await speak(p.f);if(!running||!bannerOn)return;
-  await wait(180);await speak(p.tf);if(!running||!bannerOn)return;
-  document.getElementById('obW').classList.remove('on');
-  await wait(480);
+  const l=p.s.length;sEl.style.fontSize=l>22?'clamp(2.2rem,6vw,4rem)':l>14?'clamp(3rem,8vw,5.5rem)':'clamp(4rem,10vw,7rem)';
+  const rEl=document.getElementById('obR'),lEl=document.getElementById('obL'),tEl=document.getElementById('obT');
+  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';lEl.style.cssText='opacity:0;transform:translateY(4px);transition:none;';tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
+  rEl.textContent=p.r;lEl.innerHTML=p.linkHtml;tEl.innerHTML=p.t;
+  await wait(24,myGen);rEl.style.cssText='';lEl.style.cssText='';tEl.style.cssText='';
+  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  waveOn();await speak(p.f,myGen);if(!running||!introOvOn||myGen!==gen)return;
+  await wait(140,myGen);await speak(p.link,myGen);if(!running||!introOvOn||myGen!==gen)return;
+  await wait(140,myGen);await speak(p.tf,myGen);if(!running||!introOvOn||myGen!==gen)return;
+  waveOff();await wait(460,myGen);
 }
-function closeBanner(){document.getElementById('ov').classList.remove('show');document.getElementById('ob').classList.remove('exit');bannerOn=false;}
 
-/* ═══ SCENE RUNNERS ═══ */
-async function runScene(idx){
-  if(!running)return;
-  if(idx>=TOTAL){finishAll();return;}
+/* BODY PARAGRAPH PAIRS */
+async function runBodyPairs(myGen){
+  bodyOvOn=true;
+  document.getElementById('bodyDots').innerHTML=BODY_PAIRS.map((_,i)=>`<div class="bdot" id="bbd${i}"></div>`).join('');
+  document.getElementById('bodyOv').classList.add('show');
+  for(let i=0;i<BODY_PAIRS.length;i++){if(!running||!bodyOvOn||myGen!==gen)break;await showBodyPair(BODY_PAIRS[i],i,myGen);}
+  document.getElementById('bodyOv').classList.remove('show');document.getElementById('bodyCard').classList.remove('exit');bodyOvOn=false;
+}
+async function showBodyPair(para,idx,myGen){
+  const card=document.getElementById('bodyCard');
+  if(idx>0){
+    // BP3 gets a special attention reset before sliding in
+    if(idx===2){
+      card.classList.add('exit');await wait(190,myGen);if(!running||!bodyOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');
+      waveOn();await speak("And now — your own idea. This one is yours.",myGen);
+      if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
+      await wait(300,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
+    } else {
+      card.classList.add('exit');await wait(190,myGen);if(!running||!bodyOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');
+    }
+  }
+  if(!running||!bodyOvOn||myGen!==gen)return;
+  document.getElementById('bodyNum').textContent=(idx+1)+' / '+BODY_PAIRS.length;
+  document.getElementById('bodyFlagNum').textContent=para.flagTitle;
+  document.getElementById('bodyFlagBody').style.background=para.color;
+  document.getElementById('bodyBottomBar').style.background=para.color;
+  document.getElementById('bodyPillarLeft').textContent=para.flagTitle+' · P'+(idx+2);
+  document.getElementById('bodyPillarRight').textContent=idx===2?'YOUR OWN IDEA ★':'CLAIM + SUPPORT + RESULT';
+  for(let i=0;i<BODY_PAIRS.length;i++){const d=document.getElementById('bbd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  const body=document.getElementById('bodyCardBody');body.innerHTML='';
+  const topicLbl=document.createElement('div');topicLbl.style.cssText=`font-family:"DM Mono",monospace;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;flex-shrink:0;color:${para.color};`;topicLbl.textContent=para.topic;body.appendChild(topicLbl);
+  const claimRow=document.createElement('div');claimRow.style.cssText='display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;flex-shrink:0;margin-bottom:14px;';
+  const sLen=para.starter.length;const sFontSize=sLen>16?'clamp(2.4rem,6vw,3.6rem)':sLen>10?'clamp(3rem,8vw,5rem)':'clamp(3.8rem,10vw,6.5rem)';
+  const starterEl=document.createElement('span');starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.88;letter-spacing:.5px;color:var(--ink);`;starterEl.textContent=para.starter;claimRow.appendChild(starterEl);
+  if(para.opinion){const opEl=document.createElement('span');opEl.style.cssText=`font-family:"Instrument Sans",sans-serif;font-size:clamp(14px,2vw,18px);font-weight:500;font-style:italic;color:${para.color};line-height:1;`;opEl.textContent=para.opinion;claimRow.appendChild(opEl);}
+  body.appendChild(claimRow);
+  if(para.keyExpr){const keyEl=document.createElement('div');keyEl.style.cssText=`font-family:"DM Mono",monospace;font-size:clamp(11px,1.5vw,14px);font-weight:500;letter-spacing:.5px;color:#fff;background:${para.color};display:inline-block;padding:6px 14px;border-radius:5px;margin-bottom:18px;flex-shrink:0;`;keyEl.textContent=para.keyExpr;body.appendChild(keyEl);}
+  let html=para.rest;(para.links||[]).forEach(lw=>{const escaped=lw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');html=html.replace(new RegExp(escaped),'<span style="color:var(--red);font-weight:700;font-family:\'DM Mono\',monospace;font-size:clamp(13px,1.6vw,16px);">'+lw+'</span>');});
+  const paraEl=document.createElement('div');paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:clamp(16px,2.2vw,22px);font-weight:400;line-height:1.6;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .5s cubic-bezier(.22,1,.36,1);';paraEl.innerHTML=html;body.appendChild(paraEl);
+  const spacer=document.createElement('div');spacer.style.cssText='flex:1;min-height:6px;';body.appendChild(spacer);
+  if(para.note){const noteEl=document.createElement('div');noteEl.style.cssText='font-family:"DM Mono",monospace;font-size:clamp(11px,1.4vw,14px);line-height:1.6;color:rgba(28,28,30,.5);background:rgba(0,0,0,.04);border-left:3px solid rgba(0,0,0,.14);padding:10px 16px;border-radius:0 6px 6px 0;flex-shrink:0;opacity:0;transition:opacity .5s .6s ease;';noteEl.textContent='💡 '+para.note;body.appendChild(noteEl);setTimeout(()=>{noteEl.style.opacity='1';},700);}
+  await wait(60,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
+  paraEl.offsetHeight;paraEl.style.opacity='1';paraEl.style.transform='none';
+  await wait(180,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
+  waveOn();const fullText=para.starter+(para.opinion?' '+para.opinion+',':'')+(para.keyExpr?' '+para.keyExpr:'')+para.rest;
+  await speak(fullText,myGen);if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
+  waveOff();await wait(600,myGen);
+}
+
+async function speakThenShow(stkId,text,isFirst,role,kw,myGen){
+  if(!running||myGen!==gen)return;
+  const stk=document.getElementById(stkId);if(!stk)return;
+  const line=document.createElement('div');line.className='s-line'+(isFirst?' first':'');
+  let html=text;if(kw)html=text.replace(kw,`<span style="color:var(--red);font-weight:700">${kw}</span>`);
+  if(role)line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;else line.innerHTML=html;
+  stk.appendChild(line);await wait(20,myGen);line.classList.add('in');line.scrollIntoView({behavior:'smooth',block:'nearest'});
+  await wait(220,myGen);if(!running||myGen!==gen)return;
+  await speak(text,myGen);if(!running||myGen!==gen)return;
+  await wait(180,myGen);
+}
+
+/* ── SC2 CINEMATIC CARD BUILD ── */
+function sc2ShowIdle(){
+  const idle=document.getElementById('sc2Idle');
+  const build=document.getElementById('sc2Build');
+  if(idle)idle.style.display='flex';
+  if(build)build.style.display='none';
+}
+function sc2ResetBuild(){
+  const idle=document.getElementById('sc2Idle');
+  const build=document.getElementById('sc2Build');
+  if(idle)idle.style.display='none';
+  if(build){build.style.display='flex';}
+  // Reset all animated elements
+  const kicker=document.getElementById('sc2Kicker');
+  const claim=document.getElementById('sc2ClaimBlock');
+  const sep=document.getElementById('sc2Sep');
+  const support=document.getElementById('sc2SupportBlock');
+  if(kicker)kicker.style.opacity='0';
+  if(claim){claim.style.opacity='0';claim.style.transform='translateY(14px)';}
+  if(sep)sep.style.opacity='0';
+  if(support){support.style.opacity='0';support.style.transform='translateY(14px)';}
+  const ci=document.getElementById('sc2ClaimItems');
+  const si=document.getElementById('sc2SupportItems');
+  if(ci)ci.innerHTML='';
+  if(si)si.innerHTML='';
+}
+function sc2AnimateIn(el,delay=0){
+  return new Promise(r=>{
+    setTimeout(()=>{
+      if(el){el.style.opacity='1';el.style.transform='none';}
+      setTimeout(r,420);
+    },delay);
+  });
+}
+/* ── SECONDARY MODAL DATA ── */
+const MODAL_DATA = {
+  listing:{
+    label:'Listing Marker', section:'CLAIM', color:'#c9140f', glow:'rgba(201,20,15,.22)',
+    title:'Listing Markers',
+    phrases:[
+      {text:'Firstly,', note:'introduces your first point'},
+      {text:'Furthermore,', note:'adds a second point — same direction'},
+      {text:'In addition,', note:'adds another point, slightly stronger'},
+      {text:'However,', note:'introduces a contrast or counter-argument'},
+      {text:'On the other hand,', note:'introduces the opposing view'},
+    ]
+  },
+  view:{
+    label:'Personal View', section:'CLAIM', color:'#1a5c8a', glow:'rgba(26,92,138,.22)',
+    title:'Expressing a View',
+    phrases:[
+      {text:'in my opinion,', note:'most common — always safe'},
+      {text:'it seems to me that', note:'softer, more academic tone'},
+      {text:'as far as I am concerned,', note:'strong, formal register'},
+      {text:'I firmly believe that', note:'emphatic — use for strong opinions'},
+      {text:'It is widely believed that', note:'distanced — good for balanced essays'},
+    ]
+  },
+  claim:{
+    label:'The Claim', section:'CLAIM', color:'#1a6b3c', glow:'rgba(26,107,60,.22)',
+    title:'Making a Claim',
+    phrases:[
+      {text:'the main advantage of … is', note:'best for positive points'},
+      {text:'one key problem with … is', note:'best for negative points'},
+      {text:'the most important point is', note:'signals your strongest argument'},
+      {text:'one clear benefit of … is', note:'variation of advantage'},
+      {text:'an important issue is', note:'neutral — works for any claim'},
+    ]
+  },
+  reason:{
+    label:'Reason', section:'SUPPORT', color:'#1a6b3c', glow:'rgba(26,107,60,.22)',
+    title:'Giving a Reason',
+    phrases:[
+      {text:'This is because…', note:'most natural — always works'},
+      {text:'The reason is that…', note:'more formal alternative'},
+      {text:'This is largely due to…', note:'academic register'},
+      {text:'Since…', note:'use at start of sentence — more sophisticated'},
+      {text:'The explanation for this is…', note:'high register — for top marks'},
+    ]
+  },
+  example:{
+    label:'Example', section:'SUPPORT', color:'#1a5c8a', glow:'rgba(26,92,138,.22)',
+    title:'Giving an Example',
+    phrases:[
+      {text:'For example,', note:'simplest — use this first'},
+      {text:'For instance,', note:'equivalent to "for example"'},
+      {text:'Indeed,', note:'stronger — confirms or emphasises'},
+      {text:'This can be seen in…', note:'links directly to real-world evidence'},
+      {text:'A good illustration of this is…', note:'sophisticated — names the example clearly'},
+    ]
+  },
+  result:{
+    label:'Result', section:'SUPPORT', color:'#6b4ea8', glow:'rgba(107,78,168,.22)',
+    title:'Showing a Result',
+    phrases:[
+      {text:'As a result,', note:'most common — always safe'},
+      {text:'Consequently,', note:'more formal than "as a result"'},
+      {text:'Therefore,', note:'logical conclusion — strong signal'},
+      {text:'This means that…', note:'explains the implication directly'},
+      {text:'This leads to…', note:'shows cause and effect clearly'},
+    ]
+  },
+  more:{
+    label:'And More…', section:'SUPPORT', color:'#e07b00', glow:'rgba(224,123,0,.22)',
+    title:'Contrast & Rephrase',
+    phrases:[
+      {text:'Although…', note:'contrast — use to acknowledge counter-argument'},
+      {text:'Even though…', note:'stronger contrast than "although"'},
+      {text:'However,', note:'pivot — changes direction mid-paragraph'},
+      {text:'In other words,', note:'rephrases your point more simply'},
+      {text:'That is to say,', note:'formal rephrase — explains what you mean'},
+      {text:'Unlike…', note:'direct comparison — links two ideas'},
+    ]
+  }
+};
+
+function swapModalContent(key, durationMs){
+  const d=MODAL_DATA[key];if(!d)return;
+  document.getElementById('smCard').style.boxShadow=`4px 6px 0 rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06),0 24px 55px rgba(0,0,0,.55),0 0 60px ${d.glow}`;
+  document.getElementById('smFlagBody').style.background=d.color;
+  document.getElementById('smFlagTxt').textContent=d.label;
+  document.getElementById('smSectionLbl').textContent=d.section;
+  document.getElementById('smTitle').textContent=d.title;
+  document.getElementById('smAccentBar').style.background=d.color;
+  const pc=document.getElementById('smPhrases');pc.innerHTML='';
+  d.phrases.forEach((p,i)=>{
+    const row=document.createElement('div');row.className='sm-phrase';
+    row.innerHTML=`<div class="sm-phrase-bullet" style="background:${d.color};margin-top:8px;"></div>
+      <div><div class="sm-phrase-text">${p.text}</div><div class="sm-phrase-note">${p.note}</div></div>`;
+    pc.appendChild(row);
+    setTimeout(()=>row.classList.add('in'),i*60+80);
+  });
+  const bar=document.getElementById('smTimerBar');
+  if(bar){
+    bar.style.background=d.color;
+    bar.style.transition='none';
+    bar.style.width='100%';
+    if(durationMs){
+      requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+        bar.style.transition=`width ${durationMs}ms linear`;
+        bar.style.width='0%';
+      });});
+    }
+  }
+}
+function openSecModal(key, durationMs){
+  swapModalContent(key, durationMs);
+  document.getElementById('smBackdrop').classList.add('open');
+  document.getElementById('smWrap').classList.add('open');
+}
+function closeSecModal(){
+  const bd=document.getElementById('smBackdrop');
+  const wr=document.getElementById('smWrap');
+  if(bd){bd.classList.remove('open');bd.classList.remove('dim');}
+  if(wr)wr.classList.remove('open');
+}
+
+/* sc2AddItem — drops chip onto card, onclick still works for manual tap */
+async function sc2AddItem(containerId,text,color,myGen,modalKey){
+  if(!running||myGen!==gen)return;
+  const c=document.getElementById(containerId);if(!c)return;
+  const item=document.createElement('div');
+  item.className='sc2-chip';
+  item.style.cssText=`color:${color};cursor:${modalKey?'pointer':'default'};`;
+  item.innerHTML=`<span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;display:inline-block;opacity:.7;"></span>${text.label}`;
+  if(modalKey)item.onclick=()=>openSecModal(modalKey);
+  c.appendChild(item);
+  await wait(30,myGen);
+  item.classList.add('in');
+  await wait(200,myGen);
+}
+
+/* auto-open modal — backdrop dims between cards, never goes white, isLast=true fully closes */
+async function sc2ShowModal(key,narration,myGen,isLast=false){
+  if(!running||myGen!==gen)return;
+  const wordCount=narration.split(/\s+/).length;
+  const estMs=Math.round((wordCount/130)*60*1000/0.87)+600;
+  const backdrop=document.getElementById('smBackdrop');
+  const wrap=document.getElementById('smWrap');
+  const isOpen=wrap.classList.contains('open');
+  if(!isOpen){
+    // First modal — full open
+    swapModalContent(key,estMs);
+    backdrop.classList.remove('dim');
+    backdrop.classList.add('open');
+    wrap.classList.add('open');
+    await wait(500,myGen);
+  } else {
+    // Subsequent — slide card down, swap, slide back up
+    wrap.classList.remove('open');
+    backdrop.classList.remove('open');
+    backdrop.classList.add('dim');
+    await wait(250,myGen);
+    swapModalContent(key,estMs);
+    await wait(80,myGen);
+    backdrop.classList.remove('dim');
+    backdrop.classList.add('open');
+    wrap.classList.add('open');
+    await wait(300,myGen);
+  }
+  if(!running||myGen!==gen){closeSecModal();return;}
+  await speak(narration,myGen);
+  if(!running||myGen!==gen){closeSecModal();return;}
+  await wait(300,myGen);
+  if(isLast){
+    closeSecModal();
+    await wait(300,myGen);
+  } else {
+    // Between modals: slide down but keep backdrop dim — no white flash
+    wrap.classList.remove('open');
+    backdrop.classList.remove('open');
+    backdrop.classList.add('dim');
+  }
+}
+
+async function runBodyIntro(myGen){
+  if(!running||myGen!==gen)return;
+  sc2ResetBuild();
+
+  const kicker=document.getElementById('sc2Kicker');
+  const claimBlock=document.getElementById('sc2ClaimBlock');
+  if(kicker)kicker.style.opacity='1';
+  await wait(40,myGen);if(!running||myGen!==gen)return;
+  if(claimBlock){claimBlock.style.opacity='1';claimBlock.style.transform='none';}
+  await wait(200,myGen);if(!running||myGen!==gen)return;
+
+  waveOn();
+  await speak("Every body paragraph opens with a claim.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  // Each chip drops AS its name is spoken
+  sc2AddItem('sc2ClaimItems',{label:'Listing Marker'},'#c9140f',myGen,'listing');
+  await speak("A listing marker —",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2ClaimItems',{label:'Personal View'},'#1a5c8a',myGen,'view');
+  await speak("your opinion —",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2ClaimItems',{label:'The Claim'},'#1a6b3c',myGen,'claim');
+  await speak("the claim itself.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  await wait(400,myGen);if(!running||myGen!==gen)return;
+
+  // Sep + SUPPORT land
+  const sep=document.getElementById('sc2Sep');
+  const supportBlock=document.getElementById('sc2SupportBlock');
+  if(sep)sep.style.opacity='1';
+  await wait(60,myGen);if(!running||myGen!==gen)return;
+  if(supportBlock){supportBlock.style.opacity='1';supportBlock.style.transform='none';}
+  await wait(150,myGen);if(!running||myGen!==gen)return;
+
+  await speak("Then you support it.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2SupportItems',{label:'Reason'},'#1a6b3c',myGen,'reason');
+  await speak("Give a reason.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2SupportItems',{label:'Example'},'#1a5c8a',myGen,'example');
+  await speak("Give an example.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2SupportItems',{label:'Result'},'#6b4ea8',myGen,'result');
+  await speak("Show the result.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  sc2AddItem('sc2SupportItems',{label:'And More…'},'#e07b00',myGen,'more');
+  await speak("Use what fits.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}
+
+  waveOff();
+  await wait(500,myGen);if(!running||myGen!==gen)return;
+  sc2PopulateFullList();
+  await wait(800,myGen);if(!running||myGen!==gen)return;
+
+  waveOn();await speak("Now watch three complete body paragraphs. See how all these pieces fit together.",myGen);
+  if(!running||myGen!==gen){waveOff();return;}waveOff();
+  await wait(400,myGen);if(!running||myGen!==gen)return;
+  await runBodyPairs(myGen);
+}
+
+function sc2PopulateFullList(){
+  const build=document.getElementById('sc2Build');
+  if(!build)return;
+  build.style.transition='opacity .3s';
+  build.style.opacity='0';
+
+  const CLAIM=[
+    {color:'#c9140f', label:'LISTING MARKER', phrases:['Firstly,','Furthermore,','In addition,','However,','On the other hand,']},
+    {color:'#1a5c8a', label:'PERSONAL VIEW',  phrases:['in my opinion,','it seems to me that','as far as I am concerned,']},
+    {color:'#1a6b3c', label:'THE CLAIM',      phrases:['the main advantage of …','one key problem with …','an important point is …']},
+  ];
+  const SUPPORT=[
+    {color:'#1a6b3c', label:'REASON',   phrases:['This is because …','The reason is that …','Since …']},
+    {color:'#1a5c8a', label:'EXAMPLE',  phrases:['For example,','For instance,','This can be seen in …']},
+    {color:'#e07b00', label:'CONTRAST', phrases:['Although …','However,','Even though …']},
+    {color:'#6b4ea8', label:'RESULT',   phrases:['As a result,','Consequently,','Therefore,']},
+  ];
+
+  function renderCol(groups){
+    return groups.map(g=>`
+      <div style="margin-bottom:12px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:${g.color};margin-bottom:5px;padding-left:8px;border-left:3px solid ${g.color};">${g.label}</div>
+        ${g.phrases.map(p=>`<div style="font-family:'Instrument Sans',sans-serif;font-size:clamp(11px,1.5vw,13px);color:rgba(28,28,30,.62);line-height:1.7;padding-left:11px;">${p}</div>`).join('')}
+      </div>`).join('');
+  }
+
+  setTimeout(()=>{
+    build.innerHTML=`
+      <div style="padding:46px 0 0;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="flex:1;min-height:0;display:flex;overflow:hidden;">
+
+          <!-- CLAIM column -->
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 18px;border-right:1px solid rgba(0,0,0,.07);">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">CLAIM</div>
+            ${renderCol(CLAIM)}
+          </div>
+
+          <!-- SUPPORT column -->
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 14px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">SUPPORT</div>
+            ${renderCol(SUPPORT)}
+          </div>
+
+        </div>
+
+        <!-- Explore button -->
+        <div style="flex-shrink:0;display:flex;justify-content:center;padding:10px 0 4px;">
+          <button onclick="showPhraseBank()" style="font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:20px;border:1.5px solid rgba(28,28,30,.18);background:transparent;color:var(--ink3);cursor:pointer;transition:all .18s;" onmouseover="this.style.background='rgba(0,0,0,.06)';this.style.color='var(--ink)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink3)'">Explore all phrases →</button>
+        </div>
+      </div>`;
+    build.style.transition='opacity .5s';
+    build.style.opacity='1';
+  },320);
+}
+
+
+async function runScene(idx,myGen){
+  if(!running||myGen!==gen)return;
+  if(idx>=SCENE_COUNT){finishAll();return;}
   clearStacks();showScene(idx);
 
   if(idx===0){
-    // Scene 0 is pre-rendered — narrate a brief welcome then move on
-    waveOn(0);
-    await speak("Welcome to Essay Drop. This lesson will teach you how to write a complete B2 opinion essay, sentence by sentence. Let's begin with the question.");
-    waveOff(0);
-
-  }else if(idx===1){
-    // Question narration + pairs
-    waveOn(1);
-    await speak(SC1_NARR);
-    waveOff(1);
-    if(running){await wait(300);await runPairs();}
-
-  }else if(idx===2||idx===3||idx===4){
-    // Body paragraphs — teach construction then add supports
-    const para=BODY_PARAS[idx-2];
-    const stkId='stk'+idx;
-    waveOn(idx);
-
-    // Narrate the paragraph structure first
-    await speak(`Now let's build paragraph ${idx}. Watch how the claim is constructed — listing marker, viewpoint phrase, then the full sentence.`);
-    if(!running)return;
-
-    // Build the claim step by step
-    await buildClaim(stkId,para);
-    if(!running)return;
-
-    await speak('Now listen to how the claim is developed. A strong B2 paragraph needs at least three development sentences after the main claim.');
-    if(!running)return;
-    await wait(300);
-
-    // Show supports one by one
-    for(let i=0;i<para.supports.length;i++){
-      if(!running)return;
-      const s=para.supports[i];
-      const sh=s.html?s.html.replace(/<k>/g,"<span style='color:var(--red);font-weight:700'>").replace(/<\/k>/g,'</span>'):null;
-      await speakThenShow(stkId,s.text,false,s.role,sh);
-    }
-    waveOff(idx);
-
-  }else if(idx===5){
-    // Conclusion
-    waveOn(5);
-    await speak('Finally, the conclusion. Restate your opinion using different words. Never introduce new ideas here.');
-    if(!running)return;
-    for(let i=0;i<CONCL_DATA.length;i++){
-      if(!running)return;
-      const row=CONCL_DATA[i];
-      const rh=row.html?row.html.replace(/<k>/g,"<span style='color:var(--red);font-weight:700'>").replace(/<\/k>/g,'</span>'):null;
-      await speakThenShow('stk5',row.text,i===0,row.role,rh);
-    }
-    waveOff(5);
+    waveOn();await speak("Welcome to Essay Builder. Today you will learn how to write a B2 opinion essay. There are five paragraphs: an introduction, three body paragraphs, and a conclusion.",myGen);
+    if(!running||myGen!==gen){waveOff();return;}waveOff();
+  }
+  else if(idx===1){
+    showInter('INTRODUCTION','var(--c-intro)','PARAGRAPH 1 OF 5','A <em>Hook.</em><br>A <em>Thesis.</em>','Two sentences only. Watch <strong>one example.</strong>','var(--c-intro)');
+    await speak("The introduction is just two sentences. A hook, then a thesis. Watch one example — then move on.",myGen);
+    if(!running||myGen!==gen)return;
+    await wait(400,myGen);if(!running||myGen!==gen)return;
+    hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
+    waveOn();await speak("Here is today's essay question. Should the use of phones be limited for young people? Choose your side, then follow the examples.",myGen);
+    if(!running||myGen!==gen){waveOff();return;}waveOff();await wait(240,myGen);if(!running||myGen!==gen)return;
+    await runIntroPairs(myGen);
+  }
+  else if(idx===2){
+    await runBodyIntro(myGen);
+  }
+  else if(idx===3){
+    const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='none';
+    const hint=document.getElementById('conclHint');if(hint)hint.style.display='none';
+    // Split narration — each line timed to a skeleton row appearing
+    waveOn();
+    await speak('Finally, the conclusion.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speakThenShow('stk3',CONCL_DATA[0].text,true,CONCL_DATA[0].role,CONCL_DATA[0].kw,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speak('Restate your opinion — but never repeat the same words.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speakThenShow('stk3',CONCL_DATA[1].text,false,CONCL_DATA[1].role,CONCL_DATA[1].kw,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speak('Echo your two main points briefly.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speakThenShow('stk3',CONCL_DATA[2].text,false,CONCL_DATA[2].role,CONCL_DATA[2].kw,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speak('Then rephrase your position in one clear sentence.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speakThenShow('stk3',CONCL_DATA[3].text,false,CONCL_DATA[3].role,CONCL_DATA[3].kw,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speak('And close with a final verdict. Short. Confident. Done.',myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    await speakThenShow('stk3',CONCL_DATA[4].text,false,CONCL_DATA[4].role,CONCL_DATA[4].kw,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
   }
 
-  if(!running)return;
-  await wait(480);if(!running)return;
-  cur=idx+1;runScene(cur);
+  if(!running||myGen!==gen)return;
+  await wait(400,myGen);if(!running||myGen!==gen)return;
+  const sectionEnd=SECTION_END[activeSection]??(SCENE_COUNT-1);
+  if(idx>=sectionEnd){finishSection();return;}
+  cur=idx+1;runScene(cur,myGen);
 }
 
-/* ═══ CONTROLS ═══ */
-function handleMain(){
-  if(!running){running=true;const b=document.getElementById('btnMain');b.textContent='⏹  STOP';b.classList.add('running');updateNavBtns();runScene(cur);}
-  else stopAll();
+function handlePlay(){
+  if(!running){
+    if(cur===0)activeSection='intro';
+    running=true;const myGen=gen;
+    const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
+    updateNavBtns();runScene(cur,myGen);
+  }else{hardStop();updateNavBtns();}
 }
-function stopAll(){running=false;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();const b=document.getElementById('btnMain');b.textContent=cur===0?'▶  START':'▶  RESUME';b.classList.remove('running');updateNavBtns();}
-function clearStacks(){['stk0','stk2','stk3','stk4','stk5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});}
-function nextScene(){bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearStacks();if(cur+1<TOTAL){cur++;running?runScene(cur):showScene(cur);}updateNavBtns();}
-function prevScene(){if(cur===0)return;bannerOn=false;stopSpeech();timers.forEach(t=>clearTimeout(t));timers=[];closeBanner();clearStacks();cur=Math.max(0,cur-1);running?runScene(cur):showScene(cur);updateNavBtns();}
-function updateNavBtns(){document.getElementById('btnPrev').disabled=cur<=0;document.getElementById('btnNext').disabled=cur>=TOTAL-1;}
-function finishAll(){running=false;const b=document.getElementById('btnMain');b.textContent='↺  RESTART';b.classList.remove('running');updateNavBtns();b.onclick=()=>{cur=0;clearStacks();b.textContent='▶  START';b.onclick=handleMain;initPbar();showScene(0);};}
+function clearStacks(){
+  const el=document.getElementById('stk3');if(el)el.innerHTML='';
+  const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='flex';
+  const hint=document.getElementById('conclHint');if(hint)hint.style.display='block';
+  sc2ShowIdle();
+}
+function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
+function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
+function updateNavBtns(){
+  document.getElementById('btnPrev').disabled=cur<=0;
+  document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;
+}
+function finishSection(){
+  hardStop();
+  const b=document.getElementById('btnPlay');
+  if(b){b.textContent='▶';b.classList.remove('running');}
+  updateNavBtns();
+}
+function finishAll(){finishSection();}
+
+let activeNtab='descriptors';
+function renderNotes(tab){const body=document.getElementById('notesBody');const secs=NOTES_DATA[tab]||[];let h='';secs.forEach(s=>{h+=`<div class="n-section"><div class="n-stitle">${s.title}</div>`;s.items.forEach(it=>{h+=`<div class="n-item">${it}</div>`;});h+='</div>';});body.innerHTML=h;}
+function switchNtab(t){activeNtab=t;document.querySelectorAll('.ntab').forEach(b=>b.classList.toggle('on',b.dataset.ntab===t));renderNotes(t);}
+function openNotes(){renderNotes(activeNtab);document.getElementById('notesPanel').classList.add('show');}
+function closeNotes(){document.getElementById('notesPanel').classList.remove('show');syncTab(cur);}
+
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
-const EMJS=[['📖'],['📱'],['🪝'],['💪'],['💡'],['✅']];
-function spawnEmoji(idx){const list=EMJS[idx]||[];const r=document.getElementById('stage').getBoundingClientRect();list.forEach((em,i)=>{const t=setTimeout(()=>{const el=document.createElement('div');el.className='fem';el.textContent=em;el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.45+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2500);},i*160);timers.push(t);});}
+const EMJS=[['📖'],['📱'],['📐'],['✅']];
+function spawnEmoji(idx){const list=EMJS[idx]||[];const r=document.getElementById('stage').getBoundingClientRect();list.forEach((em,i)=>{setTimeout(()=>{const el=document.createElement('div');el.className='fem';el.textContent=em;el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.45+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2500);},i*160);});}
 
-document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();handleMain();}if(e.key==='ArrowRight')nextScene();if(e.key==='ArrowLeft')prevScene();if(e.key==='Escape'){stopAll();closeTips();}});
+document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();handlePlay();}if(e.key==='ArrowRight')nextScene();if(e.key==='ArrowLeft')prevScene();if(e.key==='Escape'){hardStop();updateNavBtns();closeNotes();}});
 let _tx=0;
 document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
 
-loadVoice();initPbar();showScene(0);
+window.addEventListener('resize',updateFooterVar);
+loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
+requestAnimationFrame(updateFooterVar);
 </script>
 </body>
 </html>
