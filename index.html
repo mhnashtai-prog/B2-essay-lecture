@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>ESSAY BUILDER</title>
+<title>WRITING BUILDER</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -472,10 +472,67 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .flash.pop{opacity:.04;transition:opacity 0s;}
 .fem{position:fixed;pointer-events:none;z-index:800;font-size:20px;animation:femUp 2s ease-out forwards;}
 @keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-10px) scale(1.1);}80%{opacity:.8;transform:translateY(-90px);}100%{opacity:0;transform:translateY(-130px);}}
+
+/* ══ SKILL SELECTOR ══ */
+.skill-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;gap:18px;transition:opacity .28s,transform .28s cubic-bezier(.22,1,.36,1);}
+.skill-screen.out{opacity:0;transform:scale(.96);pointer-events:none;}
+.skill-header{text-align:center;}
+.skill-main-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;letter-spacing:2px;line-height:.88;color:var(--ink);}
+.skill-main-title span{color:var(--red);}
+.skill-main-sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-top:8px;}
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:380px;}
+.skill-card{background:#fff;border-radius:18px;border:1px solid rgba(28,28,30,.09);padding:18px 16px 14px;cursor:pointer;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:3px 4px 0 rgba(0,0,0,.055),0 10px 28px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;}
+.skill-card::before{content:'';position:absolute;bottom:-7px;left:5px;right:5px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:18px;z-index:-1;}
+.skill-card::after{content:'';position:absolute;bottom:-13px;left:11px;right:11px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.04);border-radius:18px;z-index:-2;}
+.skill-card:hover{transform:translateY(-4px) scale(1.025);box-shadow:4px 7px 0 rgba(0,0,0,.08),0 18px 40px rgba(0,0,0,.13);}
+.skill-card:active{transform:scale(.97);}
+.skill-card-bar{height:3px;border-radius:2px;margin-bottom:2px;}
+.skill-card-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(24px,5.5vw,32px);font-weight:900;letter-spacing:1px;line-height:.9;}
+.skill-card-type{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+.skill-card-desc{font-family:'Instrument Sans',sans-serif;font-size:11px;color:var(--ink3);line-height:1.4;margin-top:1px;}
+.back-pill{position:fixed;top:14px;left:16px;z-index:1100;display:none;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:20px;border:1px solid rgba(28,28,30,.15);background:rgba(250,249,247,.94);backdrop-filter:blur(12px);color:var(--ink3);cursor:pointer;transition:all .2s;}
+.back-pill:hover{color:var(--ink);border-color:rgba(28,28,30,.3);}
 </style>
 </head>
 <body>
-<div class="shell">
+
+<!-- ══ SKILL SELECTOR ══ -->
+<div class="skill-screen" id="skillScreen">
+  <div class="skill-header">
+    <div class="skill-main-title">B2 WRITING<br><span>BUILDER</span></div>
+    <div class="skill-main-sub">Choose a writing task</div>
+  </div>
+  <div class="skill-grid">
+    <div class="skill-card" onclick="launchSkill('essay')">
+      <div class="skill-card-bar" style="background:#c9140f;"></div>
+      <div class="skill-card-name" style="color:#c9140f;">ESSAY</div>
+      <div class="skill-card-type">Opinion · Argument</div>
+      <div class="skill-card-desc">Hook · Claim · Support · Conclusion</div>
+    </div>
+    <div class="skill-card" onclick="launchSkill('report')">
+      <div class="skill-card-bar" style="background:#1a5c8a;"></div>
+      <div class="skill-card-name" style="color:#1a5c8a;">REPORT</div>
+      <div class="skill-card-type">Formal · Objective</div>
+      <div class="skill-card-desc">Purpose · Findings · Recommendation</div>
+    </div>
+    <div class="skill-card" onclick="launchSkill('review')">
+      <div class="skill-card-bar" style="background:#2d7a3a;"></div>
+      <div class="skill-card-name" style="color:#2d7a3a;">REVIEW</div>
+      <div class="skill-card-type">Descriptive · Personal</div>
+      <div class="skill-card-desc">Reputation · Features · Verdict</div>
+    </div>
+    <div class="skill-card" onclick="launchSkill('email')">
+      <div class="skill-card-bar" style="background:#7b5ea7;"></div>
+      <div class="skill-card-name" style="color:#7b5ea7;">EMAIL</div>
+      <div class="skill-card-type">Formal · Informal</div>
+      <div class="skill-card-desc">Opening · Purpose · Sign-off</div>
+    </div>
+  </div>
+</div>
+
+<button class="back-pill" id="backPill" onclick="goBack()">← Skills</button>
+
+<div class="shell" id="playerShell" style="visibility:hidden;">
   <div class="topbar">
     <div class="topbar-words">
       <span class="tw red lg">THESIS</span><span class="tw">·</span><span class="tw">CLAIM</span><span class="tw">·</span><span class="tw red">REASON</span><span class="tw">·</span><span class="tw">EXAMPLE</span><span class="tw">·</span><span class="tw lg">RESULT</span><span class="tw">·</span><span class="tw">HOOK</span><span class="tw">·</span><span class="tw red">OPINION</span><span class="tw">·</span><span class="tw">LINKING WORD</span><span class="tw">·</span><span class="tw lg">FORMAL</span><span class="tw">·</span><span class="tw">TOPIC SENTENCE</span><span class="tw">·</span><span class="tw red">PARAGRAPH</span><span class="tw">·</span><span class="tw">EVIDENCE</span><span class="tw">·</span><span class="tw lg">B2 LEVEL</span>
@@ -503,14 +560,14 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
         <div class="section-lbl" style="color:var(--red)">B2 WRITING</div>
         <div style="padding:52px 24px 6px 26px;flex-shrink:0;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.9;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+          <div id="sc0Title" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.9;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
+          <div id="sc0Tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
             <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">Opinion Essay</span>
             <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">140–190 words</span>
             <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">5 paragraphs</span>
           </div>
         </div>
-        <div style="flex:1;min-height:0;padding:4px 26px 4px;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow:hidden;">
+        <div id="sc0Structure" style="flex:1;min-height:0;padding:4px 26px 4px;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow:hidden;">
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;min-width:26px;">P1</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">INTRODUCTION</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Hook + Thesis statement</div></div></div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P2</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 1</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
           <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P3</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 2</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
@@ -525,21 +582,23 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     <!-- SC1: QUESTION -->
     <div class="scene" id="sc1">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-intro)"><span class="flag-num">INTRODUCTION</span></div></div>
-        <div class="section-lbl" style="color:var(--c-intro)">THE QUESTION</div>
+        <div class="flag"><div class="flag-body" id="sc1FlagBody" style="background:var(--c-intro)"><span class="flag-num" id="sc1FlagLabel">INTRODUCTION</span></div></div>
+        <div class="section-lbl" id="sc1SectionLbl" style="color:var(--c-intro)">THE QUESTION</div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:54px 24px 10px;">
-          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;flex-shrink:0;">📱 Today's essay question</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:.95;color:var(--ink);flex-shrink:0;">Should the use of phones be <span style="color:var(--red);">limited</span> for young people?</div>
+          <div id="sc1Kicker" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;flex-shrink:0;">📱 Today's essay question</div>
+          <div id="sc1Question" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:.95;color:var(--ink);flex-shrink:0;">Should the use of phones be <span style="color:var(--red);">limited</span> for young people?</div>
           <div style="flex:1;"></div>
-          <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink2);margin-bottom:14px;flex-shrink:0;">What do <strong style="color:var(--ink);">you</strong> think? Pick your side.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex-shrink:0;margin-bottom:12px;">
-            <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;">YES</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">limit them</div></div>
-            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--ink3);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--ink2);">MAYBE</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">it depends</div></div>
-            <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--red);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--red);">NO</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">let them</div></div>
+          <div id="sc1Extra" style="flex-shrink:0;margin-bottom:12px;">
+            <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink2);margin-bottom:14px;">What do <strong style="color:var(--ink);">you</strong> think? Pick your side.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+              <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;">YES</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">limit them</div></div>
+              <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--ink3);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--ink2);">MAYBE</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">it depends</div></div>
+              <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--red);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--red);">NO</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">let them</div></div>
+            </div>
           </div>
         </div>
         <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots1"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
-        <div class="accent-bar" style="background:var(--c-intro)"></div>
+        <div class="accent-bar" id="sc1AccentBar" style="background:var(--c-intro)"></div>
       </div>
     </div>
 
@@ -862,9 +921,88 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     </div>
     <div class="sm-accent-bar" id="smAccentBar"></div>
   </div>
-</div>
+</div><!-- /playerShell -->
 
 <script>
+// ══════════════════════════════════════════════
+// SKILL DATA — loaded from writing-data.json
+// ══════════════════════════════════════════════
+let SKILLS = null;
+
+async function loadSkills(){
+  try {
+    const res = await fetch('writing-data.json');
+    SKILLS = await res.json();
+    initSelector();
+  } catch(e) {
+    // Fallback: show error state
+    document.getElementById('skillScreen').innerHTML += `<div style="font-family:'DM Mono',monospace;font-size:11px;color:#c9140f;margin-top:12px;">Could not load writing-data.json</div>`;
+    console.error('Failed to load skill data:', e);
+  }
+}
+
+function initSelector(){
+  // Enable skill cards now data is ready
+  document.querySelectorAll('.skill-card').forEach(c => c.style.opacity = '1');
+}
+
+loadSkills();
+
+
+let SK = null; // active skill
+
+function launchSkill(key){
+  SK = SKILLS[key];
+  // Swap dynamic logo
+  document.querySelector('.logo').innerHTML = SK.logoHtml;
+  // Swap sc0 flag + colors
+  document.querySelector('#sc0 .flag-num').textContent = SK.sc0FlagLabel;
+  document.querySelector('#sc0 .flag-body').style.background = SK.accentColor;
+  document.querySelector('#sc0 .accent-bar').style.background = SK.accentColor;
+  document.querySelector('#sc0 .section-lbl').style.color = SK.accentColor;
+  // Swap sc0 title
+  document.getElementById('sc0Title').innerHTML = `HOW TO <span style="color:${SK.accentColor};">WRITE</span> A${SK.sc0TitleSuffix}`;
+  // Swap sc0 tags
+  document.getElementById('sc0Tags').innerHTML = SK.sc0Tags.map((t,i)=>`<span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:${i===0?SK.accentColor+'18':'rgba(0,0,0,.05)'};color:${i===0?SK.accentColor:'var(--ink3)'};border:1px solid ${i===0?SK.accentColor+'22':'var(--border)'}">${t}</span>`).join('');
+  // Swap sc0 paragraph structure
+  document.getElementById('sc0Structure').innerHTML = SK.sc0Structure.map(s=>`
+    <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${s.c};min-width:26px;">${s.p}</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">${s.label}</div>
+        <div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">${s.sub}</div>
+      </div>
+    </div>`).join('');
+  // Swap sc1 question card
+  document.getElementById('sc1FlagBody').style.background = SK.accentColor;
+  document.getElementById('sc1FlagLabel').textContent = SK.sc1FlagLabel;
+  document.getElementById('sc1SectionLbl').textContent = SK.sc1SectionLbl;
+  document.getElementById('sc1SectionLbl').style.color = SK.accentColor;
+  document.getElementById('sc1Kicker').textContent = SK.sc1Kicker;
+  document.getElementById('sc1Question').innerHTML = SK.sc1Question;
+  document.getElementById('sc1Extra').innerHTML = SK.sc1Extra;
+  document.getElementById('sc1AccentBar').style.background = SK.accentColor;
+  // Swap sc2 idle state labels
+  document.querySelector('#sc2Idle > div:first-child').textContent = SK.sc2IdleTop;
+  document.querySelector('#sc2Idle > div:nth-child(2)').innerHTML = SK.sc2IdleBig;
+  // Show player, hide selector
+  document.getElementById('skillScreen').classList.add('out');
+  document.getElementById('playerShell').style.visibility='visible';
+  document.getElementById('backPill').style.display='block';
+  // Reset and start
+  cur=0;running=false;introOvOn=false;bodyOvOn=false;pbOvOn=false;gen=0;
+  clearStacks();buildDots();updateDots(0);showScene(0);updateNavBtns();
+  requestAnimationFrame(updateFooterVar);
+}
+
+function goBack(){
+  hardStop();
+  document.getElementById('playerShell').style.visibility='hidden';
+  document.getElementById('backPill').style.display='none';
+  document.getElementById('skillScreen').classList.remove('out');
+  SK=null;
+}
+
 const SCENE_COUNT=4;
 function updateFooterVar(){
   const f=document.getElementById('mainFooter');
@@ -914,15 +1052,10 @@ const NOTES_DATA={
   ]
 };
 
-const PAIRS=[
-  {s:'Nowadays,',r:'smartphones are used by millions of young people around the world every single day.',f:'Nowadays, smartphones are used by millions of young people around the world every single day.',link:'Although this technology brings many benefits, there is growing concern about its effect on young people.',linkHtml:'<span style="color:var(--red);font-weight:700">Although</span> this technology brings many benefits, there is growing concern about its effect on young people.',t:'This essay will discuss whether it is a good idea to <strong>limit how much young people use their phones.</strong>',tf:'This essay will discuss whether it is a good idea to limit how much young people use their phones.'},
-];
-
-const BODY_PAIRS=[
-  {color:'#c9140f',flagTitle:'BODY PARAGRAPH 1',topic:'📝 P2 — FIRST POINT',starter:'Firstly,',opinion:'in my opinion,',keyExpr:'the main advantage of limiting phones',rest:" is that students can focus better in class. This is because phones are full of apps that keep interrupting you. As a result, schools that ban phones have seen big improvements in students' results.",links:['This is because','As a result,'],note:'Open with a listing marker. State your point. Then give one or two reasons or examples.'},
-  {color:'#c9140f',flagTitle:'BODY PARAGRAPH 2',topic:'💡 P3 — SECOND POINT',starter:'Furthermore,',opinion:'it seems to me that',keyExpr:'one key problem with too much phone use',rest:" is the damage it does to sleep. Looking at a bright screen late at night makes it harder to fall asleep. Consequently, tired students find it much more difficult to learn.",links:['Consequently,'],note:'Use a DIFFERENT listing marker. Name your point clearly, then show why it matters.'},
-  {color:'#7b5ea7',flagTitle:'BODY PARAGRAPH 3 ★',topic:'⭐ P4 — YOUR OWN IDEA',starter:'On the other hand,',opinion:'as far as I am concerned,',keyExpr:'one problem that is often forgotten',rest:" is the effect on social skills. When young people are always on their phones, they get less practice at talking face to face. Therefore, they may find real conversations more difficult as they get older.",links:['Therefore,'],note:'This MUST be your own idea — not one from the question. Explain it simply and clearly.'}
-];
+// PAIRS and BODY_PAIRS read from SK at runtime
+function getPAIRS(){ return SK ? SK.pairs : []; }
+function getBODY_PAIRS(){ return SK ? SK.bodyPairs : []; }
+function getCONCL_DATA(){ return SK ? SK.conclData : []; }
 
 const LISTING_MARKERS=[
   {marker:'Firstly,',color:'#c9140f',label:'TO INTRODUCE',example:'<em>Firstly,</em> in my opinion, the main benefit of limiting phones is better sleep.'},
@@ -932,13 +1065,7 @@ const LISTING_MARKERS=[
   {marker:'On the other hand,',color:'#6b4ea8',label:'TO CONTRAST',example:'<em>On the other hand,</em> smartphones give students access to a great deal of information.'}
 ];
 
-const CONCL_DATA=[
-  {role:'SUMMARY',kw:'In conclusion,',text:"In conclusion, I firmly believe that the question of phone use for young people requires careful thought."},
-  {role:'POINT 1',kw:'On one hand,',text:"On one hand, limiting phones leads to better focus, better sleep, and better wellbeing."},
-  {role:'POINT 2',kw:'On the other hand,',text:"On the other hand, smartphones have real benefits and should not be seen as purely harmful."},
-  {role:'REWORD',kw:'In other words,',text:"In other words, it is not the phone itself that is the problem — it is how and when it is used."},
-  {role:'VERDICT',kw:'Overall,',text:"Overall, a balanced approach to limiting smartphone use would benefit most young people."}
-];
+// CONCL_DATA is now read via getCONCL_DATA() from SK
 
 let cur=0,running=false,introOvOn=false,bodyOvOn=false,pbOvOn=false,gen=0;
 const synth=window.speechSynthesis;
@@ -1007,6 +1134,7 @@ function hideListing(){document.getElementById('listingOv').classList.remove('sh
 
 /* INTRO PAIRS */
 async function runIntroPairs(myGen){
+  const PAIRS=getPAIRS();
   introOvOn=true;
   document.getElementById('introDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
   document.getElementById('introOv').classList.add('show');
@@ -1014,6 +1142,7 @@ async function runIntroPairs(myGen){
   document.getElementById('introOv').classList.remove('show');document.getElementById('introCard').classList.remove('exit');introOvOn=false;
 }
 async function showIntroPair(p,idx,myGen){
+  const PAIRS=getPAIRS();
   const card=document.getElementById('introCard');
   if(idx>0){card.classList.add('exit');await wait(190,myGen);if(!running||!introOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');}
   if(!running||!introOvOn||myGen!==gen)return;
@@ -1033,6 +1162,7 @@ async function showIntroPair(p,idx,myGen){
 
 /* BODY PARAGRAPH PAIRS */
 async function runBodyPairs(myGen){
+  const BODY_PAIRS=getBODY_PAIRS();
   bodyOvOn=true;
   document.getElementById('bodyDots').innerHTML=BODY_PAIRS.map((_,i)=>`<div class="bdot" id="bbd${i}"></div>`).join('');
   document.getElementById('bodyOv').classList.add('show');
@@ -1053,6 +1183,7 @@ async function showBodyPair(para,idx,myGen){
     }
   }
   if(!running||!bodyOvOn||myGen!==gen)return;
+  const BODY_PAIRS=getBODY_PAIRS();
   document.getElementById('bodyNum').textContent=(idx+1)+' / '+BODY_PAIRS.length;
   document.getElementById('bodyFlagNum').textContent=para.flagTitle;
   document.getElementById('bodyFlagBody').style.background=para.color;
@@ -1319,25 +1450,17 @@ async function runBodyIntro(myGen){
   await wait(200,myGen);if(!running||myGen!==gen)return;
 
   waveOn();
-  await speak("Every body paragraph opens with a claim.",myGen);
+  await speak(SK.sc2NarrationIntro,myGen);
   if(!running||myGen!==gen){waveOff();return;}
 
-  // Each chip drops AS its name is spoken
-  sc2AddItem('sc2ClaimItems',{label:'Listing Marker'},'#c9140f',myGen,'listing');
-  await speak("A listing marker —",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  sc2AddItem('sc2ClaimItems',{label:'Personal View'},'#1a5c8a',myGen,'view');
-  await speak("your opinion —",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  sc2AddItem('sc2ClaimItems',{label:'The Claim'},'#1a6b3c',myGen,'claim');
-  await speak("the claim itself.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
+  for(const chip of SK.sc2ChipsA){
+    sc2AddItem('sc2ClaimItems',{label:chip.label},chip.color,myGen,null);
+    await speak(chip.narration,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+  }
 
   await wait(400,myGen);if(!running||myGen!==gen)return;
 
-  // Sep + SUPPORT land
   const sep=document.getElementById('sc2Sep');
   const supportBlock=document.getElementById('sc2SupportBlock');
   if(sep)sep.style.opacity='1';
@@ -1345,24 +1468,14 @@ async function runBodyIntro(myGen){
   if(supportBlock){supportBlock.style.opacity='1';supportBlock.style.transform='none';}
   await wait(150,myGen);if(!running||myGen!==gen)return;
 
-  await speak("Then you support it.",myGen);
+  await speak(SK.sc2NarrationBridge,myGen);
   if(!running||myGen!==gen){waveOff();return;}
 
-  sc2AddItem('sc2SupportItems',{label:'Reason'},'#1a6b3c',myGen,'reason');
-  await speak("Give a reason.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  sc2AddItem('sc2SupportItems',{label:'Example'},'#1a5c8a',myGen,'example');
-  await speak("Give an example.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  sc2AddItem('sc2SupportItems',{label:'Result'},'#6b4ea8',myGen,'result');
-  await speak("Show the result.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  sc2AddItem('sc2SupportItems',{label:'And More…'},'#e07b00',myGen,'more');
-  await speak("Use what fits.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}
+  for(const chip of SK.sc2ChipsB){
+    sc2AddItem('sc2SupportItems',{label:chip.label},chip.color,myGen,null);
+    await speak(chip.narration,myGen);
+    if(!running||myGen!==gen){waveOff();return;}
+  }
 
   waveOff();
   await wait(500,myGen);if(!running||myGen!==gen)return;
@@ -1437,16 +1550,16 @@ async function runScene(idx,myGen){
   clearStacks();showScene(idx);
 
   if(idx===0){
-    waveOn();await speak("Welcome to Essay Builder. Today you will learn how to write a B2 opinion essay. There are five paragraphs: an introduction, three body paragraphs, and a conclusion.",myGen);
+    waveOn();await speak(SK.welcomeNarration,myGen);
     if(!running||myGen!==gen){waveOff();return;}waveOff();
   }
   else if(idx===1){
-    showInter('INTRODUCTION','var(--c-intro)','PARAGRAPH 1 OF 5','A <em>Hook.</em><br>A <em>Thesis.</em>','Two sentences only. Watch <strong>one example.</strong>','var(--c-intro)');
-    await speak("The introduction is just two sentences. A hook, then a thesis. Watch one example — then move on.",myGen);
+    showInter('INTRODUCTION','var(--c-intro)',SK.interKicker,SK.interBig,SK.interSub,'var(--c-intro)');
+    await speak(SK.sc1Narration,myGen);
     if(!running||myGen!==gen)return;
     await wait(400,myGen);if(!running||myGen!==gen)return;
     hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
-    waveOn();await speak("Here is today's essay question. Should the use of phones be limited for young people? Choose your side, then follow the examples.",myGen);
+    waveOn();await speak(SK.sc1QuestionNarration,myGen);
     if(!running||myGen!==gen){waveOff();return;}waveOff();await wait(240,myGen);if(!running||myGen!==gen)return;
     await runIntroPairs(myGen);
   }
@@ -1456,28 +1569,16 @@ async function runScene(idx,myGen){
   else if(idx===3){
     const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='none';
     const hint=document.getElementById('conclHint');if(hint)hint.style.display='none';
-    // Split narration — each line timed to a skeleton row appearing
+    const CONCL_DATA=getCONCL_DATA();
+    const narrations=SK.conclNarrations||[];
     waveOn();
-    await speak('Finally, the conclusion.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speakThenShow('stk3',CONCL_DATA[0].text,true,CONCL_DATA[0].role,CONCL_DATA[0].kw,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speak('Restate your opinion — but never repeat the same words.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speakThenShow('stk3',CONCL_DATA[1].text,false,CONCL_DATA[1].role,CONCL_DATA[1].kw,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speak('Echo your two main points briefly.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speakThenShow('stk3',CONCL_DATA[2].text,false,CONCL_DATA[2].role,CONCL_DATA[2].kw,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speak('Then rephrase your position in one clear sentence.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speakThenShow('stk3',CONCL_DATA[3].text,false,CONCL_DATA[3].role,CONCL_DATA[3].kw,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speak('And close with a final verdict. Short. Confident. Done.',myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-    await speakThenShow('stk3',CONCL_DATA[4].text,false,CONCL_DATA[4].role,CONCL_DATA[4].kw,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
+    for(let i=0;i<CONCL_DATA.length;i++){
+      if(!running||myGen!==gen){waveOff();return;}
+      if(narrations[i])await speak(narrations[i],myGen);
+      if(!running||myGen!==gen){waveOff();return;}
+      await speakThenShow('stk3',CONCL_DATA[i].text,i===0,CONCL_DATA[i].role,CONCL_DATA[i].kw,myGen);
+      if(!running||myGen!==gen){waveOff();return;}
+    }
     waveOff();
   }
 
@@ -1536,4 +1637,4 @@ loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
 requestAnimationFrame(updateFooterVar);
 </script>
 </body>
-</html>
+</html>OCTYPE html>
