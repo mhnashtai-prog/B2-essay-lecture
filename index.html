@@ -542,12 +542,24 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 
 <script>
 // ─── MP3 AUDIO ENGINE ─────────────────────────────────────────────────────────
-// Each speak() call receives an explicit mp3 number n (1–30).
-// Audio created on-demand after user gesture — no preload, no global counter.
-// Robust to tab-jumping: any speak() always plays exactly the right file.
+// ─── MP3 AUDIO ENGINE ────────────────────────────────────────────────────────
+// All 30 Audio objects are created on the FIRST user gesture (handlePlay/jumpTab)
+// so iOS Safari grants autoplay permission to all of them at once.
 const MP3_BASE='./data/';
+const MP3_COUNT=30;
+let mp3Pool=null;   // created on first gesture
 let mp3Active=null;
 let mp3Resolve=null;
+
+function initAudioPool(){
+  if(mp3Pool)return;
+  mp3Pool=[];
+  for(let i=1;i<=MP3_COUNT;i++){
+    const a=new Audio(MP3_BASE+String(i).padStart(2,'0')+'.mp3.mp3');
+    a.preload='none'; // don't preload — just register in gesture context
+    mp3Pool.push(a);
+  }
+}
 
 function stopSpeech(){
   if(mp3Active){
@@ -567,13 +579,14 @@ function speak(t,myGen,n){
   return new Promise(resolve=>{
     if(!running||myGen!==gen){resolve();return;}
     stopSpeech();
-    const file=MP3_BASE+String(n).padStart(2,'0')+'.mp3.mp3';
-    const audio=new Audio(file);
+    if(!mp3Pool){resolve();return;}
+    const audio=mp3Pool[n-1];
+    audio.currentTime=0;
     mp3Active=audio;
     mp3Resolve=resolve;
     audio.onended=()=>{mp3Active=null;mp3Resolve=null;resolve();};
-    audio.onerror=()=>{console.warn('MP3 error n='+n,file);mp3Active=null;mp3Resolve=null;resolve();};
-    audio.play().catch(e=>{console.warn('play() blocked:',e.message);mp3Active=null;mp3Resolve=null;resolve();});
+    audio.onerror=()=>{console.warn('MP3 error n='+n);mp3Active=null;mp3Resolve=null;resolve();};
+    audio.play().catch(e=>{console.warn('play() blocked n='+n+':',e.message);mp3Active=null;mp3Resolve=null;resolve();});
   });
 }
 // ─────────────────────────────────────────────────────────────────────────────
@@ -624,6 +637,7 @@ function syncTab(idx){
 }
 function jumpTab(tab){
   if(tab==='notes'){openNotes();return;}
+  initAudioPool();
   // Always close notes panel before switching sections
   document.getElementById('notesPanel').classList.remove('show');
   hardStop();clearStacks();
@@ -778,9 +792,13 @@ async function showBodyPair(para,idx,myGen){
   await wait(180,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
   waveOn();
   const fullText=para.starter+(para.opinion?' '+para.opinion+',':'')+(para.keyExpr?' '+para.keyExpr:'')+para.rest;
-  await speak(fullText,myGen,BP_NUMS[idx]);
+  // Race: audio vs minimum display time (4s) — whichever finishes LATER wins
+  await Promise.all([
+    speak(fullText,myGen,BP_NUMS[idx]),
+    wait(4000,myGen)
+  ]);
   if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
-  waveOff();await wait(600,myGen);
+  waveOff();await wait(800,myGen);
 }
 
 // ─── CONCLUSION speakThenShow ─────────────────────────────────────────────────
@@ -977,6 +995,7 @@ async function runScene(idx,myGen){
 }
 
 function handlePlay(){
+  initAudioPool();
   if(!running){
     running=true;const myGen=gen;
     const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
