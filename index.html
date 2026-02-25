@@ -302,7 +302,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       <div class="stat-block sb2"><div class="sb-inner"><span class="sb-num">5</span><span class="sb-item">PARAGRAPHS</span><span class="sb-num red">190</span><span class="sb-item">MAX WORDS</span><span class="sb-num teal">3</span><span class="sb-item">BODY POINTS</span><span class="sb-num">1</span><span class="sb-item">OWN IDEA REQ.</span></div></div>
     </div>
 
-    <!-- SC0: OVERVIEW -->
     <div class="scene active" id="sc0">
       <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
@@ -327,7 +326,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       </div>
     </div>
 
-    <!-- SC1: QUESTION -->
     <div class="scene" id="sc1">
       <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--c-intro)"><span class="flag-num">INTRODUCTION</span></div></div>
@@ -348,7 +346,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       </div>
     </div>
 
-    <!-- SC2: BODY — idle card shown when not running -->
     <div class="scene" id="sc2">
       <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
@@ -371,7 +368,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       </div>
     </div>
 
-    <!-- SC3: CONCLUSION -->
     <div class="scene" id="sc3">
       <div class="poster">
         <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
@@ -392,7 +388,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
         <div class="accent-bar" style="background:var(--c-conc)"></div>
       </div>
     </div>
-  </div><!-- /stage -->
+  </div>
 
   <div class="footer" id="mainFooter">
     <div class="tab-bar-wrap">
@@ -412,7 +408,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     <button class="btn-nav" id="btnNext" onclick="nextScene()">›</button>
     <div class="wave-mini off" id="wR"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
   </div>
-</div><!-- /shell -->
+</div>
 
 <!-- PHRASE BANK OVERLAY -->
 <div class="pb-ov" id="pbOv">
@@ -546,13 +542,17 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 
 <script>
 // ─── MP3 AUDIO ENGINE ─────────────────────────────────────────────────────────
+// Each speak() call receives an explicit mp3 number n (1–30).
+// Audio created on-demand after user gesture — no preload, no global counter.
+// Robust to tab-jumping: any speak() always plays exactly the right file.
 const MP3_BASE='./data/';
 let mp3Active=null;
 let mp3Resolve=null;
 
 function stopSpeech(){
   if(mp3Active){
-    try{mp3Active.pause();}catch(e){}
+    mp3Active.pause();
+    mp3Active.currentTime=0;
     mp3Active.onended=null;
     mp3Active.onerror=null;
     mp3Active=null;
@@ -560,30 +560,24 @@ function stopSpeech(){
   if(mp3Resolve){mp3Resolve();mp3Resolve=null;}
 }
 
-function loadVoice(){} // stub
+function loadVoice(){} // compatibility stub — no-op
 
+// n = 1-based file number. t = text (ignored, kept for API compat).
 function speak(t,myGen,n){
   return new Promise(resolve=>{
     if(!running||myGen!==gen){resolve();return;}
     stopSpeech();
-    const file=MP3_BASE+String(n).padStart(2,'0')+'.mp3';
+    const file=MP3_BASE+String(n).padStart(2,'0')+'.mp3.mp3';
     const audio=new Audio(file);
     mp3Active=audio;
     mp3Resolve=resolve;
     audio.onended=()=>{mp3Active=null;mp3Resolve=null;resolve();};
-    audio.onerror=(e)=>{console.warn('MP3 error n='+n,file,e);mp3Active=null;mp3Resolve=null;resolve();};
-    // On mobile, play() can be blocked if no prior gesture — we handle gracefully
-    const playPromise=audio.play();
-    if(playPromise!==undefined){
-      playPromise.catch(e=>{
-        console.warn('play() blocked:',e.message);
-        mp3Active=null;mp3Resolve=null;resolve();
-      });
-    }
+    audio.onerror=()=>{console.warn('MP3 error n='+n,file);mp3Active=null;mp3Resolve=null;resolve();};
+    audio.play().catch(e=>{console.warn('play() blocked:',e.message);mp3Active=null;mp3Resolve=null;resolve();});
   });
 }
+// ─────────────────────────────────────────────────────────────────────────────
 
-// ─── CORE STATE ───────────────────────────────────────────────────────────────
 const SCENE_COUNT=4;
 let cur=0,running=false,introOvOn=false,bodyOvOn=false,pbOvOn=false,gen=0;
 
@@ -597,28 +591,15 @@ function updateLayoutVars(){
 }
 function wait(ms,myGen){return new Promise(r=>setTimeout(()=>r(),(myGen!==undefined&&myGen!==gen)?0:ms));}
 
-// ─── HARD STOP: fully reset all state ────────────────────────────────────────
 function hardStop(){
-  gen++;
-  running=false;
-  introOvOn=false;
-  bodyOvOn=false;
-  pbOvOn=false;
-  stopSpeech();
-  waveOff();
-  ['introOv','bodyOv','pbOv','listingOv','interOv'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.classList.remove('show');
-  });
-  const ic=document.getElementById('introCard');if(ic)ic.classList.remove('exit');
-  const bc=document.getElementById('bodyCard');if(bc)bc.classList.remove('exit');
+  gen++;running=false;introOvOn=false;bodyOvOn=false;pbOvOn=false;
+  stopSpeech();waveOff();
+  ['introOv','bodyOv','pbOv','listingOv','interOv'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  document.getElementById('introCard').classList.remove('exit');
+  document.getElementById('bodyCard').classList.remove('exit');
   closeSecModal();
-  const b=document.getElementById('btnPlay');
-  if(b){b.textContent='▶';b.classList.remove('running');}
-  // FIX: always reset sc2 to idle on stop so it's clean for next play
-  sc2ShowIdle();
+  const b=document.getElementById('btnPlay');if(b){b.textContent='▶';b.classList.remove('running');}
 }
-
 function buildDots(){
   for(let sc=0;sc<SCENE_COUNT;sc++){
     const c=document.getElementById('dots'+sc);if(!c)continue;c.innerHTML='';
@@ -634,7 +615,6 @@ function updateDots(i){
     }
   }
 }
-
 const SECTION_END={intro:1,body:2,conc:3};
 let activeSection='intro';
 function sectionForScene(idx){if(idx<=1)return 'intro';if(idx<=2)return 'body';return 'conc';}
@@ -642,41 +622,26 @@ function syncTab(idx){
   const t=sectionForScene(idx);
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
 }
-
-// ─── FIX: jumpTab — close notes first, then navigate cleanly ─────────────────
 function jumpTab(tab){
   if(tab==='notes'){openNotes();return;}
-
-  // If notes are open, close them first
-  const notesPanel=document.getElementById('notesPanel');
-  if(notesPanel&&notesPanel.classList.contains('show')){
-    notesPanel.classList.remove('show');
-  }
-
-  hardStop(); // resets everything including sc2 to idle
-
+  // Always close notes panel before switching sections
+  document.getElementById('notesPanel').classList.remove('show');
+  hardStop();clearStacks();
   const map={intro:0,body:2,conc:3};
   const target=map[tab];
   if(typeof target==='number'){
-    activeSection=tab;
-    cur=target;
-    showScene(cur); // show the correct scene card (sc2 idle for body)
-    syncTab(cur);
-    updateNavBtns();
-    // Small delay so the scene renders before audio starts
-    setTimeout(()=>{
-      running=true;
-      const myGen=gen;
-      const b=document.getElementById('btnPlay');
-      if(b){b.textContent='⏹';b.classList.add('running');}
-      updateNavBtns();
-      runScene(cur,myGen);
-    },80);
+    activeSection=tab;cur=target;
+    // showScene is called inside runScene — don't call it here to avoid double render
+    syncTab(cur);updateNavBtns();
+    running=true;
+    const myGen=gen;
+    const b=document.getElementById('btnPlay');
+    b.textContent='⏹';b.classList.add('running');
+    runScene(cur,myGen);
   } else {
     updateNavBtns();
   }
 }
-
 function showScene(i){
   document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
   const sc=document.getElementById('sc'+i);if(!sc)return;
@@ -684,10 +649,8 @@ function showScene(i){
   document.getElementById('ctr').textContent=(i+1)+' / '+SCENE_COUNT;
   updateDots(i);syncTab(i);updateNavBtns();flashColor();if(i>0)spawnEmoji(i);
 }
-
 function waveOn(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}});}
 function waveOff(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}});}
-
 function showInter(flag,fc,kicker,big,sub,ac){
   document.getElementById('interFlagBody').style.background=fc;
   document.getElementById('interFlagNum').textContent=flag;
@@ -711,7 +674,7 @@ function showListing(){
   document.getElementById('listingOv').classList.add('show');
 }
 
-// ─── SC1: INTRO PAIRS ────────────────────────────────────────────────────────
+// ─── SCENE 1: INTRO PAIRS ────────────────────────────────────────────────────
 async function runIntroPairs(myGen){
   introOvOn=true;
   const dotsEl=document.getElementById('introDots');
@@ -745,13 +708,23 @@ async function showIntroPair(p,idx,myGen){
   waveOff();await wait(460,myGen);
 }
 
-// ─── SC2: BODY PAIRS ─────────────────────────────────────────────────────────
-const BP_NUMS=[18,19,20];
+// ─── SCENE 2: BODY PAIRS ─────────────────────────────────────────────────────
+// BP mp3 numbers: BP[0]=17, BP[1]=18, BP[2]=20 (19 = "your own idea" intro)
+const BP_NUMS=[17,18,20];
 
 async function runBodyPairs(myGen){
   bodyOvOn=true;
+  // Clear stale content from previous run before showing overlay
+  const bodyCardBody=document.getElementById('bodyCardBody');
+  if(bodyCardBody)bodyCardBody.innerHTML='';
+  document.getElementById('bodyFlagNum').textContent='';
   document.getElementById('bodyDots').innerHTML=BODY_PAIRS.map((_,i)=>'<div class="bdot" id="bbd'+i+'"></div>').join('');
-  document.getElementById('bodyOv').classList.add('show');
+  // Ensure overlay is fully reset before re-opening
+  const bodyOvEl=document.getElementById('bodyOv');
+  bodyOvEl.classList.remove('show');
+  document.getElementById('bodyCard').classList.remove('exit');
+  await wait(40,myGen);if(!running||myGen!==gen)return;
+  bodyOvEl.classList.add('show');
   for(let i=0;i<BODY_PAIRS.length;i++){if(!running||!bodyOvOn||myGen!==gen)break;await showBodyPair(BODY_PAIRS[i],i,myGen);}
   document.getElementById('bodyOv').classList.remove('show');
   document.getElementById('bodyCard').classList.remove('exit');
@@ -765,7 +738,7 @@ async function showBodyPair(para,idx,myGen){
     card.classList.remove('exit');
     if(idx===2){
       waveOn();
-      await speak("And now — your own idea. This one is yours.",myGen,17);
+      await speak("And now — your own idea. This one is yours.",myGen,19);
       if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
       await wait(300,myGen);
       if(!running||!bodyOvOn||myGen!==gen)return;
@@ -811,6 +784,7 @@ async function showBodyPair(para,idx,myGen){
 }
 
 // ─── CONCLUSION speakThenShow ─────────────────────────────────────────────────
+// CONCL sentence mp3 numbers: [0]=22, [1]=24, [2]=26, [3]=28, [4]=30
 const CONCL_NUMS=[22,24,26,28,30];
 
 async function speakThenShow(stkId,text,isFirst,role,kw,myGen,n){
@@ -825,27 +799,26 @@ async function speakThenShow(stkId,text,isFirst,role,kw,myGen,n){
   await wait(180,myGen);
 }
 
-// ─── SC2: BODY BUILD ─────────────────────────────────────────────────────────
+// ─── SCENE 2: BODY BUILD INTRO ───────────────────────────────────────────────
 function sc2ShowIdle(){
-  const idle=document.getElementById('sc2Idle');
-  const build=document.getElementById('sc2Build');
-  if(idle)idle.style.display='flex';
-  if(build)build.style.display='none';
+  document.getElementById('sc2Idle').style.display='flex';
+  document.getElementById('sc2Build').style.display='none';
 }
 function sc2ResetBuild(){
-  // FIX: Don't touch idle/build display here — runBodyIntro controls it
-  const kicker=document.getElementById('sc2Kicker');
-  const claim=document.getElementById('sc2ClaimBlock');
-  const sep=document.getElementById('sc2Sep');
-  const support=document.getElementById('sc2SupportBlock');
-  if(kicker)kicker.style.opacity='0';
-  if(claim){claim.style.opacity='0';claim.style.transform='translateY(14px)';}
-  if(sep)sep.style.opacity='0';
-  if(support){support.style.opacity='0';support.style.transform='translateY(14px)';}
-  const ci=document.getElementById('sc2ClaimItems');if(ci)ci.innerHTML='';
-  const si=document.getElementById('sc2SupportItems');if(si)si.innerHTML='';
+  document.getElementById('sc2Idle').style.display='none';
+  const build=document.getElementById('sc2Build');
+  // Restore original markup in case sc2PopulateFullList() replaced it
+  build.style.opacity='1';
+  build.style.transition='';
+  build.innerHTML=
+    '<div id="sc2Kicker" style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .4s;flex-shrink:0;">Each body paragraph has two parts</div>'+
+    '<div id="sc2ClaimBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(32px,7vw,56px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">CLAIM</div></div>'+
+    '<div id="sc2ClaimItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;margin-bottom:6px;padding-left:4px;border-left:3px solid var(--red);"></div>'+
+    '<div id="sc2Sep" style="flex-shrink:0;opacity:0;transition:opacity .3s;margin:2px 0 4px;"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(16px,3vw,28px);font-weight:900;color:var(--red);line-height:1;">+</div></div>'+
+    '<div id="sc2SupportBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(32px,7vw,56px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">SUPPORT</div></div>'+
+    '<div id="sc2SupportItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;padding-left:4px;border-left:3px solid rgba(28,28,30,.18);"></div>';
+  build.style.display='flex';
 }
-
 function swapModalContent(key,durationMs){
   const d=MODAL_DATA[key];if(!d)return;
   document.getElementById('smCard').style.boxShadow='4px 6px 0 rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06),0 24px 55px rgba(0,0,0,.55),0 0 60px '+d.glow;
@@ -903,18 +876,9 @@ function sc2PopulateFullList(){
     build.style.transition='opacity .5s';build.style.opacity='1';
   },320);
 }
-
-// FIX: runBodyIntro now controls idle/build visibility itself, not clearStacks
 async function runBodyIntro(myGen){
   if(!running||myGen!==gen)return;
-
-  // Reset build state and switch from idle to build view
   sc2ResetBuild();
-  const idle=document.getElementById('sc2Idle');
-  const build=document.getElementById('sc2Build');
-  if(idle)idle.style.display='none';
-  if(build)build.style.display='flex';
-
   const kicker=document.getElementById('sc2Kicker');
   const claimBlock=document.getElementById('sc2ClaimBlock');
   if(kicker)kicker.style.opacity='1';
@@ -960,11 +924,7 @@ async function runBodyIntro(myGen){
 async function runScene(idx,myGen){
   if(!running||myGen!==gen)return;
   if(idx>=SCENE_COUNT){finishAll();return;}
-
-  // FIX: clearStacks before showScene so sc2 idle is correct for manual nav
-  // But DON'T call clearStacks when body will immediately run (it would fight runBodyIntro)
-  if(idx!==2)clearStacks();
-  showScene(idx);
+  clearStacks();showScene(idx);
 
   if(idx===0){
     waveOn();
@@ -986,7 +946,6 @@ async function runScene(idx,myGen){
     await runIntroPairs(myGen);
 
   } else if(idx===2){
-    // runBodyIntro handles its own idle→build transition
     await runBodyIntro(myGen);
 
   } else if(idx===3){
@@ -1013,59 +972,25 @@ async function runScene(idx,myGen){
   cur=idx+1;runScene(cur,myGen);
 }
 
-// ─── PLAY BUTTON ─────────────────────────────────────────────────────────────
 function handlePlay(){
   if(!running){
-    running=true;
-    const myGen=gen;
-    const b=document.getElementById('btnPlay');
-    b.textContent='⏹';b.classList.add('running');
-    updateNavBtns();
-    runScene(cur,myGen);
-  } else {
-    hardStop();
-    updateNavBtns();
-  }
+    running=true;const myGen=gen;
+    const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
+    updateNavBtns();runScene(cur,myGen);
+  } else {hardStop();updateNavBtns();}
 }
-
-// ─── NAVIGATION ──────────────────────────────────────────────────────────────
-// FIX: clearStacks resets sc2 to idle — safe for manual nav but NOT called inside runScene for idx===2
 function clearStacks(){
   const el=document.getElementById('stk3');if(el)el.innerHTML='';
   const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='flex';
   const hint=document.getElementById('conclHint');if(hint)hint.style.display='block';
   sc2ShowIdle();
 }
-function nextScene(){
-  hardStop(); // includes sc2ShowIdle
-  clearStacks();
-  if(cur+1<SCENE_COUNT)cur++;
-  activeSection=sectionForScene(cur);
-  showScene(cur);
-  updateNavBtns();
-}
-function prevScene(){
-  if(cur===0)return;
-  hardStop();
-  clearStacks();
-  cur=Math.max(0,cur-1);
-  activeSection=sectionForScene(cur);
-  showScene(cur);
-  updateNavBtns();
-}
-function updateNavBtns(){
-  document.getElementById('btnPrev').disabled=cur<=0;
-  document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;
-}
-function finishSection(){
-  hardStop();
-  const b=document.getElementById('btnPlay');
-  if(b){b.textContent='▶';b.classList.remove('running');}
-  updateNavBtns();
-}
+function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
+function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
+function updateNavBtns(){document.getElementById('btnPrev').disabled=cur<=0;document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;}
+function finishSection(){hardStop();const b=document.getElementById('btnPlay');if(b){b.textContent='▶';b.classList.remove('running');}updateNavBtns();}
 function finishAll(){finishSection();}
 
-// ─── NOTES ───────────────────────────────────────────────────────────────────
 let activeNtab='descriptors';
 function renderNotes(tab){
   const body=document.getElementById('notesBody');
@@ -1076,8 +1001,6 @@ function renderNotes(tab){
 function switchNtab(t){activeNtab=t;document.querySelectorAll('.ntab').forEach(b=>b.classList.toggle('on',b.dataset.ntab===t));renderNotes(t);}
 function openNotes(){renderNotes(activeNtab);document.getElementById('notesPanel').classList.add('show');}
 function closeNotes(){document.getElementById('notesPanel').classList.remove('show');syncTab(cur);}
-
-// ─── MISC ─────────────────────────────────────────────────────────────────────
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
 const EMJS=[['📖'],['📱'],['📐'],['✅']];
 function spawnEmoji(idx){
@@ -1175,6 +1098,7 @@ const MODAL_DATA={
   result:{label:'Result',section:'SUPPORT',color:'#6b4ea8',glow:'rgba(107,78,168,.22)',title:'Showing a Result',phrases:[{text:'As a result,',note:'most common — always safe'},{text:'Consequently,',note:'more formal'},{text:'Therefore,',note:'logical conclusion — strong signal'},{text:'This means that…',note:'explains implication directly'},{text:'This leads to…',note:'shows cause and effect clearly'}]},
   more:{label:'And More…',section:'SUPPORT',color:'#e07b00',glow:'rgba(224,123,0,.22)',title:'Contrast & Rephrase',phrases:[{text:'Although…',note:'contrast — acknowledge counter-argument'},{text:'Even though…',note:'stronger contrast'},{text:'However,',note:'pivot — changes direction'},{text:'In other words,',note:'rephrases your point'},{text:'Unlike…',note:'direct comparison'}]}
 };
+
 
 window.addEventListener('resize',updateLayoutVars);
 buildDots();updateDots(0);showScene(0);updateNavBtns();
