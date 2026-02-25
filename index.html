@@ -878,6 +878,10 @@ function sc2PopulateFullList(){
 }
 async function runBodyIntro(myGen){
   if(!running||myGen!==gen)return;
+  // Show the CLAIM + SUPPORT overview poster first
+  sc2ShowIdle();
+  await wait(3000,myGen);if(!running||myGen!==gen)return;
+  // Now transition into the animated lecture
   sc2ResetBuild();
   const kicker=document.getElementById('sc2Kicker');
   const claimBlock=document.getElementById('sc2ClaimBlock');
