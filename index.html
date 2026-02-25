@@ -1025,9 +1025,21 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')prevScene();
   if(e.key==='Escape'){hardStop();updateNavBtns();closeNotes();}
 });
-let _tx=0;
-document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
+let _tx=0,_ty=0;
+document.addEventListener('touchstart',e=>{_tx=e.changedTouches[0].screenX;_ty=e.changedTouches[0].screenY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  // Don't swipe when any overlay is visible
+  if(bodyOvOn||introOvOn||pbOvOn)return;
+  if(document.getElementById('notesPanel').classList.contains('show'))return;
+  if(document.getElementById('interOv').classList.contains('show'))return;
+  const dx=e.changedTouches[0].screenX-_tx;
+  const dy=e.changedTouches[0].screenY-_ty;
+  // Ignore if vertical scroll dominates (dy > dx means user was scrolling)
+  if(Math.abs(dy)>Math.abs(dx))return;
+  // Higher threshold to avoid accidental swipes
+  if(dx<-80)nextScene();
+  if(dx>80)prevScene();
+});
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const NOTES_DATA={
