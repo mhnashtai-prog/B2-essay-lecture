@@ -16,8 +16,6 @@
 html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(--bg);
   font-family:'Instrument Sans',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
 .shell{position:fixed;inset:0;display:flex;flex-direction:column;}
-
-/* TOPBAR */
 .topbar{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 18px 9px;
   background:rgba(250,249,247,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(14px);z-index:100;position:relative;overflow:hidden;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:4px;text-transform:uppercase;position:relative;z-index:2;}
@@ -28,8 +26,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .tw{font-family:'DM Mono',monospace;font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(28,28,30,0.055);white-space:nowrap;flex-shrink:0;}
 .tw.red{color:rgba(201,20,15,0.07);}
 .tw.lg{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;letter-spacing:3px;color:rgba(28,28,30,0.06);}
-
-/* STAGE */
 .stage{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg);padding-bottom:20px;}
 .bg-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
 .bw{position:absolute;font-family:'Barlow Condensed',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:2px;line-height:1;user-select:none;white-space:nowrap;}
@@ -69,8 +65,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .sb-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,2.5vw,22px);font-weight:900;color:rgba(28,28,30,0.055);letter-spacing:1px;writing-mode:vertical-rl;}
 .sb-num.red{color:rgba(201,20,15,0.08);}
 .sb-num.teal{color:rgba(61,158,149,0.08);}
-
-/* POSTER CARD */
 .poster{position:relative;width:min(460px,93vw);height:min(530px,calc(var(--stage-h,100vh) - 48px));background:#fff;border-radius:22px;border:1px solid rgba(28,28,30,0.10);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);animation:pIn .42s cubic-bezier(.22,1,.36,1) both;z-index:1;}
 .poster::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
 .poster::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
@@ -89,33 +83,9 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .dot.active{width:18px;border-radius:3px;background:var(--ink);}
 .dot.done{background:rgba(0,0,0,.34);}
 .accent-bar{height:5px;flex-shrink:0;}
-
-/* FOOTER — tab bar only */
 .footer{flex-shrink:0;background:rgba(250,249,247,0.99);border-top:1px solid var(--border);backdrop-filter:blur(16px);z-index:999;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 6px);position:relative;}
-
-/* FLOATING PLAY CLUSTER — overlaps card bottom, sits above tab bar */
-.play-cluster{
-  position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:calc(var(--footer-h, 60px) + 10px);
-  z-index:1000;
-  display:flex;align-items:center;gap:10px;
-  background:rgba(250,249,247,0.92);
-  backdrop-filter:blur(16px);
-  border:1px solid rgba(28,28,30,0.10);
-  border-radius:50px;
-  padding:5px 10px 5px 10px;
-  box-shadow:0 4px 18px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);
-}
-.btn-play-inline{
-  width:32px;height:32px;border-radius:50%;border:none;
-  background:var(--ink);color:#fff;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;font-size:12px;
-  box-shadow:0 2px 0 rgba(0,0,0,.28),0 4px 10px rgba(0,0,0,.18);
-  transition:all .18s;
-}
+.play-cluster{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--footer-h, 60px) + 10px);z-index:1000;display:flex;align-items:center;gap:10px;background:rgba(250,249,247,0.92);backdrop-filter:blur(16px);border:1px solid rgba(28,28,30,0.10);border-radius:50px;padding:5px 10px 5px 10px;box-shadow:0 4px 18px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);}
+.btn-play-inline{width:32px;height:32px;border-radius:50%;border:none;background:var(--ink);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;box-shadow:0 2px 0 rgba(0,0,0,.28),0 4px 10px rgba(0,0,0,.18);transition:all .18s;}
 .btn-play-inline:active{transform:translateY(1px);box-shadow:0 1px 0 rgba(0,0,0,.28);}
 .btn-play-inline.running{background:var(--red);box-shadow:0 3px 0 rgba(100,6,6,.4),0 5px 14px rgba(201,20,15,.24);}
 .btn-nav{width:34px;height:34px;border-radius:50%;background:transparent;border:none;font-size:18px;font-weight:700;color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
@@ -126,13 +96,13 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .wave-mini .wb{width:3px;border-radius:1.5px;background:var(--ink3);}
 .wave-mini.on .wb{animation:wv .9s ease-in-out infinite;}
 .wave-mini.off .wb{animation:none;transform:scaleY(.22);opacity:.18;}
+@keyframes wv{0%,100%{height:3px;opacity:.3;}25%{height:14px;opacity:.9;}50%{height:7px;opacity:.6;}75%{height:11px;opacity:.8;}}
+.wave-mini.on .wb:nth-child(1){animation-delay:0s;}.wave-mini.on .wb:nth-child(2){animation-delay:.13s;}.wave-mini.on .wb:nth-child(3){animation-delay:.26s;}.wave-mini.on .wb:nth-child(4){animation-delay:.39s;}.wave-mini.on .wb:nth-child(5){animation-delay:.52s;}
 .tab-bar-wrap{display:flex;align-items:center;justify-content:center;padding:10px 18px 10px;}
 .tab-bar{display:inline-flex;align-items:center;background:rgba(0,0,0,.08);border-radius:30px;padding:4px;gap:2px;}
 .tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;padding:8px 16px;border-radius:24px;border:none;cursor:pointer;background:transparent;color:var(--ink3);transition:all .22s cubic-bezier(.22,1,.36,1);white-space:nowrap;font-weight:500;}
 .tab-btn.active{background:var(--ink);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.22);}
 @media(max-width:400px){.tab-btn{font-size:9px;padding:7px 10px;}}
-
-/* SCENES */
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;pointer-events:none;opacity:0;}
 .scene.active{opacity:1;pointer-events:all;}
 .sentence-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;scrollbar-width:none;}
@@ -142,103 +112,35 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .s-line.in{opacity:1;transform:none;}
 .s-line.first{color:var(--ink);font-weight:600;font-size:16px;}
 .s-role{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-right:8px;vertical-align:middle;border-left:2.5px solid currentColor;}
-
-/* ═══════════════════════════════════════════════════════
-   PHRASE-BANK POSTER — FULL BLEED (SC2 overlay)
-   Two-column grid: LEFT = CLAIM section, RIGHT = SUPPORT section
-   Each category row = big coloured heading + phrase pills
-═══════════════════════════════════════════════════════ */
-.pb-ov{
-  position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;
-  background:#fff;display:flex;flex-direction:column;
-  pointer-events:none;opacity:0;transition:opacity .24s;overflow:hidden;
-}
-.pb-ov::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(28,28,30,0.03) 47px,rgba(28,28,30,0.03) 48px);
-  pointer-events:none;z-index:0;
-}
+.pb-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:#fff;display:flex;flex-direction:column;pointer-events:none;opacity:0;transition:opacity .24s;overflow:hidden;}
+.pb-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(28,28,30,0.03) 47px,rgba(28,28,30,0.03) 48px);pointer-events:none;z-index:0;}
 .pb-ov.show{opacity:1;pointer-events:all;}
-
-/* Header bar */
-.pb-header{
-  flex-shrink:0;display:flex;align-items:stretch;
-  border-bottom:3px solid var(--ink);position:relative;z-index:2;background:#fff;
-}
-.pb-hflag{
-  background:var(--red);padding:13px 22px;
-  display:flex;align-items:center;gap:10px;border-right:2px solid var(--ink);
-}
+.pb-header{flex-shrink:0;display:flex;align-items:stretch;border-bottom:3px solid var(--ink);position:relative;z-index:2;background:#fff;}
+.pb-hflag{background:var(--red);padding:13px 22px;display:flex;align-items:center;gap:10px;border-right:2px solid var(--ink);}
 .pb-hflag span{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;}
 .pb-htitle{flex:1;padding:13px 24px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;}
 .pb-hsub{padding:13px 22px;display:flex;align-items:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ink3);border-left:2px solid var(--ink);}
 .pb-hstop{padding:10px 18px;display:flex;align-items:center;border-left:2px solid var(--ink);}
 .pb-stop-btn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border-radius:4px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:all .15s;}
 .pb-stop-btn:hover{background:var(--ink);color:#fff;}
-
-/* Two-column body */
-.pb-body{
-  flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;
-  position:relative;z-index:1;overflow:hidden;
-}
-
-/* Column */
+.pb-body{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;position:relative;z-index:1;overflow:hidden;}
 .pb-col{display:flex;flex-direction:column;overflow:hidden;}
 .pb-col.left{border-right:3px solid var(--ink);}
-
-/* Column heading — CLAIM / SUPPORT */
-.pb-col-head{
-  flex-shrink:0;display:flex;align-items:center;gap:16px;
-  padding:14px 24px 12px;
-  border-bottom:2px solid rgba(28,28,30,0.1);
-}
-.pb-col-word{
-  font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,7vw,64px);font-weight:900;
-  letter-spacing:1px;line-height:.88;color:var(--ink);
-}
+.pb-col-head{flex-shrink:0;display:flex;align-items:center;gap:16px;padding:14px 24px 12px;border-bottom:2px solid rgba(28,28,30,0.1);}
+.pb-col-word{font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,7vw,64px);font-weight:900;letter-spacing:1px;line-height:.88;color:var(--ink);}
 .pb-col-word.red{color:var(--red);}
-.pb-col-desc{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink3);line-height:1.5;
-}
-
-/* Category rows inside each column */
+.pb-col-desc{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);line-height:1.5;}
 .pb-cats{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;}
-.pb-cat{
-  flex:1;display:flex;align-items:stretch;
-  border-bottom:1px solid rgba(28,28,30,0.07);
-}
+.pb-cat{flex:1;display:flex;align-items:stretch;border-bottom:1px solid rgba(28,28,30,0.07);}
 .pb-cat:last-child{border-bottom:none;}
-
-/* Left accent bar = category colour */
 .pb-cat-bar{width:6px;flex-shrink:0;}
-
-/* Category content */
 .pb-cat-body{flex:1;padding:8px 18px;display:flex;flex-direction:column;justify-content:center;gap:5px;}
-.pb-cat-label{
-  font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,2.4vw,22px);font-weight:900;
-  letter-spacing:1px;text-transform:uppercase;line-height:1;
-}
+.pb-cat-label{font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,2.4vw,22px);font-weight:900;letter-spacing:1px;text-transform:uppercase;line-height:1;}
 .pb-cat-pills{display:flex;flex-wrap:wrap;gap:5px;}
-.pb-pill{
-  font-family:'DM Mono',monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:.3px;
-  padding:4px 10px;border-radius:3px;
-  background:rgba(28,28,30,0.05);color:var(--ink2);
-  white-space:nowrap;border:1px solid rgba(28,28,30,0.08);
-}
+.pb-pill{font-family:'DM Mono',monospace;font-size:clamp(10px,1.4vw,13px);letter-spacing:.3px;padding:4px 10px;border-radius:3px;background:rgba(28,28,30,0.05);color:var(--ink2);white-space:nowrap;border:1px solid rgba(28,28,30,0.08);}
 .pb-pill.hi{font-weight:600;}
-
-/* Bottom accent stripe */
 .pb-foot{height:5px;background:var(--red);flex-shrink:0;position:relative;z-index:2;}
-
-/* ═══════════════════════════════════════════════════════
-   LISTING MARKERS POSTER
-═══════════════════════════════════════════════════════ */
-.listing-ov{
-  position:fixed;inset:0 0 var(--footer-h) 0;z-index:210;
-  background:#fff;display:flex;flex-direction:column;
-  pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;
-}
+.listing-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:210;background:#fff;display:flex;flex-direction:column;pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;}
 .listing-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(28,28,30,0.03) 47px,rgba(28,28,30,0.03) 48px);pointer-events:none;z-index:0;}
 .listing-ov.show{opacity:1;}
 .listing-header{flex-shrink:0;display:flex;align-items:stretch;border-bottom:3px solid var(--ink);position:relative;z-index:2;background:#fff;}
@@ -259,15 +161,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .listing-row-example{flex:1;display:flex;align-items:center;padding:10px 22px;font-family:'Instrument Sans',sans-serif;font-size:clamp(16px,2.3vw,22px);line-height:1.45;color:var(--ink2);}
 .listing-row-example em{font-style:italic;}
 .listing-foot{height:5px;background:var(--red);flex-shrink:0;position:relative;z-index:1;}
-
-/* ═══════════════════════════════════════════════════════
-   INTRO PAIRS OVERLAY
-═══════════════════════════════════════════════════════ */
-.poster-ov{
-  position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;
-  background:#fff;display:flex;align-items:stretch;
-  pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;
-}
+.poster-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:#fff;display:flex;align-items:stretch;pointer-events:none;opacity:0;transition:opacity .26s;overflow:hidden;}
 .poster-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(28,28,30,0.03) 39px,rgba(28,28,30,0.03) 40px);pointer-events:none;z-index:0;}
 .poster-ov.show{opacity:1;pointer-events:all;}
 .pov-pillar{width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
@@ -304,23 +198,12 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .ob-tt{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:clamp(16px,2.2vw,22px);line-height:1.52;color:var(--ink2);opacity:0;transform:translateY(8px);transition:opacity .36s .52s,transform .42s .52s cubic-bezier(.22,1,.36,1);}
 .ob-tt strong{color:var(--c-intro);font-weight:700;}
 .poster-ov.show .pov-card:not(.exit) .ob-tt{opacity:1;transform:none;}
-
-/* BODY PARAGRAPH OVERLAY */
 .pov-body-body{flex:1;min-height:0;padding:64px 60px 16px;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;}
 .pov-body-body::-webkit-scrollbar{display:none;}
-
-/* INTERSTITIAL — matches poster card geometry */
 .inter-ov{position:fixed;inset:0 0 var(--footer-h) 0;z-index:200;background:rgba(250,249,247,0.97);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;overflow:hidden;}
 .inter-ov::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(28,28,30,0.03) 39px,rgba(28,28,30,0.03) 40px);pointer-events:none;}
 .inter-ov.show{opacity:1;}
-.inter-card{
-  width:min(460px,93vw);height:min(530px,calc(var(--stage-h,100vh) - 48px));
-  background:#fff;border-radius:22px;border:1px solid rgba(28,28,30,0.10);
-  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;position:relative;
-  box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);
-  opacity:0;transform:translateY(20px) scale(.96);
-  transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);
-}
+.inter-card{width:min(460px,93vw);height:min(530px,calc(var(--stage-h,100vh) - 48px));background:#fff;border-radius:22px;border:1px solid rgba(28,28,30,0.10);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;position:relative;box-shadow:4px 6px 0 rgba(0,0,0,.07),0 24px 55px rgba(0,0,0,.13),0 4px 14px rgba(0,0,0,.07);opacity:0;transform:translateY(20px) scale(.96);transition:opacity .38s .06s,transform .44s .06s cubic-bezier(.22,1,.36,1);}
 .inter-card::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:22px;z-index:-1;}
 .inter-card::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:22px;z-index:-2;}
 .inter-ov.show .inter-card{opacity:1;transform:none;}
@@ -336,120 +219,38 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .inter-sub{font-family:'Instrument Sans',sans-serif;font-size:clamp(14px,2vw,16px);line-height:1.55;color:var(--ink2);margin-top:4px;}
 .inter-sub strong{color:var(--ink);font-weight:600;}
 .inter-bottom{height:5px;flex-shrink:0;}
-
-
-/* ═══════════════════════════════════════════════════
-   SECONDARY MODAL CARDS — dark inversion
-   Same poster geometry, opposite polarity
-═══════════════════════════════════════════════════ */
-.sm-backdrop{
-  position:fixed;inset:0;z-index:600;
-  background:rgba(0,0,0,0);
-  pointer-events:none;
-  transition:background .28s;
-}
-.sm-backdrop.open{
-  background:rgba(0,0,0,.55);
-  pointer-events:all;
-}
-.sm-backdrop.dim{
-  background:rgba(0,0,0,.35);
-  pointer-events:none;
-}
-.sm-wrap{
-  position:fixed;left:50%;bottom:calc(var(--footer-h) + 18px);
-  transform:translateX(-50%) translateY(30px);
-  width:min(460px,93vw);
-  max-height:calc(var(--stage-h, 80vh) - 36px);
-  z-index:610;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .26s,transform .36s cubic-bezier(.22,1,.36,1);
-}
-.sm-wrap.open{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-  pointer-events:all;
-}
-/* The dark card itself */
-.sm-card{
-  background:#1C1C1E;
-  border-radius:22px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  max-height:inherit;
-  box-shadow:
-    4px 6px 0 rgba(0,0,0,.5),
-    0 0 0 1px rgba(255,255,255,.06),
-    0 24px 55px rgba(0,0,0,.55),
-    0 0 60px var(--sm-glow,rgba(201,20,15,.18));
-}
-.sm-card::before{
-  content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;
-  background:#111;border-radius:22px;z-index:-1;
-  border:1px solid rgba(255,255,255,.04);
-}
-.sm-card::after{
-  content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;
-  background:#0a0a0a;border-radius:22px;z-index:-2;
-  border:1px solid rgba(255,255,255,.03);
-}
-/* flag — uses same zigzag geometry */
+.sm-backdrop{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0);pointer-events:none;transition:background .28s;}
+.sm-backdrop.open{background:rgba(0,0,0,.55);pointer-events:all;}
+.sm-backdrop.dim{background:rgba(0,0,0,.35);pointer-events:none;}
+.sm-wrap{position:fixed;left:50%;bottom:calc(var(--footer-h) + 18px);transform:translateX(-50%) translateY(30px);width:min(460px,93vw);max-height:calc(var(--stage-h, 80vh) - 36px);z-index:610;pointer-events:none;opacity:0;transition:opacity .26s,transform .36s cubic-bezier(.22,1,.36,1);}
+.sm-wrap.open{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+.sm-card{background:#1C1C1E;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;position:relative;max-height:inherit;box-shadow:4px 6px 0 rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06),0 24px 55px rgba(0,0,0,.55),0 0 60px var(--sm-glow,rgba(201,20,15,.18));}
+.sm-card::before{content:'';position:absolute;bottom:-8px;left:6px;right:6px;height:100%;background:#111;border-radius:22px;z-index:-1;border:1px solid rgba(255,255,255,.04);}
+.sm-card::after{content:'';position:absolute;bottom:-15px;left:13px;right:13px;height:100%;background:#0a0a0a;border-radius:22px;z-index:-2;border:1px solid rgba(255,255,255,.03);}
 .sm-flag{position:absolute;top:-2px;left:22px;z-index:10;}
 .sm-flag-body{padding:10px 16px 9px;display:flex;align-items:center;justify-content:center;position:relative;}
 .sm-flag-body::after{content:'';position:absolute;bottom:-8px;left:0;right:0;height:9px;background:inherit;clip-path:polygon(0% 0%,8.33% 100%,16.66% 0%,25% 100%,33.33% 0%,41.66% 100%,50% 0%,58.33% 100%,66.66% 0%,75% 100%,83.33% 0%,91.66% 100%,100% 0%);}
 .sm-flag-txt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:#fff;white-space:nowrap;}
 .sm-section-lbl{position:absolute;top:16px;right:20px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);}
-/* body */
 .sm-body{flex:1;min-height:0;padding:54px 26px 12px;display:flex;flex-direction:column;gap:0;overflow-y:auto;scrollbar-width:none;}
 .sm-body::-webkit-scrollbar{display:none;}
 .sm-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(38px,8vw,58px);font-weight:900;line-height:.86;letter-spacing:1px;color:#fff;flex-shrink:0;margin-bottom:16px;}
 .sm-divider{height:1px;background:rgba(255,255,255,.08);flex-shrink:0;margin:0 0 12px;}
-/* phrase rows */
-.sm-phrase{
-  display:flex;align-items:baseline;gap:12px;
-  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);
-  flex-shrink:0;
-  opacity:0;transform:translateX(-8px);
-  transition:opacity .3s,transform .35s cubic-bezier(.22,1,.36,1);
-}
+.sm-phrase{display:flex;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .35s cubic-bezier(.22,1,.36,1);}
 .sm-phrase:last-child{border-bottom:none;}
 .sm-phrase.in{opacity:1;transform:none;}
 .sm-phrase-bullet{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 .sm-phrase-text{font-family:'Instrument Sans',sans-serif;font-size:clamp(15px,2.2vw,19px);font-weight:500;line-height:1.4;color:rgba(255,255,255,.88);}
 .sm-phrase-note{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.35);margin-top:2px;}
-/* footer row */
 .sm-foot-row{padding:0 0 2px;flex-shrink:0;}
 .sm-timer-bar-wrap{height:4px;background:rgba(255,255,255,.08);border-radius:0 0 22px 22px;overflow:hidden;}
 .sm-timer-bar{height:100%;width:100%;border-radius:0 0 22px 22px;transition:width linear;}
-/* accent bottom bar */
 .sm-accent-bar{height:5px;flex-shrink:0;}
-
-/* chip buttons on SC2 card */
-.sc2-chip{
-  display:inline-flex;align-items:center;gap:7px;
-  font-family:'Instrument Sans',sans-serif;font-size:clamp(13px,1.8vw,15px);font-weight:500;
-  padding:2px 0;
-  background:transparent;border:none;
-  opacity:0;transform:translateX(-6px);
-  transition:opacity .15s;
-}
-.sc2-chip.in{
-  opacity:1;transform:none;
-  animation:chipLand .5s cubic-bezier(.22,1,.36,1) both;
-}
+.sc2-chip{display:inline-flex;align-items:center;gap:7px;font-family:'Instrument Sans',sans-serif;font-size:clamp(13px,1.8vw,15px);font-weight:500;padding:2px 0;background:transparent;border:none;opacity:0;transform:translateX(-6px);transition:opacity .15s;}
+.sc2-chip.in{opacity:1;transform:none;animation:chipLand .5s cubic-bezier(.22,1,.36,1) both;}
 .sc2-chip:hover{opacity:.7;}
 .sc2-chip:active{transform:scale(.97);}
-@keyframes chipLand{
-  0%  {transform:translateX(-8px) rotate(-6deg);opacity:0;}
-  45% {transform:translateX(2px) rotate(3deg);opacity:1;}
-  70% {transform:translateX(-1px) rotate(-1deg);}
-  100%{transform:none;}
-}
-
-/* NOTES */
+@keyframes chipLand{0%{transform:translateX(-8px) rotate(-6deg);opacity:0;}45%{transform:translateX(2px) rotate(3deg);opacity:1;}70%{transform:translateX(-1px) rotate(-1deg);}100%{transform:none;}}
 .notes-panel{position:fixed;inset:0;z-index:500;background:#FAF9F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;pointer-events:none;opacity:0;transition:opacity .26s;}
 .notes-panel.show{opacity:1;pointer-events:all;}
 .notes-card{width:min(460px,96vw);height:min(600px,88vh);background:#fff;border-radius:22px;border:1px solid rgba(0,0,0,.06);box-shadow:4px 6px 0 rgba(0,0,0,.06),0 24px 60px rgba(0,0,0,.14);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(24px) scale(.96);transition:opacity .32s,transform .4s cubic-bezier(.22,1,.36,1);}
@@ -467,13 +268,10 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 .n-item{font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.55;color:var(--ink2);padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.07);}
 .n-item:last-child{border-bottom:none;}
 .n-item strong{color:var(--ink);font-weight:600;}
-
 .flash{position:fixed;inset:0;z-index:900;pointer-events:none;opacity:0;transition:opacity .08s;background:var(--red);}
 .flash.pop{opacity:.04;transition:opacity 0s;}
 .fem{position:fixed;pointer-events:none;z-index:800;font-size:20px;animation:femUp 2s ease-out forwards;}
 @keyframes femUp{0%{opacity:0;transform:translateY(0) scale(.5);}15%{opacity:1;transform:translateY(-10px) scale(1.1);}80%{opacity:.8;transform:translateY(-90px);}100%{opacity:0;transform:translateY(-130px);}}
-
-/* ══ SKILL SELECTOR ══ */
 .skill-screen{position:fixed;inset:0;z-index:1000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;gap:18px;transition:opacity .28s,transform .28s cubic-bezier(.22,1,.36,1);}
 .skill-screen.out{opacity:0;transform:scale(.96);pointer-events:none;}
 .skill-header{text-align:center;}
@@ -496,7 +294,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 </head>
 <body>
 
-<!-- ══ SKILL SELECTOR ══ -->
+<!-- SKILL SELECTOR -->
 <div class="skill-screen" id="skillScreen">
   <div class="skill-header">
     <div class="skill-main-title">B2 WRITING<br><span>BUILDER</span></div>
@@ -537,7 +335,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     <div class="topbar-words">
       <span class="tw red lg">THESIS</span><span class="tw">·</span><span class="tw">CLAIM</span><span class="tw">·</span><span class="tw red">REASON</span><span class="tw">·</span><span class="tw">EXAMPLE</span><span class="tw">·</span><span class="tw lg">RESULT</span><span class="tw">·</span><span class="tw">HOOK</span><span class="tw">·</span><span class="tw red">OPINION</span><span class="tw">·</span><span class="tw">LINKING WORD</span><span class="tw">·</span><span class="tw lg">FORMAL</span><span class="tw">·</span><span class="tw">TOPIC SENTENCE</span><span class="tw">·</span><span class="tw red">PARAGRAPH</span><span class="tw">·</span><span class="tw">EVIDENCE</span><span class="tw">·</span><span class="tw lg">B2 LEVEL</span>
     </div>
-    <div class="logo">ESSAY<span>_</span>BUILDER</div>
+    <div class="logo" id="logoEl">ESSAY<span>_</span>BUILDER</div>
     <div class="spacer"></div>
     <div class="tbctr" id="ctr">1 / 4</div>
   </div>
@@ -554,105 +352,63 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
       <div class="stat-block sb2"><div class="sb-inner"><span class="sb-num">5</span><span class="sb-item">PARAGRAPHS</span><span class="sb-num red">190</span><span class="sb-item">MAX WORDS</span><span class="sb-num teal">3</span><span class="sb-item">BODY POINTS</span><span class="sb-num">1</span><span class="sb-item">OWN IDEA REQ.</span></div></div>
     </div>
 
-    <!-- SC0: OVERVIEW -->
     <div class="scene active" id="sc0">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">ESSAY</span></div></div>
-        <div class="section-lbl" style="color:var(--red)">B2 WRITING</div>
+        <div class="flag"><div class="flag-body" id="sc0FlagBody" style="background:var(--red)"><span class="flag-num" id="sc0FlagLabel">ESSAY</span></div></div>
+        <div class="section-lbl" id="sc0SectionLbl" style="color:var(--red)">B2 WRITING</div>
         <div style="padding:52px 24px 6px 26px;flex-shrink:0;">
           <div id="sc0Title" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,5.5vw,42px);font-weight:900;line-height:.9;color:var(--ink);">HOW TO <span style="color:var(--red);">WRITE</span> AN ESSAY</div>
-          <div id="sc0Tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
-            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:var(--red-s);color:var(--red);border:1px solid rgba(201,20,15,.14)">Opinion Essay</span>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">140–190 words</span>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:rgba(0,0,0,.05);color:var(--ink3);border:1px solid var(--border)">5 paragraphs</span>
-          </div>
+          <div id="sc0Tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>
         </div>
-        <div id="sc0Structure" style="flex:1;min-height:0;padding:4px 26px 4px;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow:hidden;">
-          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#3d9e95;min-width:26px;">P1</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">INTRODUCTION</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Hook + Thesis statement</div></div></div>
-          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P2</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 1</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
-          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--red);min-width:26px;">P3</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 2</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Claim → Reason → Example → Result</div></div></div>
-          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#7b5ea7;min-width:26px;">P4</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">BODY PARAGRAPH 3 <span style="color:#7b5ea7;font-size:12px;">★ own idea</span></div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Your original point — required for full marks</div></div></div>
-          <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:#2d7a3a;min-width:26px;">P5</div><div><div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">CONCLUSION</div><div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">Restate opinion · No new ideas</div></div></div>
-        </div>
+        <div id="sc0Structure" style="flex:1;min-height:0;padding:4px 26px 4px;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow:hidden;"></div>
         <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()" disabled>‹</button><div class="dots" id="dots0"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
-        <div class="accent-bar" style="background:var(--red)"></div>
+        <div class="accent-bar" id="sc0AccentBar" style="background:var(--red)"></div>
       </div>
     </div>
 
-    <!-- SC1: QUESTION -->
     <div class="scene" id="sc1">
       <div class="poster">
         <div class="flag"><div class="flag-body" id="sc1FlagBody" style="background:var(--c-intro)"><span class="flag-num" id="sc1FlagLabel">INTRODUCTION</span></div></div>
         <div class="section-lbl" id="sc1SectionLbl" style="color:var(--c-intro)">THE QUESTION</div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:54px 24px 10px;">
-          <div id="sc1Kicker" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;flex-shrink:0;">📱 Today's essay question</div>
-          <div id="sc1Question" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:.95;color:var(--ink);flex-shrink:0;">Should the use of phones be <span style="color:var(--red);">limited</span> for young people?</div>
+          <div id="sc1Kicker" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;flex-shrink:0;"></div>
+          <div id="sc1Question" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:.95;color:var(--ink);flex-shrink:0;"></div>
           <div style="flex:1;"></div>
-          <div id="sc1Extra" style="flex-shrink:0;margin-bottom:12px;">
-            <div style="font-family:'Instrument Sans',sans-serif;font-size:16px;line-height:1.5;color:var(--ink2);margin-bottom:14px;">What do <strong style="color:var(--ink);">you</strong> think? Pick your side.</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-              <div style="text-align:center;padding:12px 8px;border-top:2px solid #16a34a;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#16a34a;">YES</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">limit them</div></div>
-              <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--ink3);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--ink2);">MAYBE</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">it depends</div></div>
-              <div style="text-align:center;padding:12px 8px;border-top:2px solid var(--red);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--red);">NO</div><div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);margin-top:3px;">let them</div></div>
-            </div>
-          </div>
+          <div id="sc1Extra" style="flex-shrink:0;margin-bottom:12px;"></div>
         </div>
         <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots1"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
         <div class="accent-bar" id="sc1AccentBar" style="background:var(--c-intro)"></div>
       </div>
     </div>
 
-    <!-- SC2: BODY — cinematic animated reveal on the card itself -->
     <div class="scene" id="sc2">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num">BODY PARAGRAPHS</span></div></div>
+        <div class="flag"><div class="flag-body" style="background:var(--red)"><span class="flag-num" id="sc2FlagLabel">BODY PARAGRAPHS</span></div></div>
         <div class="section-lbl" style="color:var(--red)">STRUCTURE</div>
-
-        <!-- IDLE STATE: shown before ▶ is pressed -->
         <div id="sc2Idle" style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:46px 20px 12px;gap:6px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);">Each body paragraph has two parts</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,9vw,64px);font-weight:900;line-height:.86;text-align:center;color:var(--ink);">CLAIM<br><span style="color:var(--red);font-size:clamp(20px,4vw,28px);">+</span><br>SUPPORT</div>
+          <div id="sc2IdleTop" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);">Each body paragraph has two parts</div>
+          <div id="sc2IdleBig" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,9vw,64px);font-weight:900;line-height:.86;text-align:center;color:var(--ink);">CLAIM<br><span style="color:var(--red);font-size:clamp(20px,4vw,28px);">+</span><br>SUPPORT</div>
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(0,0,0,.22);text-align:center;margin-top:4px;">tap ▶ to learn what each part does</div>
         </div>
-
-        <!-- ANIMATED STATE: built by JS during narration -->
         <div id="sc2Build" style="flex:1;min-height:0;display:none;flex-direction:column;padding:46px 20px 6px;overflow:hidden;">
-
-          <!-- kicker -->
           <div id="sc2Kicker" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .4s;flex-shrink:0;">Each body paragraph has two parts</div>
-
-          <!-- CLAIM block -->
-          <div id="sc2ClaimBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">CLAIM</div>
-          </div>
-          <!-- CLAIM sub-items container -->
+          <div id="sc2ClaimBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">CLAIM</div></div>
           <div id="sc2ClaimItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;margin-bottom:6px;padding-left:4px;border-left:3px solid var(--red);"></div>
-
-          <!-- separator + SUPPORT -->
-          <div id="sc2Sep" style="flex-shrink:0;opacity:0;transition:opacity .3s;margin:2px 0 4px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:900;color:var(--red);line-height:1;">+</div>
-          </div>
-
-          <div id="sc2SupportBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">SUPPORT</div>
-          </div>
-          <!-- SUPPORT sub-items container -->
+          <div id="sc2Sep" style="flex-shrink:0;opacity:0;transition:opacity .3s;margin:2px 0 4px;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:900;color:var(--red);line-height:1;">+</div></div>
+          <div id="sc2SupportBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">SUPPORT</div></div>
           <div id="sc2SupportItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;padding-left:4px;border-left:3px solid rgba(28,28,30,.18);"></div>
-
         </div>
-
         <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots2"></div><button class="card-arrow" onclick="nextScene()">›</button></div>
         <div class="accent-bar" style="background:var(--red)"></div>
       </div>
     </div>
 
-    <!-- SC3: CONCLUSION -->
     <div class="scene" id="sc3">
       <div class="poster">
-        <div class="flag"><div class="flag-body" style="background:var(--c-conc)"><span class="flag-num">CONCLUSION</span></div></div>
-        <div class="section-lbl" style="color:var(--c-conc)">CONCLUSION</div>
+        <div class="flag"><div class="flag-body" id="sc3FlagBody" style="background:var(--c-conc)"><span class="flag-num" id="sc3FlagLabel">CONCLUSION</span></div></div>
+        <div class="section-lbl" id="sc3SectionLbl" style="color:var(--c-conc)">CONCLUSION</div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:54px 24px 6px;overflow:hidden;">
-          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.28);margin-bottom:10px;flex-shrink:0;">Paragraph 5 · Conclusion</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,.28);margin-bottom:10px;flex-shrink:0;" id="sc3KickerLbl">Paragraph 5 · Conclusion</div>
           <div id="conclSkeleton" style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
             <div style="display:flex;align-items:center;gap:10px;opacity:.22;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">SUMMARY</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
             <div style="display:flex;align-items:center;gap:10px;opacity:.18;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;border-left:2.5px solid var(--red);background:rgba(201,20,15,.07);color:var(--red);white-space:nowrap;">POINT 1</div><div style="flex:1;height:10px;background:rgba(0,0,0,.08);border-radius:3px;"></div></div>
@@ -664,7 +420,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
           <div class="sentence-scroll" id="stk3"></div>
         </div>
         <div class="card-dots-row"><button class="card-arrow" onclick="prevScene()">‹</button><div class="dots" id="dots3"></div><button class="card-arrow" onclick="nextScene()" disabled>›</button></div>
-        <div class="accent-bar" style="background:var(--c-conc)"></div>
+        <div class="accent-bar" id="sc3AccentBar" style="background:var(--c-conc)"></div>
       </div>
     </div>
   </div>
@@ -680,7 +436,6 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     </div>
   </div>
 
-  <!-- FLOATING PLAY CLUSTER — sits above footer, always visible -->
   <div class="play-cluster" id="playCluster">
     <div class="wave-mini off" id="wL"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
     <button class="btn-nav" id="btnPrev" onclick="prevScene()" disabled>‹</button>
@@ -690,7 +445,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   </div>
 </div>
 
-<!-- ══ PHRASE BANK POSTER (SC2 full-bleed overlay) ══ -->
+<!-- PHRASE BANK -->
 <div class="pb-ov" id="pbOv">
   <div class="pb-header">
     <div class="pb-hflag"><span>BODY PARAGRAPHS · PHRASE BANK</span></div>
@@ -699,128 +454,28 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
     <div class="pb-hstop"><button class="pb-stop-btn" onclick="hardStop();updateNavBtns()">⏹ STOP</button></div>
   </div>
   <div class="pb-body">
-    <!-- LEFT: CLAIM -->
     <div class="pb-col left">
-      <div class="pb-col-head">
-        <div class="pb-col-word red">CLAIM</div>
-        <div class="pb-col-desc">Open your paragraph.<br>State your point.</div>
-      </div>
+      <div class="pb-col-head"><div class="pb-col-word red">CLAIM</div><div class="pb-col-desc">Open your paragraph.<br>State your point.</div></div>
       <div class="pb-cats">
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#c9140f;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#c9140f;">Listing Marker</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">Firstly,</span>
-              <span class="pb-pill hi">Furthermore,</span>
-              <span class="pb-pill hi">In addition,</span>
-              <span class="pb-pill hi">However,</span>
-              <span class="pb-pill hi">On the other hand,</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#1a5c8a;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#1a5c8a;">Expressing a View</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">in my opinion,</span>
-              <span class="pb-pill hi">it seems to me that</span>
-              <span class="pb-pill hi">as far as I am concerned,</span>
-              <span class="pb-pill">I firmly believe that</span>
-              <span class="pb-pill">It is widely believed that</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#1a6b3c;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#1a6b3c;">Making a Claim</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">the main advantage of … is</span>
-              <span class="pb-pill hi">one key problem with … is</span>
-              <span class="pb-pill">The key benefit of … is</span>
-              <span class="pb-pill">One clear drawback is…</span>
-              <span class="pb-pill">An important point is…</span>
-            </div>
-          </div>
-        </div>
-
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#c9140f;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#c9140f;">Listing Marker</div><div class="pb-cat-pills"><span class="pb-pill hi">Firstly,</span><span class="pb-pill hi">Furthermore,</span><span class="pb-pill hi">In addition,</span><span class="pb-pill hi">However,</span><span class="pb-pill hi">On the other hand,</span></div></div></div>
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#1a5c8a;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#1a5c8a;">Expressing a View</div><div class="pb-cat-pills"><span class="pb-pill hi">in my opinion,</span><span class="pb-pill hi">it seems to me that</span><span class="pb-pill hi">as far as I am concerned,</span><span class="pb-pill">I firmly believe that</span><span class="pb-pill">It is widely believed that</span></div></div></div>
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#1a6b3c;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#1a6b3c;">Making a Claim</div><div class="pb-cat-pills"><span class="pb-pill hi">the main advantage of … is</span><span class="pb-pill hi">one key problem with … is</span><span class="pb-pill">The key benefit of … is</span><span class="pb-pill">One clear drawback is…</span><span class="pb-pill">An important point is…</span></div></div></div>
       </div>
     </div>
-
-    <!-- RIGHT: SUPPORT -->
     <div class="pb-col">
-      <div class="pb-col-head">
-        <div class="pb-col-word">SUPPORT</div>
-        <div class="pb-col-desc">Develop your claim.<br>Use what fits best.</div>
-      </div>
+      <div class="pb-col-head"><div class="pb-col-word">SUPPORT</div><div class="pb-col-desc">Develop your claim.<br>Use what fits best.</div></div>
       <div class="pb-cats">
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#1a6b3c;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#1a6b3c;">Reason — why?</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">This is because…</span>
-              <span class="pb-pill hi">The reason is that…</span>
-              <span class="pb-pill">This is largely due to…</span>
-              <span class="pb-pill">Since…</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#1a5c8a;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#1a5c8a;">Example — evidence</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">For example,</span>
-              <span class="pb-pill hi">For instance,</span>
-              <span class="pb-pill">Indeed,</span>
-              <span class="pb-pill">This can be seen in…</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#6b4ea8;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#6b4ea8;">Result — consequence</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">As a result,</span>
-              <span class="pb-pill hi">Consequently,</span>
-              <span class="pb-pill hi">Therefore,</span>
-              <span class="pb-pill">This means that…</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pb-cat">
-          <div class="pb-cat-bar" style="background:#e07b00;"></div>
-          <div class="pb-cat-body">
-            <div class="pb-cat-label" style="color:#e07b00;">Contrast / Compare</div>
-            <div class="pb-cat-pills">
-              <span class="pb-pill hi">Although…</span>
-              <span class="pb-pill hi">However,</span>
-              <span class="pb-pill">Even though…</span>
-              <span class="pb-pill">While…</span>
-              <span class="pb-pill">Unlike…</span>
-              <span class="pb-pill">In other words,</span>
-            </div>
-          </div>
-        </div>
-
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#1a6b3c;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#1a6b3c;">Reason — why?</div><div class="pb-cat-pills"><span class="pb-pill hi">This is because…</span><span class="pb-pill hi">The reason is that…</span><span class="pb-pill">This is largely due to…</span><span class="pb-pill">Since…</span></div></div></div>
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#1a5c8a;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#1a5c8a;">Example — evidence</div><div class="pb-cat-pills"><span class="pb-pill hi">For example,</span><span class="pb-pill hi">For instance,</span><span class="pb-pill">Indeed,</span><span class="pb-pill">This can be seen in…</span></div></div></div>
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#6b4ea8;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#6b4ea8;">Result — consequence</div><div class="pb-cat-pills"><span class="pb-pill hi">As a result,</span><span class="pb-pill hi">Consequently,</span><span class="pb-pill hi">Therefore,</span><span class="pb-pill">This means that…</span></div></div></div>
+        <div class="pb-cat"><div class="pb-cat-bar" style="background:#e07b00;"></div><div class="pb-cat-body"><div class="pb-cat-label" style="color:#e07b00;">Contrast / Compare</div><div class="pb-cat-pills"><span class="pb-pill hi">Although…</span><span class="pb-pill hi">However,</span><span class="pb-pill">Even though…</span><span class="pb-pill">While…</span><span class="pb-pill">Unlike…</span><span class="pb-pill">In other words,</span></div></div></div>
       </div>
     </div>
   </div>
   <div class="pb-foot"></div>
 </div>
 
-<!-- ══ LISTING MARKERS ══ -->
+<!-- LISTING MARKERS -->
 <div class="listing-ov" id="listingOv">
   <div class="listing-header">
     <div class="listing-hflag"><span>LISTING MARKERS</span></div>
@@ -835,23 +490,20 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   <div class="listing-foot"></div>
 </div>
 
-<!-- ══ INTRO PAIRS ══ -->
+<!-- INTRO PAIRS -->
 <div class="poster-ov" id="introOv" onclick="if(event.target===this){hardStop();updateNavBtns();}">
   <div class="pov-pillar left"><span class="pov-pillar-text">INTRODUCTION · HOOK + THESIS</span></div>
   <div class="pov-pillar right"><span class="pov-pillar-text">1 EXAMPLE · FOLLOW THE PATTERN</span></div>
   <div class="pov-card" id="introCard">
     <div class="pov-flag"><div class="pov-flag-body" style="background:var(--c-intro)"><span class="pov-flag-num">INTRODUCTION</span></div></div>
-    <div class="pov-pair-lbl" id="introNum">1 / 5</div>
+    <div class="pov-pair-lbl" id="introNum">1 / 1</div>
     <div class="pov-intro-body">
       <div class="ob-hlbl">🪝 HOOK</div>
       <div class="ob-starter" id="obS"></div>
       <div class="ob-rest" id="obR"></div>
       <div class="ob-link" id="obL"></div>
       <div class="ob-sep"></div>
-      <div>
-        <div class="ob-tlbl">📌 THESIS</div>
-        <div class="ob-tt" id="obT"></div>
-      </div>
+      <div><div class="ob-tlbl">📌 THESIS</div><div class="ob-tt" id="obT"></div></div>
     </div>
     <div class="pov-card-foot"><button class="pov-stop-btn" onclick="hardStop();updateNavBtns()">⏹ STOP</button></div>
     <div class="pov-bottom-bar" style="background:var(--c-intro)"></div>
@@ -859,7 +511,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   <div class="pov-dots" id="introDots"></div>
 </div>
 
-<!-- ══ BODY PARAGRAPH PAIRS ══ -->
+<!-- BODY PAIRS -->
 <div class="poster-ov" id="bodyOv" onclick="if(event.target===this){hardStop();updateNavBtns();}">
   <div class="pov-pillar left"><span class="pov-pillar-text" id="bodyPillarLeft">BODY PARAGRAPH 1 · P2</span></div>
   <div class="pov-pillar right"><span class="pov-pillar-text" id="bodyPillarRight">CLAIM + SUPPORT + RESULT</span></div>
@@ -873,7 +525,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   <div class="pov-dots" id="bodyDots"></div>
 </div>
 
-<!-- ══ INTERSTITIAL ══ -->
+<!-- INTERSTITIAL -->
 <div class="inter-ov" id="interOv">
   <div class="inter-card">
     <div class="inter-flag"><div class="inter-flag-body" id="interFlagBody"><span class="inter-flag-num" id="interFlagNum"></span></div></div>
@@ -887,7 +539,7 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
   </div>
 </div>
 
-<!-- ══ NOTES ══ -->
+<!-- NOTES -->
 <div class="notes-panel" id="notesPanel">
   <div class="notes-card">
     <div class="notes-top"></div>
@@ -905,75 +557,129 @@ html,body{width:100%;height:100%;overflow:hidden;position:fixed;background:var(-
 
 <div class="flash" id="flash"></div>
 
-<!-- ══ SECONDARY MODAL — dark phrase cards ══ -->
+<!-- SECONDARY MODAL -->
 <div class="sm-backdrop" id="smBackdrop" onclick="closeSecModal()"></div>
 <div class="sm-wrap" id="smWrap">
   <div class="sm-card" id="smCard">
     <div class="sm-flag"><div class="sm-flag-body" id="smFlagBody"><span class="sm-flag-txt" id="smFlagTxt"></span></div></div>
     <div class="sm-section-lbl" id="smSectionLbl"></div>
-    <div class="sm-body">
-      <div class="sm-title" id="smTitle"></div>
-      <div class="sm-divider"></div>
-      <div id="smPhrases"></div>
-    </div>
-    <div class="sm-foot-row">
-      <div class="sm-timer-bar-wrap"><div class="sm-timer-bar" id="smTimerBar"></div></div>
-    </div>
+    <div class="sm-body"><div class="sm-title" id="smTitle"></div><div class="sm-divider"></div><div id="smPhrases"></div></div>
+    <div class="sm-foot-row"><div class="sm-timer-bar-wrap"><div class="sm-timer-bar" id="smTimerBar"></div></div></div>
     <div class="sm-accent-bar" id="smAccentBar"></div>
   </div>
-</div><!-- /playerShell -->
+</div>
 
 <script>
-// ══════════════════════════════════════════════
-// SKILL DATA — loaded from writing-data.json
-// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════════
+// MP3 AUDIO ENGINE
+// All 110 Audio objects created on first user gesture (initAudioPool).
+// Each skill has an offset so speak(t, myGen, n) resolves to the correct file:
+//   essay  : n + 0   → files 01–30
+//   report : n + 30  → files 31–60
+//   review : n + 60  → files 61–90
+//   email  : n + 90  → files 91–110
+// ══════════════════════════════════════════════════════════════════════════════
+const MP3_OFFSETS = { essay: 0, report: 30, review: 60, email: 90 };
+const MP3_BASE    = './data/';
+const MP3_TOTAL   = 110;
+
+let mp3Pool    = null;   // created once on first gesture
+let mp3Active  = null;
+let mp3Resolve = null;
+let mp3Offset  = 0;      // set by launchSkill()
+
+function initAudioPool() {
+  if (mp3Pool) return;
+  mp3Pool = [];
+  for (let i = 1; i <= MP3_TOTAL; i++) {
+    const a = new Audio(MP3_BASE + String(i).padStart(2, '0') + '.mp3.mp3');
+    a.preload = 'none';
+    mp3Pool.push(a);
+  }
+}
+
+function stopSpeech() {
+  if (mp3Active) {
+    mp3Active.pause();
+    mp3Active.currentTime = 0;
+    mp3Active.onended = null;
+    mp3Active.onerror = null;
+    mp3Active = null;
+  }
+  if (mp3Resolve) { mp3Resolve(); mp3Resolve = null; }
+}
+
+function loadVoice() {} // compatibility stub — no-op
+
+// speak(text, myGen, n)
+//   n  = 1-based LOCAL file number for this skill (offset applied automatically)
+//   If n is omitted the call is a silent pass-through (useful as placeholder).
+function speak(t, myGen, n) {
+  return new Promise(resolve => {
+    if (!running || myGen !== gen) { resolve(); return; }
+    stopSpeech();
+    if (!mp3Pool || n === undefined) { resolve(); return; }
+    const globalN = n + mp3Offset;
+    if (globalN < 1 || globalN > MP3_TOTAL) { console.warn('speak: out of range n=' + globalN); resolve(); return; }
+    const audio = mp3Pool[globalN - 1];
+    audio.currentTime = 0;
+    mp3Active  = audio;
+    mp3Resolve = resolve;
+    audio.onended = () => { mp3Active = null; mp3Resolve = null; resolve(); };
+    audio.onerror = () => { console.warn('MP3 error n=' + globalN); mp3Active = null; mp3Resolve = null; resolve(); };
+    audio.play().catch(e => { console.warn('play() blocked:', e.message); mp3Active = null; mp3Resolve = null; resolve(); });
+  });
+}
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ══ SKILL DATA ══
 let SKILLS = null;
 
-async function loadSkills(){
+async function loadSkills() {
   try {
     const res = await fetch('writing-data.json');
     SKILLS = await res.json();
-    initSelector();
   } catch(e) {
-    // Fallback: show error state
     document.getElementById('skillScreen').innerHTML += `<div style="font-family:'DM Mono',monospace;font-size:11px;color:#c9140f;margin-top:12px;">Could not load writing-data.json</div>`;
     console.error('Failed to load skill data:', e);
   }
 }
-
-function initSelector(){
-  // Enable skill cards now data is ready
-  document.querySelectorAll('.skill-card').forEach(c => c.style.opacity = '1');
-}
-
 loadSkills();
-
 
 let SK = null; // active skill
 
-function launchSkill(key){
+function launchSkill(key) {
+  // Initialise audio pool on this gesture so iOS grants autoplay to all 110 objects
+  initAudioPool();
+
   SK = SKILLS[key];
-  // Swap dynamic logo
-  document.querySelector('.logo').innerHTML = SK.logoHtml;
-  // Swap sc0 flag + colors
-  document.querySelector('#sc0 .flag-num').textContent = SK.sc0FlagLabel;
-  document.querySelector('#sc0 .flag-body').style.background = SK.accentColor;
-  document.querySelector('#sc0 .accent-bar').style.background = SK.accentColor;
-  document.querySelector('#sc0 .section-lbl').style.color = SK.accentColor;
-  // Swap sc0 title
-  document.getElementById('sc0Title').innerHTML = `HOW TO <span style="color:${SK.accentColor};">WRITE</span> A${SK.sc0TitleSuffix}`;
-  // Swap sc0 tags
-  document.getElementById('sc0Tags').innerHTML = SK.sc0Tags.map((t,i)=>`<span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:${i===0?SK.accentColor+'18':'rgba(0,0,0,.05)'};color:${i===0?SK.accentColor:'var(--ink3)'};border:1px solid ${i===0?SK.accentColor+'22':'var(--border)'}">${t}</span>`).join('');
-  // Swap sc0 paragraph structure
-  document.getElementById('sc0Structure').innerHTML = SK.sc0Structure.map(s=>`
-    <div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
+  // Set MP3 offset for this skill
+  mp3Offset = MP3_OFFSETS[key] || 0;
+
+  // Update logo
+  document.getElementById('logoEl').innerHTML = SK.logoHtml;
+
+  // SC0 — overview card
+  const sc0Color = SK.accentColor;
+  document.getElementById('sc0FlagBody').style.background = sc0Color;
+  document.getElementById('sc0FlagLabel').textContent = SK.sc0FlagLabel;
+  document.getElementById('sc0AccentBar').style.background = sc0Color;
+  document.getElementById('sc0SectionLbl').style.color = sc0Color;
+  document.getElementById('sc0Title').innerHTML = `HOW TO <span style="color:${sc0Color};">WRITE</span> A${SK.sc0TitleSuffix}`;
+  document.getElementById('sc0Tags').innerHTML = SK.sc0Tags.map((t,i) =>
+    `<span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 9px;border-radius:20px;text-transform:uppercase;background:${i===0?sc0Color+'18':'rgba(0,0,0,.05)'};color:${i===0?sc0Color:'var(--ink3)'};border:1px solid ${i===0?sc0Color+'22':'var(--border)'}">${t}</span>`
+  ).join('');
+  document.getElementById('sc0Structure').innerHTML = SK.sc0Structure.map(s =>
+    `<div style="display:flex;align-items:baseline;gap:14px;flex-shrink:0;">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${s.c};min-width:26px;">${s.p}</div>
       <div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;color:var(--ink);">${s.label}</div>
         <div style="font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--ink3);margin-top:1px;">${s.sub}</div>
       </div>
-    </div>`).join('');
-  // Swap sc1 question card
+    </div>`
+  ).join('');
+
+  // SC1 — question card
   document.getElementById('sc1FlagBody').style.background = SK.accentColor;
   document.getElementById('sc1FlagLabel').textContent = SK.sc1FlagLabel;
   document.getElementById('sc1SectionLbl').textContent = SK.sc1SectionLbl;
@@ -982,40 +688,45 @@ function launchSkill(key){
   document.getElementById('sc1Question').innerHTML = SK.sc1Question;
   document.getElementById('sc1Extra').innerHTML = SK.sc1Extra;
   document.getElementById('sc1AccentBar').style.background = SK.accentColor;
-  // Swap sc2 idle state labels
-  document.querySelector('#sc2Idle > div:first-child').textContent = SK.sc2IdleTop;
-  document.querySelector('#sc2Idle > div:nth-child(2)').innerHTML = SK.sc2IdleBig;
-  // Show player, hide selector
+
+  // SC2 idle labels
+  document.getElementById('sc2IdleTop').textContent = SK.sc2IdleTop || 'Each body paragraph has two parts';
+  document.getElementById('sc2IdleBig').innerHTML = SK.sc2IdleBig || 'CLAIM<br><span style="color:var(--red);font-size:clamp(20px,4vw,28px);">+</span><br>SUPPORT';
+
+  // Show player
   document.getElementById('skillScreen').classList.add('out');
-  document.getElementById('playerShell').style.visibility='visible';
-  document.getElementById('backPill').style.display='block';
-  // Reset and start
-  cur=0;running=false;introOvOn=false;bodyOvOn=false;pbOvOn=false;gen=0;
-  clearStacks();buildDots();updateDots(0);showScene(0);updateNavBtns();
+  document.getElementById('playerShell').style.visibility = 'visible';
+  document.getElementById('backPill').style.display = 'block';
+
+  // Reset state
+  cur = 0; running = false; introOvOn = false; bodyOvOn = false; pbOvOn = false; gen = 0;
+  clearStacks(); buildDots(); updateDots(0); showScene(0); updateNavBtns();
   requestAnimationFrame(updateFooterVar);
 }
 
-function goBack(){
+function goBack() {
   hardStop();
-  document.getElementById('playerShell').style.visibility='hidden';
-  document.getElementById('backPill').style.display='none';
+  document.getElementById('playerShell').style.visibility = 'hidden';
+  document.getElementById('backPill').style.display = 'none';
   document.getElementById('skillScreen').classList.remove('out');
-  SK=null;
+  SK = null;
 }
 
-const SCENE_COUNT=4;
-function updateFooterVar(){
-  const f=document.getElementById('mainFooter');
-  const tb=document.querySelector('.topbar');
-  if(f){
-    const fh=f.offsetHeight;
-    const tbh=tb?tb.offsetHeight:0;
-    document.documentElement.style.setProperty('--footer-h',fh+'px');
-    document.documentElement.style.setProperty('--stage-h',(window.innerHeight-fh-tbh)+'px');
+const SCENE_COUNT = 4;
+
+function updateFooterVar() {
+  const f  = document.getElementById('mainFooter');
+  const tb = document.querySelector('.topbar');
+  if (f) {
+    const fh  = f.offsetHeight;
+    const tbh = tb ? tb.offsetHeight : 0;
+    document.documentElement.style.setProperty('--footer-h', fh + 'px');
+    document.documentElement.style.setProperty('--stage-h', (window.innerHeight - fh - tbh) + 'px');
   }
 }
 
-const NOTES_DATA={
+// ══ NOTES DATA ══
+const NOTES_DATA = {
   descriptors:[
     {title:'Content (25%)',items:['<strong>Answer the question directly.</strong> Include both given ideas plus your own third idea.','Each point must be developed — not just stated.','Missing the third idea = automatic loss of marks.']},
     {title:'Communicative Achievement (25%)',items:['<strong>Formal register throughout.</strong> No contractions, no slang.','Every claim needs a reason or example.','Never "I think" — use "In my opinion" or "It seems to me that".']},
@@ -1023,13 +734,13 @@ const NOTES_DATA={
     {title:'Language (25%)',items:['<strong>Range of vocabulary</strong> — avoid repetition.','Variety of grammar: passive, relative clauses, conditionals.','Accurate spelling and punctuation.']}
   ],
   linking:[
-    {title:'📌 Opening — DIFFERENT one each time',items:['<strong>Firstly,</strong> · <strong>Furthermore,</strong> · <strong>In addition,</strong> · <strong>However,</strong> · <strong>On the other hand,</strong>','⚠️ Never use "Secondly," in a B2 First for Schools essay.','⚠️ Never repeat the same opening marker.']},
-    {title:'💬 Expressing a view',items:['it seems to me · In my opinion, · As far as I am concerned,','It is widely believed · I firmly believe that']},
-    {title:'🔍 Reason',items:['This is because… · This is largely due to… · Since… · The reason is that…']},
-    {title:'📖 Example',items:['For example, · For instance, · Indeed, · This can be seen in…']},
-    {title:'⚡ Result',items:['As a result, · Consequently, · Therefore, · This means that…']},
-    {title:'↔️ Contrast',items:['Although… · Even though… · Despite… · However,']},
-    {title:'🏁 Concluding',items:['In conclusion, · To sum up, · All things considered, · On balance,']}
+    {title:'Opening — DIFFERENT one each time',items:['<strong>Firstly,</strong> · <strong>Furthermore,</strong> · <strong>In addition,</strong> · <strong>However,</strong> · <strong>On the other hand,</strong>','⚠️ Never use "Secondly," in a B2 essay.','⚠️ Never repeat the same opening marker.']},
+    {title:'Expressing a view',items:['it seems to me · In my opinion, · As far as I am concerned,','It is widely believed · I firmly believe that']},
+    {title:'Reason',items:['This is because… · This is largely due to… · Since… · The reason is that…']},
+    {title:'Example',items:['For example, · For instance, · Indeed, · This can be seen in…']},
+    {title:'Result',items:['As a result, · Consequently, · Therefore, · This means that…']},
+    {title:'Contrast',items:['Although… · Even though… · Despite… · However,']},
+    {title:'Concluding',items:['In conclusion, · To sum up, · All things considered, · On balance,']}
   ],
   planning:[
     {title:'The 5-minute exam plan',items:['<strong>Read twice.</strong> Underline the two given ideas.','Decide: agree / disagree / balanced.','Jot 2–3 keywords per paragraph — not full sentences.','Decide your OWN third idea BEFORE you start writing.']},
@@ -1038,13 +749,12 @@ const NOTES_DATA={
   ],
   phrases:[
     {title:'CLAIM — Listing marker',items:['Firstly,','Furthermore,','In addition,','However,','On the other hand,']},
-    {title:'CLAIM — Expressing a view',items:['in my opinion,','it seems to me that','as far as I am concerned,','I firmly believe that','It is widely believed that']},
-    {title:'CLAIM — Making a claim',items:['the main advantage of … is','one key problem with … is','The key benefit of … is','One clear drawback is…','An important point is…']},
-    {title:'SUPPORT — Reason',items:['This is because…','The reason is that…','This is largely due to…','Since…']},
-    {title:'SUPPORT — Example',items:['For example,','For instance,','Indeed,','This can be seen in…']},
-    {title:'SUPPORT — Result',items:['As a result,','Consequently,','Therefore,','This means that…']},
-    {title:'SUPPORT — Contrast',items:['Although…','However,','Even though…','While…','Unlike…']},
-    {title:'SUPPORT — Rephrase',items:['In other words,','That is to say,','Simply put,']}
+    {title:'CLAIM — Expressing a view',items:['in my opinion,','it seems to me that','as far as I am concerned,','I firmly believe that']},
+    {title:'CLAIM — Making a claim',items:['the main advantage of … is','one key problem with … is','An important point is…']},
+    {title:'SUPPORT — Reason',items:['This is because…','The reason is that…','Since…']},
+    {title:'SUPPORT — Example',items:['For example,','For instance,','This can be seen in…']},
+    {title:'SUPPORT — Result',items:['As a result,','Consequently,','Therefore,']},
+    {title:'SUPPORT — Contrast',items:['Although…','However,','Even though…','In other words,']}
   ],
   wordlimit:[
     {title:'Target: 140–190 words',items:['<strong>Under 130 = automatic mark penalty.</strong>','190 words = roughly 12–15 sentences across 5 paragraphs.','Intro 2–3 · Each body 3–4 · Conclusion 2–3.']},
@@ -1052,12 +762,12 @@ const NOTES_DATA={
   ]
 };
 
-// PAIRS and BODY_PAIRS read from SK at runtime
-function getPAIRS(){ return SK ? SK.pairs : []; }
-function getBODY_PAIRS(){ return SK ? SK.bodyPairs : []; }
-function getCONCL_DATA(){ return SK ? SK.conclData : []; }
+// ══ SKILL DATA ACCESSORS ══
+function getPAIRS()      { return SK ? SK.pairs      : []; }
+function getBODY_PAIRS() { return SK ? SK.bodyPairs  : []; }
+function getCONCL_DATA() { return SK ? SK.conclData  : []; }
 
-const LISTING_MARKERS=[
+const LISTING_MARKERS = [
   {marker:'Firstly,',color:'#c9140f',label:'TO INTRODUCE',example:'<em>Firstly,</em> in my opinion, the main benefit of limiting phones is better sleep.'},
   {marker:'Furthermore,',color:'#1a6b3c',label:'TO ADD A POINT',example:'<em>Furthermore,</em> it seems to me that phone use affects concentration in class.'},
   {marker:'In addition,',color:'#1a5c8a',label:'TO ADD MORE',example:'<em>In addition,</em> as far as I am concerned, phones can damage social skills.'},
@@ -1065,45 +775,72 @@ const LISTING_MARKERS=[
   {marker:'On the other hand,',color:'#6b4ea8',label:'TO CONTRAST',example:'<em>On the other hand,</em> smartphones give students access to a great deal of information.'}
 ];
 
-// CONCL_DATA is now read via getCONCL_DATA() from SK
+// ══ RUNTIME STATE ══
+let cur=0, running=false, introOvOn=false, bodyOvOn=false, pbOvOn=false, gen=0;
 
-let cur=0,running=false,introOvOn=false,bodyOvOn=false,pbOvOn=false,gen=0;
-const synth=window.speechSynthesis;
-let voice=null;
-function loadVoice(){const p=()=>{const v=synth.getVoices();voice=v.find(x=>x.name==='Google UK English Male')||v.find(x=>x.name==='Daniel')||v.find(x=>x.lang==='en-GB')||v.find(x=>x.lang&&x.lang.startsWith('en'))||v[0]||null;};if(synth.getVoices().length)p();else synth.onvoiceschanged=p;}
-let sRes=null;
-function stopSpeech(){if(sRes){sRes();sRes=null;}synth.cancel();}
-function speak(t,myGen){return new Promise(r=>{if(!running||myGen!==gen){r();return;}synth.cancel();sRes=r;const go=()=>{if(!running||myGen!==gen){sRes=null;r();return;}const u=new SpeechSynthesisUtterance(t);u.voice=voice;u.rate=0.87;u.pitch=1;u.volume=1;u.onend=()=>{sRes=null;r();};u.onerror=()=>{sRes=null;r();};synth.speak(u);};setTimeout(go,120);});}
-function wait(ms,myGen){return new Promise(r=>setTimeout(()=>r(),(myGen!==undefined&&myGen!==gen)?0:ms));}
-
-function hardStop(){
-  gen++;running=false;introOvOn=false;bodyOvOn=false;pbOvOn=false;
-  stopSpeech();waveOff();
-  document.getElementById('introOv').classList.remove('show');
+function hardStop() {
+  gen++; running=false; introOvOn=false; bodyOvOn=false; pbOvOn=false;
+  stopSpeech(); waveOff();
+  ['introOv','bodyOv','pbOv','listingOv','interOv'].forEach(id => document.getElementById(id).classList.remove('show'));
   document.getElementById('introCard').classList.remove('exit');
-  document.getElementById('bodyOv').classList.remove('show');
   document.getElementById('bodyCard').classList.remove('exit');
-  document.getElementById('pbOv').classList.remove('show');
-  document.getElementById('listingOv').classList.remove('show');
-  document.getElementById('interOv').classList.remove('show');
   closeSecModal();
-  const b=document.getElementById('btnPlay');if(b){b.textContent='▶';b.classList.remove('running');}
+  const b = document.getElementById('btnPlay');
+  if (b) { b.textContent = '▶'; b.classList.remove('running'); }
 }
 
-function buildDots(){for(let sc=0;sc<SCENE_COUNT;sc++){const c=document.getElementById('dots'+sc);if(!c)continue;c.innerHTML='';for(let i=0;i<SCENE_COUNT;i++){const d=document.createElement('div');d.className='dot';d.id='d'+sc+'-'+i;c.appendChild(d);}}}
-function updateDots(i){for(let sc=0;sc<SCENE_COUNT;sc++){for(let j=0;j<SCENE_COUNT;j++){const d=document.getElementById('d'+sc+'-'+j);if(!d)continue;d.classList.remove('active','done');if(j===i)d.classList.add('active');else if(j<i)d.classList.add('done');}}}
+function wait(ms, myGen) {
+  return new Promise(r => setTimeout(() => r(), (myGen !== undefined && myGen !== gen) ? 0 : ms));
+}
 
-const SECTION_END={intro:1,body:2,conc:3};
-let activeSection='intro';
-function sectionForScene(idx){if(idx<=1)return 'intro';if(idx<=2)return 'body';return 'conc';}
-function syncTab(idx){const t=sectionForScene(idx);document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));}
-function jumpTab(tab){if(tab==='notes'){openNotes();return;}hardStop();clearStacks();const map={intro:0,body:2,conc:3};const target=map[tab];if(typeof target==='number'){activeSection=tab;cur=target;showScene(cur);setTimeout(()=>{if(!running){running=true;const myGen=gen;const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');updateNavBtns();runScene(cur,myGen);}},120);}updateNavBtns();}
+function buildDots() {
+  for (let sc=0; sc<SCENE_COUNT; sc++) {
+    const c = document.getElementById('dots'+sc); if (!c) continue; c.innerHTML='';
+    for (let i=0; i<SCENE_COUNT; i++) { const d=document.createElement('div'); d.className='dot'; d.id='d'+sc+'-'+i; c.appendChild(d); }
+  }
+}
+function updateDots(i) {
+  for (let sc=0; sc<SCENE_COUNT; sc++) {
+    for (let j=0; j<SCENE_COUNT; j++) {
+      const d=document.getElementById('d'+sc+'-'+j); if (!d) continue;
+      d.classList.remove('active','done');
+      if (j===i) d.classList.add('active'); else if (j<i) d.classList.add('done');
+    }
+  }
+}
 
-function showScene(i){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));const sc=document.getElementById('sc'+i);if(!sc)return;sc.classList.add('active');document.getElementById('ctr').textContent=(i+1)+' / '+SCENE_COUNT;updateDots(i);syncTab(i);updateNavBtns();flashColor();if(i>0)spawnEmoji(i);}
-function waveOn(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}});}
-function waveOff(){['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}});}
+const SECTION_END = {intro:1, body:2, conc:3};
+let activeSection = 'intro';
+function sectionForScene(idx) { if (idx<=1) return 'intro'; if (idx<=2) return 'body'; return 'conc'; }
+function syncTab(idx) { const t=sectionForScene(idx); document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t)); }
 
-function showInter(flag,fc,kicker,big,sub,ac){
+function jumpTab(tab) {
+  if (tab==='notes') { openNotes(); return; }
+  initAudioPool();
+  hardStop(); clearStacks();
+  const map={intro:0, body:2, conc:3};
+  const target=map[tab];
+  if (typeof target==='number') {
+    activeSection=tab; cur=target;
+    showScene(cur);
+    setTimeout(() => {
+      if (!running) { running=true; const myGen=gen; const b=document.getElementById('btnPlay'); b.textContent='⏹'; b.classList.add('running'); updateNavBtns(); runScene(cur,myGen); }
+    }, 120);
+  }
+  updateNavBtns();
+}
+
+function showScene(i) {
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  const sc=document.getElementById('sc'+i); if (!sc) return;
+  sc.classList.add('active');
+  document.getElementById('ctr').textContent=(i+1)+' / '+SCENE_COUNT;
+  updateDots(i); syncTab(i); updateNavBtns(); flashColor(); if (i>0) spawnEmoji(i);
+}
+function waveOn()  { ['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('off');w.classList.add('on');}}); }
+function waveOff() { ['wL','wR'].forEach(id=>{const w=document.getElementById(id);if(w){w.classList.remove('on');w.classList.add('off');}}); }
+
+function showInter(flag,fc,kicker,big,sub,ac) {
   document.getElementById('interFlagBody').style.background=fc;
   document.getElementById('interFlagNum').textContent=flag;
   document.getElementById('interKicker').textContent=kicker;
@@ -1114,507 +851,335 @@ function showInter(flag,fc,kicker,big,sub,ac){
   document.getElementById('interOv').style.setProperty('--inter-accent',ac||fc);
   document.getElementById('interOv').classList.add('show');
 }
-function hideInter(){document.getElementById('interOv').classList.remove('show');}
-
-/* PHRASE BANK POSTER */
-function showPhraseBank(){pbOvOn=true;document.getElementById('pbOv').classList.add('show');}
-function hidePhraseBank(){document.getElementById('pbOv').classList.remove('show');pbOvOn=false;}
-
-/* LISTING MARKERS */
-function showListing(){
-  const el=document.getElementById('listingRows');el.innerHTML='';
+function hideInter() { document.getElementById('interOv').classList.remove('show'); }
+function showPhraseBank() { pbOvOn=true; document.getElementById('pbOv').classList.add('show'); }
+function showListing() {
+  const el=document.getElementById('listingRows'); el.innerHTML='';
   LISTING_MARKERS.forEach(m=>{
-    const row=document.createElement('div');row.className='listing-row';
+    const row=document.createElement('div'); row.className='listing-row';
     row.innerHTML=`<div class="listing-row-marker" style="color:${m.color};background:${m.color}12;">${m.marker}</div><div class="listing-row-mid"><div class="listing-row-mid-label" style="color:${m.color};">${m.label}</div></div><div class="listing-row-example">${m.example}</div>`;
     el.appendChild(row);
   });
   document.getElementById('listingOv').classList.add('show');
 }
-function hideListing(){document.getElementById('listingOv').classList.remove('show');}
 
-/* INTRO PAIRS */
-async function runIntroPairs(myGen){
+// ══ INTRO PAIRS ══
+async function runIntroPairs(myGen) {
   const PAIRS=getPAIRS();
   introOvOn=true;
   document.getElementById('introDots').innerHTML=PAIRS.map((_,i)=>`<div class="bdot" id="bd${i}"></div>`).join('');
   document.getElementById('introOv').classList.add('show');
-  for(let i=0;i<PAIRS.length;i++){if(!running||!introOvOn||myGen!==gen)break;await showIntroPair(PAIRS[i],i,myGen);}
-  document.getElementById('introOv').classList.remove('show');document.getElementById('introCard').classList.remove('exit');introOvOn=false;
+  for (let i=0;i<PAIRS.length;i++) { if (!running||!introOvOn||myGen!==gen) break; await showIntroPair(PAIRS[i],i,myGen); }
+  document.getElementById('introOv').classList.remove('show');
+  document.getElementById('introCard').classList.remove('exit');
+  introOvOn=false;
 }
-async function showIntroPair(p,idx,myGen){
+async function showIntroPair(p,idx,myGen) {
   const PAIRS=getPAIRS();
   const card=document.getElementById('introCard');
-  if(idx>0){card.classList.add('exit');await wait(190,myGen);if(!running||!introOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');}
-  if(!running||!introOvOn||myGen!==gen)return;
+  if (idx>0) { card.classList.add('exit'); await wait(190,myGen); if (!running||!introOvOn||myGen!==gen){card.classList.remove('exit');return;} card.classList.remove('exit'); }
+  if (!running||!introOvOn||myGen!==gen) return;
   document.getElementById('introNum').textContent=(idx+1)+' / '+PAIRS.length;
-  const sEl=document.getElementById('obS');sEl.textContent=p.s;
-  const l=p.s.length;sEl.style.fontSize=l>22?'clamp(2.2rem,6vw,4rem)':l>14?'clamp(3rem,8vw,5.5rem)':'clamp(4rem,10vw,7rem)';
+  const sEl=document.getElementById('obS'); sEl.textContent=p.s;
+  const l=p.s.length; sEl.style.fontSize=l>22?'clamp(2.2rem,6vw,4rem)':l>14?'clamp(3rem,8vw,5.5rem)':'clamp(4rem,10vw,7rem)';
   const rEl=document.getElementById('obR'),lEl=document.getElementById('obL'),tEl=document.getElementById('obT');
-  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';lEl.style.cssText='opacity:0;transform:translateY(4px);transition:none;';tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
-  rEl.textContent=p.r;lEl.innerHTML=p.linkHtml;tEl.innerHTML=p.t;
-  await wait(24,myGen);rEl.style.cssText='';lEl.style.cssText='';tEl.style.cssText='';
-  for(let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
-  waveOn();await speak(p.f,myGen);if(!running||!introOvOn||myGen!==gen)return;
-  await wait(140,myGen);await speak(p.link,myGen);if(!running||!introOvOn||myGen!==gen)return;
-  await wait(140,myGen);await speak(p.tf,myGen);if(!running||!introOvOn||myGen!==gen)return;
-  waveOff();await wait(460,myGen);
+  rEl.style.cssText='opacity:0;transform:translateY(6px);transition:none;';
+  lEl.style.cssText='opacity:0;transform:translateY(4px);transition:none;';
+  tEl.style.cssText='opacity:0;transform:translateY(8px);transition:none;';
+  rEl.textContent=p.r; lEl.innerHTML=p.linkHtml; tEl.innerHTML=p.t;
+  await wait(24,myGen); rEl.style.cssText=''; lEl.style.cssText=''; tEl.style.cssText='';
+  for (let i=0;i<PAIRS.length;i++){const d=document.getElementById('bd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  waveOn();
+  // p.audioNums = [hookN, linkN, thesisN] — 1-based local file numbers
+  if (p.audioNums) {
+    await speak(p.f,  myGen, p.audioNums[0]); if (!running||!introOvOn||myGen!==gen) return;
+    await wait(140,myGen);
+    await speak(p.link, myGen, p.audioNums[1]); if (!running||!introOvOn||myGen!==gen) return;
+    await wait(140,myGen);
+    await speak(p.tf, myGen, p.audioNums[2]); if (!running||!introOvOn||myGen!==gen) return;
+  }
+  waveOff(); await wait(460,myGen);
 }
 
-/* BODY PARAGRAPH PAIRS */
-async function runBodyPairs(myGen){
+// ══ BODY PAIRS ══
+async function runBodyPairs(myGen) {
   const BODY_PAIRS=getBODY_PAIRS();
   bodyOvOn=true;
+  document.getElementById('bodyCardBody').innerHTML='';
+  document.getElementById('bodyFlagNum').textContent='';
   document.getElementById('bodyDots').innerHTML=BODY_PAIRS.map((_,i)=>`<div class="bdot" id="bbd${i}"></div>`).join('');
-  document.getElementById('bodyOv').classList.add('show');
-  for(let i=0;i<BODY_PAIRS.length;i++){if(!running||!bodyOvOn||myGen!==gen)break;await showBodyPair(BODY_PAIRS[i],i,myGen);}
-  document.getElementById('bodyOv').classList.remove('show');document.getElementById('bodyCard').classList.remove('exit');bodyOvOn=false;
+  const bodyOvEl=document.getElementById('bodyOv');
+  bodyOvEl.classList.remove('show');
+  document.getElementById('bodyCard').classList.remove('exit');
+  await wait(40,myGen); if (!running||myGen!==gen) return;
+  bodyOvEl.classList.add('show');
+  for (let i=0;i<BODY_PAIRS.length;i++) { if (!running||!bodyOvOn||myGen!==gen) break; await showBodyPair(BODY_PAIRS[i],i,myGen); }
+  document.getElementById('bodyOv').classList.remove('show');
+  document.getElementById('bodyCard').classList.remove('exit');
+  bodyOvOn=false;
 }
-async function showBodyPair(para,idx,myGen){
+async function showBodyPair(para,idx,myGen) {
+  const BODY_PAIRS=getBODY_PAIRS();
   const card=document.getElementById('bodyCard');
-  if(idx>0){
-    // BP3 gets a special attention reset before sliding in
-    if(idx===2){
-      card.classList.add('exit');await wait(190,myGen);if(!running||!bodyOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');
-      waveOn();await speak("And now — your own idea. This one is yours.",myGen);
-      if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
-      await wait(300,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
-    } else {
-      card.classList.add('exit');await wait(190,myGen);if(!running||!bodyOvOn||myGen!==gen){card.classList.remove('exit');return;}card.classList.remove('exit');
+  if (idx>0) {
+    card.classList.add('exit'); await wait(190,myGen);
+    if (!running||!bodyOvOn||myGen!==gen){card.classList.remove('exit');return;}
+    card.classList.remove('exit');
+    if (idx===2 && para.ownIdeaNarration) {
+      waveOn();
+      await speak(para.ownIdeaNarration, myGen, para.ownIdeaN);
+      if (!running||!bodyOvOn||myGen!==gen){waveOff();return;}
+      await wait(300,myGen); if (!running||!bodyOvOn||myGen!==gen) return;
     }
   }
-  if(!running||!bodyOvOn||myGen!==gen)return;
-  const BODY_PAIRS=getBODY_PAIRS();
+  if (!running||!bodyOvOn||myGen!==gen) return;
   document.getElementById('bodyNum').textContent=(idx+1)+' / '+BODY_PAIRS.length;
   document.getElementById('bodyFlagNum').textContent=para.flagTitle;
   document.getElementById('bodyFlagBody').style.background=para.color;
   document.getElementById('bodyBottomBar').style.background=para.color;
   document.getElementById('bodyPillarLeft').textContent=para.flagTitle+' · P'+(idx+2);
   document.getElementById('bodyPillarRight').textContent=idx===2?'YOUR OWN IDEA ★':'CLAIM + SUPPORT + RESULT';
-  for(let i=0;i<BODY_PAIRS.length;i++){const d=document.getElementById('bbd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
-  const body=document.getElementById('bodyCardBody');body.innerHTML='';
-  const topicLbl=document.createElement('div');topicLbl.style.cssText=`font-family:"DM Mono",monospace;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;flex-shrink:0;color:${para.color};`;topicLbl.textContent=para.topic;body.appendChild(topicLbl);
-  const claimRow=document.createElement('div');claimRow.style.cssText='display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;flex-shrink:0;margin-bottom:14px;';
-  const sLen=para.starter.length;const sFontSize=sLen>16?'clamp(2.4rem,6vw,3.6rem)':sLen>10?'clamp(3rem,8vw,5rem)':'clamp(3.8rem,10vw,6.5rem)';
-  const starterEl=document.createElement('span');starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.88;letter-spacing:.5px;color:var(--ink);`;starterEl.textContent=para.starter;claimRow.appendChild(starterEl);
-  if(para.opinion){const opEl=document.createElement('span');opEl.style.cssText=`font-family:"Instrument Sans",sans-serif;font-size:clamp(14px,2vw,18px);font-weight:500;font-style:italic;color:${para.color};line-height:1;`;opEl.textContent=para.opinion;claimRow.appendChild(opEl);}
+  for (let i=0;i<BODY_PAIRS.length;i++){const d=document.getElementById('bbd'+i);if(d){d.classList.toggle('active',i===idx);d.classList.toggle('done',i<idx);}}
+  const body=document.getElementById('bodyCardBody'); body.innerHTML='';
+  const topicLbl=document.createElement('div');
+  topicLbl.style.cssText=`font-family:"DM Mono",monospace;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;flex-shrink:0;color:${para.color};`;
+  topicLbl.textContent=para.topic; body.appendChild(topicLbl);
+  const claimRow=document.createElement('div');
+  claimRow.style.cssText='display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;flex-shrink:0;margin-bottom:14px;';
+  const sLen=para.starter.length;
+  const sFontSize=sLen>16?'clamp(2.4rem,6vw,3.6rem)':sLen>10?'clamp(3rem,8vw,5rem)':'clamp(3.8rem,10vw,6.5rem)';
+  const starterEl=document.createElement('span');
+  starterEl.style.cssText=`font-family:"Barlow Condensed",sans-serif;font-size:${sFontSize};font-weight:900;line-height:.88;letter-spacing:.5px;color:var(--ink);`;
+  starterEl.textContent=para.starter; claimRow.appendChild(starterEl);
+  if (para.opinion){const opEl=document.createElement('span');opEl.style.cssText=`font-family:"Instrument Sans",sans-serif;font-size:clamp(14px,2vw,18px);font-weight:500;font-style:italic;color:${para.color};line-height:1;`;opEl.textContent=para.opinion;claimRow.appendChild(opEl);}
   body.appendChild(claimRow);
-  if(para.keyExpr){const keyEl=document.createElement('div');keyEl.style.cssText=`font-family:"DM Mono",monospace;font-size:clamp(11px,1.5vw,14px);font-weight:500;letter-spacing:.5px;color:#fff;background:${para.color};display:inline-block;padding:6px 14px;border-radius:5px;margin-bottom:18px;flex-shrink:0;`;keyEl.textContent=para.keyExpr;body.appendChild(keyEl);}
-  let html=para.rest;(para.links||[]).forEach(lw=>{const escaped=lw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');html=html.replace(new RegExp(escaped),'<span style="color:var(--red);font-weight:700;font-family:\'DM Mono\',monospace;font-size:clamp(13px,1.6vw,16px);">'+lw+'</span>');});
-  const paraEl=document.createElement('div');paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:clamp(16px,2.2vw,22px);font-weight:400;line-height:1.6;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .5s cubic-bezier(.22,1,.36,1);';paraEl.innerHTML=html;body.appendChild(paraEl);
-  const spacer=document.createElement('div');spacer.style.cssText='flex:1;min-height:6px;';body.appendChild(spacer);
-  if(para.note){const noteEl=document.createElement('div');noteEl.style.cssText='font-family:"DM Mono",monospace;font-size:clamp(11px,1.4vw,14px);line-height:1.6;color:rgba(28,28,30,.5);background:rgba(0,0,0,.04);border-left:3px solid rgba(0,0,0,.14);padding:10px 16px;border-radius:0 6px 6px 0;flex-shrink:0;opacity:0;transition:opacity .5s .6s ease;';noteEl.textContent='💡 '+para.note;body.appendChild(noteEl);setTimeout(()=>{noteEl.style.opacity='1';},700);}
-  await wait(60,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
-  paraEl.offsetHeight;paraEl.style.opacity='1';paraEl.style.transform='none';
-  await wait(180,myGen);if(!running||!bodyOvOn||myGen!==gen)return;
-  waveOn();const fullText=para.starter+(para.opinion?' '+para.opinion+',':'')+(para.keyExpr?' '+para.keyExpr:'')+para.rest;
-  await speak(fullText,myGen);if(!running||!bodyOvOn||myGen!==gen){waveOff();return;}
-  waveOff();await wait(600,myGen);
+  if (para.keyExpr){const keyEl=document.createElement('div');keyEl.style.cssText=`font-family:"DM Mono",monospace;font-size:clamp(11px,1.5vw,14px);font-weight:500;letter-spacing:.5px;color:#fff;background:${para.color};display:inline-block;padding:6px 14px;border-radius:5px;margin-bottom:18px;flex-shrink:0;`;keyEl.textContent=para.keyExpr;body.appendChild(keyEl);}
+  let html=para.rest;
+  (para.links||[]).forEach(lw=>{const esc=lw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');html=html.replace(new RegExp(esc),'<span style="color:var(--red);font-weight:700;font-family:\'DM Mono\',monospace;font-size:clamp(13px,1.6vw,16px);">'+lw+'</span>');});
+  const paraEl=document.createElement('div');
+  paraEl.style.cssText='font-family:"Instrument Sans",sans-serif;font-size:clamp(16px,2.2vw,22px);font-weight:400;line-height:1.6;color:var(--ink);flex-shrink:0;opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .5s cubic-bezier(.22,1,.36,1);';
+  paraEl.innerHTML=html; body.appendChild(paraEl);
+  const spacer=document.createElement('div'); spacer.style.cssText='flex:1;min-height:6px;'; body.appendChild(spacer);
+  if (para.note){const noteEl=document.createElement('div');noteEl.style.cssText='font-family:"DM Mono",monospace;font-size:clamp(11px,1.4vw,14px);line-height:1.6;color:rgba(28,28,30,.5);background:rgba(0,0,0,.04);border-left:3px solid rgba(0,0,0,.14);padding:10px 16px;border-radius:0 6px 6px 0;flex-shrink:0;opacity:0;transition:opacity .5s .6s ease;';noteEl.textContent='💡 '+para.note;body.appendChild(noteEl);setTimeout(()=>{noteEl.style.opacity='1';},700);}
+  await wait(60,myGen); if (!running||!bodyOvOn||myGen!==gen) return;
+  paraEl.offsetHeight; paraEl.style.opacity='1'; paraEl.style.transform='none';
+  await wait(180,myGen); if (!running||!bodyOvOn||myGen!==gen) return;
+  waveOn();
+  const fullText=para.starter+(para.opinion?' '+para.opinion+',':'')+(para.keyExpr?' '+para.keyExpr:'')+para.rest;
+  // para.audioN = 1-based local file number for this body paragraph
+  await Promise.all([
+    speak(fullText, myGen, para.audioN),
+    wait(4000, myGen)
+  ]);
+  if (!running||!bodyOvOn||myGen!==gen){waveOff();return;}
+  waveOff(); await wait(800,myGen);
 }
 
-async function speakThenShow(stkId,text,isFirst,role,kw,myGen){
-  if(!running||myGen!==gen)return;
-  const stk=document.getElementById(stkId);if(!stk)return;
-  const line=document.createElement('div');line.className='s-line'+(isFirst?' first':'');
-  let html=text;if(kw)html=text.replace(kw,`<span style="color:var(--red);font-weight:700">${kw}</span>`);
-  if(role)line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;else line.innerHTML=html;
-  stk.appendChild(line);await wait(20,myGen);line.classList.add('in');line.scrollIntoView({behavior:'smooth',block:'nearest'});
-  await wait(220,myGen);if(!running||myGen!==gen)return;
-  await speak(text,myGen);if(!running||myGen!==gen)return;
+// ══ CONCLUSION ══
+async function speakThenShow(stkId,text,isFirst,role,kw,myGen,n) {
+  if (!running||myGen!==gen) return;
+  const stk=document.getElementById(stkId); if (!stk) return;
+  const line=document.createElement('div'); line.className='s-line'+(isFirst?' first':'');
+  let html=text; if(kw) html=text.replace(kw,`<span style="color:var(--red);font-weight:700">${kw}</span>`);
+  if (role) line.innerHTML=`<span class="s-role" style="color:var(--red);background:rgba(201,20,15,.07)">${role}</span>${html}`;
+  else line.innerHTML=html;
+  stk.appendChild(line); await wait(20,myGen); line.classList.add('in');
+  line.scrollIntoView({behavior:'smooth',block:'nearest'});
+  await wait(220,myGen); if (!running||myGen!==gen) return;
+  await speak(text, myGen, n); if (!running||myGen!==gen) return;
   await wait(180,myGen);
 }
 
-/* ── SC2 CINEMATIC CARD BUILD ── */
-function sc2ShowIdle(){
-  const idle=document.getElementById('sc2Idle');
+// ══ SC2 BUILD ══
+function sc2ShowIdle() {
+  document.getElementById('sc2Idle').style.display='flex';
+  document.getElementById('sc2Build').style.display='none';
+}
+function sc2ResetBuild() {
+  document.getElementById('sc2Idle').style.display='none';
   const build=document.getElementById('sc2Build');
-  if(idle)idle.style.display='flex';
-  if(build)build.style.display='none';
+  build.style.opacity='1'; build.style.transition='';
+  build.innerHTML=
+    '<div id="sc2Kicker" style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;opacity:0;transition:opacity .4s;flex-shrink:0;">Each body paragraph has two parts</div>'+
+    '<div id="sc2ClaimBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">CLAIM</div></div>'+
+    '<div id="sc2ClaimItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;margin-bottom:6px;padding-left:4px;border-left:3px solid var(--red);"></div>'+
+    '<div id="sc2Sep" style="flex-shrink:0;opacity:0;transition:opacity .3s;margin:2px 0 4px;"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:900;color:var(--red);line-height:1;">+</div></div>'+
+    '<div id="sc2SupportBlock" style="flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .35s,transform .4s cubic-bezier(.22,1,.36,1);"><div style="font-family:\'Barlow Condensed\',sans-serif;font-size:clamp(32px,7vw,48px);font-weight:900;line-height:.86;letter-spacing:1px;color:var(--ink);">SUPPORT</div></div>'+
+    '<div id="sc2SupportItems" style="flex-shrink:0;display:flex;flex-direction:column;gap:4px;margin-top:6px;padding-left:4px;border-left:3px solid rgba(28,28,30,.18);"></div>';
+  build.style.display='flex';
 }
-function sc2ResetBuild(){
-  const idle=document.getElementById('sc2Idle');
-  const build=document.getElementById('sc2Build');
-  if(idle)idle.style.display='none';
-  if(build){build.style.display='flex';}
-  // Reset all animated elements
-  const kicker=document.getElementById('sc2Kicker');
-  const claim=document.getElementById('sc2ClaimBlock');
-  const sep=document.getElementById('sc2Sep');
-  const support=document.getElementById('sc2SupportBlock');
-  if(kicker)kicker.style.opacity='0';
-  if(claim){claim.style.opacity='0';claim.style.transform='translateY(14px)';}
-  if(sep)sep.style.opacity='0';
-  if(support){support.style.opacity='0';support.style.transform='translateY(14px)';}
-  const ci=document.getElementById('sc2ClaimItems');
-  const si=document.getElementById('sc2SupportItems');
-  if(ci)ci.innerHTML='';
-  if(si)si.innerHTML='';
+async function sc2AddItem(containerId,text,color,myGen,modalKey) {
+  if (!running||myGen!==gen) return;
+  const c=document.getElementById(containerId); if (!c) return;
+  const item=document.createElement('div'); item.className='sc2-chip';
+  item.style.cssText=`color:${color};cursor:${modalKey?'pointer':'default'};`;
+  item.innerHTML=`<span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;display:inline-block;opacity:.7;"></span>${text.label}`;
+  if (modalKey) item.onclick=()=>openSecModal(modalKey);
+  c.appendChild(item); await wait(30,myGen); item.classList.add('in'); await wait(200,myGen);
 }
-function sc2AnimateIn(el,delay=0){
-  return new Promise(r=>{
-    setTimeout(()=>{
-      if(el){el.style.opacity='1';el.style.transform='none';}
-      setTimeout(r,420);
-    },delay);
-  });
+function sc2PopulateFullList() {
+  const build=document.getElementById('sc2Build'); if (!build) return;
+  build.style.transition='opacity .3s'; build.style.opacity='0';
+  const CLAIM=[
+    {color:'#c9140f',label:'LISTING MARKER',phrases:['Firstly,','Furthermore,','In addition,','However,','On the other hand,']},
+    {color:'#1a5c8a',label:'PERSONAL VIEW',phrases:['in my opinion,','it seems to me that','as far as I am concerned,']},
+    {color:'#1a6b3c',label:'THE CLAIM',phrases:['the main advantage of …','one key problem with …','an important point is …']}
+  ];
+  const SUPPORT=[
+    {color:'#1a6b3c',label:'REASON',phrases:['This is because …','The reason is that …','Since …']},
+    {color:'#1a5c8a',label:'EXAMPLE',phrases:['For example,','For instance,','This can be seen in …']},
+    {color:'#e07b00',label:'CONTRAST',phrases:['Although …','However,','Even though …']},
+    {color:'#6b4ea8',label:'RESULT',phrases:['As a result,','Consequently,','Therefore,']}
+  ];
+  function renderCol(groups){return groups.map(g=>`<div style="margin-bottom:12px;"><div style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:${g.color};margin-bottom:5px;padding-left:8px;border-left:3px solid ${g.color};">${g.label}</div>${g.phrases.map(p=>`<div style="font-family:'Instrument Sans',sans-serif;font-size:clamp(11px,1.5vw,13px);color:rgba(28,28,30,.62);line-height:1.7;padding-left:11px;">${p}</div>`).join('')}</div>`).join('');}
+  setTimeout(()=>{
+    build.innerHTML=`<div style="padding:46px 0 0;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;"><div style="flex:1;min-height:0;display:flex;overflow:hidden;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 18px;border-right:1px solid rgba(0,0,0,.07);"><div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">CLAIM</div>${renderCol(CLAIM)}</div><div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 14px;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">SUPPORT</div>${renderCol(SUPPORT)}</div></div><div style="flex-shrink:0;display:flex;justify-content:center;padding:10px 0 4px;"><button onclick="showPhraseBank()" style="font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:20px;border:1.5px solid rgba(28,28,30,.18);background:transparent;color:var(--ink3);cursor:pointer;">Explore all phrases →</button></div></div>`;
+    build.style.transition='opacity .5s'; build.style.opacity='1';
+  },320);
 }
-/* ── SECONDARY MODAL DATA ── */
-const MODAL_DATA = {
-  listing:{
-    label:'Listing Marker', section:'CLAIM', color:'#c9140f', glow:'rgba(201,20,15,.22)',
-    title:'Listing Markers',
-    phrases:[
-      {text:'Firstly,', note:'introduces your first point'},
-      {text:'Furthermore,', note:'adds a second point — same direction'},
-      {text:'In addition,', note:'adds another point, slightly stronger'},
-      {text:'However,', note:'introduces a contrast or counter-argument'},
-      {text:'On the other hand,', note:'introduces the opposing view'},
-    ]
-  },
-  view:{
-    label:'Personal View', section:'CLAIM', color:'#1a5c8a', glow:'rgba(26,92,138,.22)',
-    title:'Expressing a View',
-    phrases:[
-      {text:'in my opinion,', note:'most common — always safe'},
-      {text:'it seems to me that', note:'softer, more academic tone'},
-      {text:'as far as I am concerned,', note:'strong, formal register'},
-      {text:'I firmly believe that', note:'emphatic — use for strong opinions'},
-      {text:'It is widely believed that', note:'distanced — good for balanced essays'},
-    ]
-  },
-  claim:{
-    label:'The Claim', section:'CLAIM', color:'#1a6b3c', glow:'rgba(26,107,60,.22)',
-    title:'Making a Claim',
-    phrases:[
-      {text:'the main advantage of … is', note:'best for positive points'},
-      {text:'one key problem with … is', note:'best for negative points'},
-      {text:'the most important point is', note:'signals your strongest argument'},
-      {text:'one clear benefit of … is', note:'variation of advantage'},
-      {text:'an important issue is', note:'neutral — works for any claim'},
-    ]
-  },
-  reason:{
-    label:'Reason', section:'SUPPORT', color:'#1a6b3c', glow:'rgba(26,107,60,.22)',
-    title:'Giving a Reason',
-    phrases:[
-      {text:'This is because…', note:'most natural — always works'},
-      {text:'The reason is that…', note:'more formal alternative'},
-      {text:'This is largely due to…', note:'academic register'},
-      {text:'Since…', note:'use at start of sentence — more sophisticated'},
-      {text:'The explanation for this is…', note:'high register — for top marks'},
-    ]
-  },
-  example:{
-    label:'Example', section:'SUPPORT', color:'#1a5c8a', glow:'rgba(26,92,138,.22)',
-    title:'Giving an Example',
-    phrases:[
-      {text:'For example,', note:'simplest — use this first'},
-      {text:'For instance,', note:'equivalent to "for example"'},
-      {text:'Indeed,', note:'stronger — confirms or emphasises'},
-      {text:'This can be seen in…', note:'links directly to real-world evidence'},
-      {text:'A good illustration of this is…', note:'sophisticated — names the example clearly'},
-    ]
-  },
-  result:{
-    label:'Result', section:'SUPPORT', color:'#6b4ea8', glow:'rgba(107,78,168,.22)',
-    title:'Showing a Result',
-    phrases:[
-      {text:'As a result,', note:'most common — always safe'},
-      {text:'Consequently,', note:'more formal than "as a result"'},
-      {text:'Therefore,', note:'logical conclusion — strong signal'},
-      {text:'This means that…', note:'explains the implication directly'},
-      {text:'This leads to…', note:'shows cause and effect clearly'},
-    ]
-  },
-  more:{
-    label:'And More…', section:'SUPPORT', color:'#e07b00', glow:'rgba(224,123,0,.22)',
-    title:'Contrast & Rephrase',
-    phrases:[
-      {text:'Although…', note:'contrast — use to acknowledge counter-argument'},
-      {text:'Even though…', note:'stronger contrast than "although"'},
-      {text:'However,', note:'pivot — changes direction mid-paragraph'},
-      {text:'In other words,', note:'rephrases your point more simply'},
-      {text:'That is to say,', note:'formal rephrase — explains what you mean'},
-      {text:'Unlike…', note:'direct comparison — links two ideas'},
-    ]
-  }
-};
 
-function swapModalContent(key, durationMs){
-  const d=MODAL_DATA[key];if(!d)return;
+// ══ SECONDARY MODAL ══
+const MODAL_DATA = {
+  listing:{label:'Listing Marker',section:'CLAIM',color:'#c9140f',glow:'rgba(201,20,15,.22)',title:'Listing Markers',phrases:[{text:'Firstly,',note:'introduces your first point'},{text:'Furthermore,',note:'adds a second point'},{text:'In addition,',note:'adds another point'},{text:'However,',note:'introduces a contrast'},{text:'On the other hand,',note:'introduces opposing view'}]},
+  view:{label:'Personal View',section:'CLAIM',color:'#1a5c8a',glow:'rgba(26,92,138,.22)',title:'Expressing a View',phrases:[{text:'in my opinion,',note:'most common — always safe'},{text:'it seems to me that',note:'softer, more academic tone'},{text:'as far as I am concerned,',note:'strong, formal register'},{text:'I firmly believe that',note:'emphatic — for strong opinions'},{text:'It is widely believed that',note:'distanced — good for balance'}]},
+  claim:{label:'The Claim',section:'CLAIM',color:'#1a6b3c',glow:'rgba(26,107,60,.22)',title:'Making a Claim',phrases:[{text:'the main advantage of … is',note:'best for positive points'},{text:'one key problem with … is',note:'best for negative points'},{text:'the most important point is',note:'signals your strongest argument'},{text:'one clear benefit of … is',note:'variation of advantage'},{text:'an important issue is',note:'neutral — works for any claim'}]},
+  reason:{label:'Reason',section:'SUPPORT',color:'#1a6b3c',glow:'rgba(26,107,60,.22)',title:'Giving a Reason',phrases:[{text:'This is because…',note:'most natural — always works'},{text:'The reason is that…',note:'more formal alternative'},{text:'This is largely due to…',note:'academic register'},{text:'Since…',note:'use at start of sentence'},{text:'The explanation for this is…',note:'high register — for top marks'}]},
+  example:{label:'Example',section:'SUPPORT',color:'#1a5c8a',glow:'rgba(26,92,138,.22)',title:'Giving an Example',phrases:[{text:'For example,',note:'simplest — use this first'},{text:'For instance,',note:'equivalent to "for example"'},{text:'Indeed,',note:'stronger — confirms or emphasises'},{text:'This can be seen in…',note:'links to real-world evidence'},{text:'A good illustration of this is…',note:'sophisticated — names example clearly'}]},
+  result:{label:'Result',section:'SUPPORT',color:'#6b4ea8',glow:'rgba(107,78,168,.22)',title:'Showing a Result',phrases:[{text:'As a result,',note:'most common — always safe'},{text:'Consequently,',note:'more formal'},{text:'Therefore,',note:'logical conclusion — strong signal'},{text:'This means that…',note:'explains implication directly'},{text:'This leads to…',note:'shows cause and effect clearly'}]},
+  more:{label:'And More…',section:'SUPPORT',color:'#e07b00',glow:'rgba(224,123,0,.22)',title:'Contrast & Rephrase',phrases:[{text:'Although…',note:'contrast — acknowledge counter-argument'},{text:'Even though…',note:'stronger contrast'},{text:'However,',note:'pivot — changes direction'},{text:'In other words,',note:'rephrases your point'},{text:'Unlike…',note:'direct comparison'}]}
+};
+function swapModalContent(key,durationMs) {
+  const d=MODAL_DATA[key]; if(!d) return;
   document.getElementById('smCard').style.boxShadow=`4px 6px 0 rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06),0 24px 55px rgba(0,0,0,.55),0 0 60px ${d.glow}`;
   document.getElementById('smFlagBody').style.background=d.color;
   document.getElementById('smFlagTxt').textContent=d.label;
   document.getElementById('smSectionLbl').textContent=d.section;
   document.getElementById('smTitle').textContent=d.title;
   document.getElementById('smAccentBar').style.background=d.color;
-  const pc=document.getElementById('smPhrases');pc.innerHTML='';
-  d.phrases.forEach((p,i)=>{
-    const row=document.createElement('div');row.className='sm-phrase';
-    row.innerHTML=`<div class="sm-phrase-bullet" style="background:${d.color};margin-top:8px;"></div>
-      <div><div class="sm-phrase-text">${p.text}</div><div class="sm-phrase-note">${p.note}</div></div>`;
-    pc.appendChild(row);
-    setTimeout(()=>row.classList.add('in'),i*60+80);
-  });
+  const pc=document.getElementById('smPhrases'); pc.innerHTML='';
+  d.phrases.forEach((p,i)=>{const row=document.createElement('div');row.className='sm-phrase';row.innerHTML=`<div class="sm-phrase-bullet" style="background:${d.color};margin-top:8px;"></div><div><div class="sm-phrase-text">${p.text}</div><div class="sm-phrase-note">${p.note}</div></div>`;pc.appendChild(row);setTimeout(()=>row.classList.add('in'),i*60+80);});
   const bar=document.getElementById('smTimerBar');
-  if(bar){
-    bar.style.background=d.color;
-    bar.style.transition='none';
-    bar.style.width='100%';
-    if(durationMs){
-      requestAnimationFrame(()=>{requestAnimationFrame(()=>{
-        bar.style.transition=`width ${durationMs}ms linear`;
-        bar.style.width='0%';
-      });});
-    }
-  }
+  if(bar){bar.style.background=d.color;bar.style.transition='none';bar.style.width='100%';if(durationMs){requestAnimationFrame(()=>{requestAnimationFrame(()=>{bar.style.transition=`width ${durationMs}ms linear`;bar.style.width='0%';});});}}
 }
-function openSecModal(key, durationMs){
-  swapModalContent(key, durationMs);
-  document.getElementById('smBackdrop').classList.add('open');
-  document.getElementById('smWrap').classList.add('open');
-}
-function closeSecModal(){
-  const bd=document.getElementById('smBackdrop');
-  const wr=document.getElementById('smWrap');
-  if(bd){bd.classList.remove('open');bd.classList.remove('dim');}
-  if(wr)wr.classList.remove('open');
-}
+function openSecModal(key,durationMs){swapModalContent(key,durationMs);document.getElementById('smBackdrop').classList.add('open');document.getElementById('smWrap').classList.add('open');}
+function closeSecModal(){const bd=document.getElementById('smBackdrop');const wr=document.getElementById('smWrap');if(bd){bd.classList.remove('open');bd.classList.remove('dim');}if(wr)wr.classList.remove('open');}
 
-/* sc2AddItem — drops chip onto card, onclick still works for manual tap */
-async function sc2AddItem(containerId,text,color,myGen,modalKey){
-  if(!running||myGen!==gen)return;
-  const c=document.getElementById(containerId);if(!c)return;
-  const item=document.createElement('div');
-  item.className='sc2-chip';
-  item.style.cssText=`color:${color};cursor:${modalKey?'pointer':'default'};`;
-  item.innerHTML=`<span style="width:5px;height:5px;border-radius:50%;background:${color};flex-shrink:0;display:inline-block;opacity:.7;"></span>${text.label}`;
-  if(modalKey)item.onclick=()=>openSecModal(modalKey);
-  c.appendChild(item);
-  await wait(30,myGen);
-  item.classList.add('in');
-  await wait(200,myGen);
-}
-
-/* auto-open modal — backdrop dims between cards, never goes white, isLast=true fully closes */
-async function sc2ShowModal(key,narration,myGen,isLast=false){
-  if(!running||myGen!==gen)return;
-  const wordCount=narration.split(/\s+/).length;
-  const estMs=Math.round((wordCount/130)*60*1000/0.87)+600;
-  const backdrop=document.getElementById('smBackdrop');
-  const wrap=document.getElementById('smWrap');
-  const isOpen=wrap.classList.contains('open');
-  if(!isOpen){
-    // First modal — full open
-    swapModalContent(key,estMs);
-    backdrop.classList.remove('dim');
-    backdrop.classList.add('open');
-    wrap.classList.add('open');
-    await wait(500,myGen);
-  } else {
-    // Subsequent — slide card down, swap, slide back up
-    wrap.classList.remove('open');
-    backdrop.classList.remove('open');
-    backdrop.classList.add('dim');
-    await wait(250,myGen);
-    swapModalContent(key,estMs);
-    await wait(80,myGen);
-    backdrop.classList.remove('dim');
-    backdrop.classList.add('open');
-    wrap.classList.add('open');
-    await wait(300,myGen);
-  }
-  if(!running||myGen!==gen){closeSecModal();return;}
-  await speak(narration,myGen);
-  if(!running||myGen!==gen){closeSecModal();return;}
-  await wait(300,myGen);
-  if(isLast){
-    closeSecModal();
-    await wait(300,myGen);
-  } else {
-    // Between modals: slide down but keep backdrop dim — no white flash
-    wrap.classList.remove('open');
-    backdrop.classList.remove('open');
-    backdrop.classList.add('dim');
-  }
-}
-
-async function runBodyIntro(myGen){
-  if(!running||myGen!==gen)return;
+// ══ BODY INTRO LECTURE ══
+async function runBodyIntro(myGen) {
+  if (!running||myGen!==gen) return;
   sc2ResetBuild();
-
   const kicker=document.getElementById('sc2Kicker');
   const claimBlock=document.getElementById('sc2ClaimBlock');
-  if(kicker)kicker.style.opacity='1';
-  await wait(40,myGen);if(!running||myGen!==gen)return;
+  if(kicker) kicker.style.opacity='1';
+  await wait(40,myGen); if(!running||myGen!==gen) return;
   if(claimBlock){claimBlock.style.opacity='1';claimBlock.style.transform='none';}
-  await wait(200,myGen);if(!running||myGen!==gen)return;
-
+  await wait(200,myGen); if(!running||myGen!==gen) return;
   waveOn();
-  await speak(SK.sc2NarrationIntro,myGen);
-  if(!running||myGen!==gen){waveOff();return;}
 
-  for(const chip of SK.sc2ChipsA){
-    sc2AddItem('sc2ClaimItems',{label:chip.label},chip.color,myGen,null);
-    await speak(chip.narration,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
-  }
-
-  await wait(400,myGen);if(!running||myGen!==gen)return;
-
-  const sep=document.getElementById('sc2Sep');
-  const supportBlock=document.getElementById('sc2SupportBlock');
-  if(sep)sep.style.opacity='1';
-  await wait(60,myGen);if(!running||myGen!==gen)return;
-  if(supportBlock){supportBlock.style.opacity='1';supportBlock.style.transform='none';}
-  await wait(150,myGen);if(!running||myGen!==gen)return;
-
-  await speak(SK.sc2NarrationBridge,myGen);
-  if(!running||myGen!==gen){waveOff();return;}
-
-  for(const chip of SK.sc2ChipsB){
-    sc2AddItem('sc2SupportItems',{label:chip.label},chip.color,myGen,null);
-    await speak(chip.narration,myGen);
-    if(!running||myGen!==gen){waveOff();return;}
+  // SK.sc2Lecture contains narration steps with optional n= file numbers
+  for (const step of (SK.sc2Lecture||[])) {
+    await speak(step.text, myGen, step.n);
+    if (!running||myGen!==gen){waveOff();return;}
+    if (step.chip) {
+      const container = step.chip.side==='claim' ? 'sc2ClaimItems' : 'sc2SupportItems';
+      await sc2AddItem(container, {label:step.chip.label}, step.chip.color, myGen, step.chip.modal||null);
+      if (!running||myGen!==gen){waveOff();return;}
+    }
+    if (step.showSep) {
+      const sep=document.getElementById('sc2Sep');
+      const supportBlock=document.getElementById('sc2SupportBlock');
+      if(sep) sep.style.opacity='1';
+      await wait(60,myGen); if(!running||myGen!==gen) return;
+      if(supportBlock){supportBlock.style.opacity='1';supportBlock.style.transform='none';}
+      await wait(150,myGen); if(!running||myGen!==gen) return;
+    }
   }
 
   waveOff();
-  await wait(500,myGen);if(!running||myGen!==gen)return;
+  await wait(500,myGen); if(!running||myGen!==gen) return;
   sc2PopulateFullList();
-  await wait(800,myGen);if(!running||myGen!==gen)return;
-
-  waveOn();await speak("Now watch three complete body paragraphs. See how all these pieces fit together.",myGen);
-  if(!running||myGen!==gen){waveOff();return;}waveOff();
-  await wait(400,myGen);if(!running||myGen!==gen)return;
+  await wait(800,myGen); if(!running||myGen!==gen) return;
+  waveOn();
+  await speak("Now watch three complete body paragraphs. See how all these pieces fit together.", myGen, SK.sc2TransitionN);
+  if(!running||myGen!==gen){waveOff();return;}
+  waveOff();
+  await wait(400,myGen); if(!running||myGen!==gen) return;
   await runBodyPairs(myGen);
 }
 
-function sc2PopulateFullList(){
-  const build=document.getElementById('sc2Build');
-  if(!build)return;
-  build.style.transition='opacity .3s';
-  build.style.opacity='0';
-
-  const CLAIM=[
-    {color:'#c9140f', label:'LISTING MARKER', phrases:['Firstly,','Furthermore,','In addition,','However,','On the other hand,']},
-    {color:'#1a5c8a', label:'PERSONAL VIEW',  phrases:['in my opinion,','it seems to me that','as far as I am concerned,']},
-    {color:'#1a6b3c', label:'THE CLAIM',      phrases:['the main advantage of …','one key problem with …','an important point is …']},
-  ];
-  const SUPPORT=[
-    {color:'#1a6b3c', label:'REASON',   phrases:['This is because …','The reason is that …','Since …']},
-    {color:'#1a5c8a', label:'EXAMPLE',  phrases:['For example,','For instance,','This can be seen in …']},
-    {color:'#e07b00', label:'CONTRAST', phrases:['Although …','However,','Even though …']},
-    {color:'#6b4ea8', label:'RESULT',   phrases:['As a result,','Consequently,','Therefore,']},
-  ];
-
-  function renderCol(groups){
-    return groups.map(g=>`
-      <div style="margin-bottom:12px;">
-        <div style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:${g.color};margin-bottom:5px;padding-left:8px;border-left:3px solid ${g.color};">${g.label}</div>
-        ${g.phrases.map(p=>`<div style="font-family:'Instrument Sans',sans-serif;font-size:clamp(11px,1.5vw,13px);color:rgba(28,28,30,.62);line-height:1.7;padding-left:11px;">${p}</div>`).join('')}
-      </div>`).join('');
-  }
-
-  setTimeout(()=>{
-    build.innerHTML=`
-      <div style="padding:46px 0 0;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;">
-        <div style="flex:1;min-height:0;display:flex;overflow:hidden;">
-
-          <!-- CLAIM column -->
-          <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 18px;border-right:1px solid rgba(0,0,0,.07);">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">CLAIM</div>
-            ${renderCol(CLAIM)}
-          </div>
-
-          <!-- SUPPORT column -->
-          <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding:8px 14px 12px 14px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:1px;color:var(--ink);line-height:.9;margin-bottom:12px;">SUPPORT</div>
-            ${renderCol(SUPPORT)}
-          </div>
-
-        </div>
-
-        <!-- Explore button -->
-        <div style="flex-shrink:0;display:flex;justify-content:center;padding:10px 0 4px;">
-          <button onclick="showPhraseBank()" style="font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:20px;border:1.5px solid rgba(28,28,30,.18);background:transparent;color:var(--ink3);cursor:pointer;transition:all .18s;" onmouseover="this.style.background='rgba(0,0,0,.06)';this.style.color='var(--ink)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink3)'">Explore all phrases →</button>
-        </div>
-      </div>`;
-    build.style.transition='opacity .5s';
-    build.style.opacity='1';
-  },320);
-}
-
-
-async function runScene(idx,myGen){
-  if(!running||myGen!==gen)return;
+// ══ MAIN SCENE RUNNER ══
+async function runScene(idx,myGen) {
+  if(!running||myGen!==gen) return;
   if(idx>=SCENE_COUNT){finishAll();return;}
-  clearStacks();showScene(idx);
+  clearStacks(); showScene(idx);
 
   if(idx===0){
-    waveOn();await speak(SK.welcomeNarration,myGen);
-    if(!running||myGen!==gen){waveOff();return;}waveOff();
-  }
-  else if(idx===1){
+    waveOn();
+    await speak(SK.welcomeNarration, myGen, SK.welcomeN);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff();
+
+  } else if(idx===1){
     showInter('INTRODUCTION','var(--c-intro)',SK.interKicker,SK.interBig,SK.interSub,'var(--c-intro)');
-    await speak(SK.sc1Narration,myGen);
-    if(!running||myGen!==gen)return;
-    await wait(400,myGen);if(!running||myGen!==gen)return;
-    hideInter();await wait(260,myGen);if(!running||myGen!==gen)return;
-    waveOn();await speak(SK.sc1QuestionNarration,myGen);
-    if(!running||myGen!==gen){waveOff();return;}waveOff();await wait(240,myGen);if(!running||myGen!==gen)return;
+    await speak(SK.sc1Narration, myGen, SK.sc1NarrationN);
+    if(!running||myGen!==gen) return;
+    await wait(400,myGen); if(!running||myGen!==gen) return;
+    hideInter(); await wait(260,myGen); if(!running||myGen!==gen) return;
+    waveOn();
+    await speak(SK.sc1QuestionNarration, myGen, SK.sc1QuestionN);
+    if(!running||myGen!==gen){waveOff();return;}
+    waveOff(); await wait(240,myGen); if(!running||myGen!==gen) return;
     await runIntroPairs(myGen);
-  }
-  else if(idx===2){
+
+  } else if(idx===2){
     await runBodyIntro(myGen);
-  }
-  else if(idx===3){
-    const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='none';
-    const hint=document.getElementById('conclHint');if(hint)hint.style.display='none';
+
+  } else if(idx===3){
+    const sk=document.getElementById('conclSkeleton'); if(sk) sk.style.display='none';
+    const hint=document.getElementById('conclHint'); if(hint) hint.style.display='none';
     const CONCL_DATA=getCONCL_DATA();
     const narrations=SK.conclNarrations||[];
+    const narrationNs=SK.conclNarrationNs||[];    // n= values for interstitial narrations
+    const sentenceNs=SK.conclSentenceNs||[];       // n= values for the sentence reads
     waveOn();
     for(let i=0;i<CONCL_DATA.length;i++){
       if(!running||myGen!==gen){waveOff();return;}
-      if(narrations[i])await speak(narrations[i],myGen);
-      if(!running||myGen!==gen){waveOff();return;}
-      await speakThenShow('stk3',CONCL_DATA[i].text,i===0,CONCL_DATA[i].role,CONCL_DATA[i].kw,myGen);
+      if(narrations[i]) {
+        await speak(narrations[i], myGen, narrationNs[i]);
+        if(!running||myGen!==gen){waveOff();return;}
+      }
+      await speakThenShow('stk3',CONCL_DATA[i].text,i===0,CONCL_DATA[i].role,CONCL_DATA[i].kw,myGen,sentenceNs[i]);
       if(!running||myGen!==gen){waveOff();return;}
     }
     waveOff();
   }
 
-  if(!running||myGen!==gen)return;
-  await wait(400,myGen);if(!running||myGen!==gen)return;
+  if(!running||myGen!==gen) return;
+  await wait(400,myGen); if(!running||myGen!==gen) return;
   const sectionEnd=SECTION_END[activeSection]??(SCENE_COUNT-1);
   if(idx>=sectionEnd){finishSection();return;}
-  cur=idx+1;runScene(cur,myGen);
+  cur=idx+1; runScene(cur,myGen);
 }
 
-function handlePlay(){
+function handlePlay() {
+  initAudioPool();
   if(!running){
-    if(cur===0)activeSection='intro';
-    running=true;const myGen=gen;
-    const b=document.getElementById('btnPlay');b.textContent='⏹';b.classList.add('running');
-    updateNavBtns();runScene(cur,myGen);
-  }else{hardStop();updateNavBtns();}
+    if(cur===0) activeSection='intro';
+    running=true; const myGen=gen;
+    const b=document.getElementById('btnPlay'); b.textContent='⏹'; b.classList.add('running');
+    updateNavBtns(); runScene(cur,myGen);
+  } else {hardStop();updateNavBtns();}
 }
 function clearStacks(){
-  const el=document.getElementById('stk3');if(el)el.innerHTML='';
-  const sk=document.getElementById('conclSkeleton');if(sk)sk.style.display='flex';
-  const hint=document.getElementById('conclHint');if(hint)hint.style.display='block';
+  const el=document.getElementById('stk3'); if(el) el.innerHTML='';
+  const sk=document.getElementById('conclSkeleton'); if(sk) sk.style.display='flex';
+  const hint=document.getElementById('conclHint'); if(hint) hint.style.display='block';
   sc2ShowIdle();
 }
 function nextScene(){hardStop();clearStacks();if(cur+1<SCENE_COUNT)cur++;activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
 function prevScene(){if(cur===0)return;hardStop();clearStacks();cur=Math.max(0,cur-1);activeSection=sectionForScene(cur);showScene(cur);updateNavBtns();}
-function updateNavBtns(){
-  document.getElementById('btnPrev').disabled=cur<=0;
-  document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;
-}
-function finishSection(){
-  hardStop();
-  const b=document.getElementById('btnPlay');
-  if(b){b.textContent='▶';b.classList.remove('running');}
-  updateNavBtns();
-}
+function updateNavBtns(){document.getElementById('btnPrev').disabled=cur<=0;document.getElementById('btnNext').disabled=cur>=SCENE_COUNT-1;}
+function finishSection(){hardStop();const b=document.getElementById('btnPlay');if(b){b.textContent='▶';b.classList.remove('running');}updateNavBtns();}
 function finishAll(){finishSection();}
 
 let activeNtab='descriptors';
@@ -1622,19 +1187,27 @@ function renderNotes(tab){const body=document.getElementById('notesBody');const 
 function switchNtab(t){activeNtab=t;document.querySelectorAll('.ntab').forEach(b=>b.classList.toggle('on',b.dataset.ntab===t));renderNotes(t);}
 function openNotes(){renderNotes(activeNtab);document.getElementById('notesPanel').classList.add('show');}
 function closeNotes(){document.getElementById('notesPanel').classList.remove('show');syncTab(cur);}
-
 function flashColor(){const f=document.getElementById('flash');f.classList.add('pop');setTimeout(()=>f.classList.remove('pop'),20);}
 const EMJS=[['📖'],['📱'],['📐'],['✅']];
 function spawnEmoji(idx){const list=EMJS[idx]||[];const r=document.getElementById('stage').getBoundingClientRect();list.forEach((em,i)=>{setTimeout(()=>{const el=document.createElement('div');el.className='fem';el.textContent=em;el.style.cssText=`left:${r.left+r.width*.2+Math.random()*r.width*.6}px;top:${r.top+r.height*.45+Math.random()*r.height*.35}px;animation-duration:${1.9+Math.random()*.7}s;`;document.body.appendChild(el);setTimeout(()=>el.remove(),2500);},i*160);});}
 
 document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();handlePlay();}if(e.key==='ArrowRight')nextScene();if(e.key==='ArrowLeft')prevScene();if(e.key==='Escape'){hardStop();updateNavBtns();closeNotes();}});
-let _tx=0;
-document.addEventListener('touchstart',e=>_tx=e.changedTouches[0].screenX,{passive:true});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-_tx;if(dx<-55)nextScene();if(dx>55)prevScene();});
+let _tx=0,_ty=0;
+document.addEventListener('touchstart',e=>{_tx=e.changedTouches[0].screenX;_ty=e.changedTouches[0].screenY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(bodyOvOn||introOvOn||pbOvOn)return;
+  if(document.getElementById('notesPanel').classList.contains('show'))return;
+  if(document.getElementById('interOv').classList.contains('show'))return;
+  const dx=e.changedTouches[0].screenX-_tx;
+  const dy=e.changedTouches[0].screenY-_ty;
+  if(Math.abs(dy)>Math.abs(dx))return;
+  if(dx<-80)nextScene();
+  if(dx>80)prevScene();
+});
 
 window.addEventListener('resize',updateFooterVar);
-loadVoice();buildDots();updateDots(0);showScene(0);updateNavBtns();
+buildDots(); updateDots(0); showScene(0); updateNavBtns();
 requestAnimationFrame(updateFooterVar);
 </script>
 </body>
-</html>OCTYPE html>
+</html>
